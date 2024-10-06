@@ -1,9 +1,6 @@
 <?php
-//ルートで試す
-require_once '../routes/web.php';
 
-$uri = urldecode(
-	parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
-);
+require_once __DIR__ . '/../app/helpers.php';
+require_once __DIR__ . '/../routes/web.php';
 
-var_dump($uri);
+
