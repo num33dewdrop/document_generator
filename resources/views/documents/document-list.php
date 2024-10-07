@@ -1,6 +1,6 @@
-<?php include( base_path( 'resources/views/common/head.php' ) ); ?>
-<?php include( base_path( 'resources/views/common/header.php' ) ); ?>
-<?php include( base_path( 'resources/views/common/globalNav.php' ) ); ?>
+<?php include_view('head'); ?>
+<?php include_view('header') ?>
+<?php include_view('globalNav'); ?>
 <main class="l-main">
     <div class="l-main__head">
         <hgroup class="c-title">
@@ -200,5 +200,5 @@
         </div>
     </section>
 </main>
-<?php include( base_path( 'resources/views/common/footer.php' ) ); ?>
+<?php include_view('footer'); ?>
 

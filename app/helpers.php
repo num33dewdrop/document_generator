@@ -33,3 +33,9 @@ if (!function_exists('view')) {
 		View::render($view, $data);
 	}
 }
+
+if (!function_exists('include_view')) {
+	function include_view($view, $data = []): void {
+		View::include($view, $data);
+	}
+}
