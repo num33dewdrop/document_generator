@@ -1,6 +1,8 @@
-<?php include_view('head'); ?>
-<?php include_view('header') ?>
-<?php include_view('globalNav'); ?>
+<?php
+include_view('head', $data['head']);
+include_view('header');
+include_view('globalNav');
+?>
 <main class="l-main">
     <div class="l-main__head">
         <hgroup class="c-title">

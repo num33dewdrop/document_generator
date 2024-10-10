@@ -1,15 +1,7 @@
 <?php
-
 namespace Views;
 
 class View {
-
-	public static array $config;
-
-	public static function setConfig($config): void {
-		self::$config = $config;
-	}
-
 	public static function render($view, $data = []): void {
 		$viewPath = base_path('resources/views/' . $view . '.php');
 		// ビューが存在するか確認

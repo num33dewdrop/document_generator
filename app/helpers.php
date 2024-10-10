@@ -1,5 +1,5 @@
 <?php
-require_once '../app/Views/View.php';
+
 use Views\View;
 
 if (!function_exists('env')) {
@@ -11,7 +11,7 @@ if (!function_exists('env')) {
 			if (file_exists($envPath)) {
 				$lines = file($envPath);
 				foreach ($lines as $line) {
-					if ( str_contains( $line, '=' ) ) {
+					if (strpos($line, '=') !== false) {
 						list($name, $value) = explode('=', trim($line), 2);
 						$variables[$name] = $value;
 					}

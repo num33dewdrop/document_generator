@@ -1,6 +1,4 @@
 <?php
-
-require_once __DIR__ . '/../app/helpers.php';
-require_once __DIR__ . '/../routes/web.php';
+require_once __DIR__ . '/../bootstrap/app.php';
 
 
