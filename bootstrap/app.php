@@ -25,6 +25,7 @@ ini_set('error_log', __DIR__ . '/../log/php.log');
 require_once __DIR__ . '/../app/Utilities/Debug.php';
 require_once __DIR__ . '/../app/Routes/Route.php';
 require_once __DIR__ . '/../app/Views/View.php';
+
 require_once __DIR__ . '/../app/Controllers/DocumentsController.php';
 
 require_once __DIR__ . '/../app/helpers.php';

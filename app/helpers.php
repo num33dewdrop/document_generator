@@ -11,7 +11,7 @@ if (!function_exists('env')) {
 			if (file_exists($envPath)) {
 				$lines = file($envPath);
 				foreach ($lines as $line) {
-					if (strpos($line, '=') !== false) {
+					if ( str_contains( $line, '=' ) ) {
 						list($name, $value) = explode('=', trim($line), 2);
 						$variables[$name] = $value;
 					}

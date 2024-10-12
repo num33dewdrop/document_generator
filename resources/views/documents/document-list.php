@@ -106,8 +106,6 @@ include_view('globalNav');
                     </div>
                 </div>
             </li>
-
-
         </ul>
         <div class="c-pager--end">
             <ul class="c-pager__list">
