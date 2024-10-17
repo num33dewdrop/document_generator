@@ -106,7 +106,7 @@
             <h2 class="c-info__title">株式会社〇〇〇〇</h2>
             <p class="c-info__note">2012/04/03 〜 2023/07/16</p>
         </hgroup>
-        <section class="c-section">
+        <div class="c-section">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="c-section__inner">
                     <div class="c-box">
@@ -155,7 +155,7 @@
                     </div>
                 </div>
             </form>
-        </section>
+        </div>
     </div>
 </main>
 </div>

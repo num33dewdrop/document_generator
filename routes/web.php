@@ -1,11 +1,13 @@
 <?php
+
 use Routes\Route;
-use Controllers\DocumentsController;
 
 Route::get('/', function() {
-	view('welcome');
-});
+	view('auth.user-login');
+})->name('user.login');
 
-Route::get('/document-list', [DocumentsController::class, 'index']);
+Route::get('/user-register', 'RegisterController@index')->name('user.register');
+
+Route::get('/document-list', 'DocumentsController@list')->name('documents.list');
 
 Route::handleRequest();

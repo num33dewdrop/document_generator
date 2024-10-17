@@ -1,6 +1,33 @@
 <?php
 
+use Routes\Route;
 use Views\View;
+
+if (!function_exists('assets')) {
+	function assets(string $path): string {
+		return base_url() .'/assets/'. $path; // ベースURLを付加
+	}
+}
+
+if (!function_exists('base_path')) {
+	function base_path($path = ''): string {
+		return rtrim(dirname(__DIR__), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+	}
+}
+
+// ベースURLを取得するヘルパー関数
+if (!function_exists('base_url')) {
+	function base_url(): string {
+		return rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+	}
+}
+
+if (!function_exists('config')) {
+	function config($key): string {
+		$config = require base_path('config/app.php');
+		return $config[$key];
+	}
+}
 
 if (!function_exists('env')) {
 	function env($key, $default = null) {
@@ -22,20 +49,24 @@ if (!function_exists('env')) {
 	}
 }
 
-if (!function_exists('base_path')) {
-	function base_path($path = ''): string {
-		return rtrim(dirname(__DIR__), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+// ルートのURLを生成するヘルパー関数
+if (!function_exists('route')) {
+	function route(string $name): string {
+		// 定義されたルートを取得
+		$uri = Route::route($name);
+		return base_url() . $uri; // ベースURLを付加
 	}
 }
 
 if (!function_exists('view')) {
 	function view($view, $data = []): void {
-		View::render($view, $data);
+		View::render(str_replace('.', '/', $view), $data);
 	}
 }
 
-if (!function_exists('include_view')) {
-	function include_view($view, $data = []): void {
+if (!function_exists('view_parts')) {
+	function view_parts($view, $data = []): void {
 		View::include($view, $data);
 	}
 }
+

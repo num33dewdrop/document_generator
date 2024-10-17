@@ -2,18 +2,13 @@
 namespace Controllers;
 use Utilities\Debug;
 
-class DocumentsController {
-	public static function index(): void {
-		Debug::start('HOME');
-		Debug::echo('テスト');
-		$data = array(
-			'head' => array(
-				"title" => 'HOME',
-				"description" => 'サイトの説明です',
-				"config" => require base_path('config/app.php')
-			)
-		);
+class DocumentsController extends Controller {
+	public function list(): void {
+		Debug::start('DOCUMENT LIST');
+		$this->data['head']['title'] = 'DOCUMENT LIST';
+		$this->data['head']['description'] = 'DOCUMENT LISTの説明';
 		// ビューにデータを渡して表示
-		view('documents/document-list', $data);
+		view('documents.document-list', $this->data);
+		Debug::end('DOCUMENT LIST');
 	}
 }

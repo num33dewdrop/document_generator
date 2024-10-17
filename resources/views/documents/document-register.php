@@ -95,14 +95,13 @@
 </div>
 <main class="l-main">
     <div class="l-main__head">
-    <hgroup class="c-title">
-        <h1>資料登録</h1>
-        <p>RESUME REGISTER</p>
-    </hgroup>
-    
-</div>
+        <hgroup class="c-title">
+            <h1>資料登録</h1>
+            <p>RESUME REGISTER</p>
+        </hgroup>
+    </div>
     <div class="l-main__body">
-        <section class="c-section">
+        <div class="c-section">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="c-section__inner">
                     <div class="c-box">
@@ -196,7 +195,7 @@
                     </div>
                 </div>
             </form>
-        </section>
+        </div>
     </div>
 </main>
 </div>

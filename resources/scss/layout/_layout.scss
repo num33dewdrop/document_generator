@@ -8,11 +8,19 @@
   height: $header-height;
   z-index: 50;
   background-color: $white;
-  //box-shadow: $shadow;
+  &--center {
+    padding-top: 40px;
+    height: 150px;
+    position: relative;
+    background-color: $gray-clear;
+  }
   &__inner {
     @include flex(center, space-between);
     height: 100%;
     padding: 0 $side-margin;
+    &--center {
+      @include flex(center, center);
+    }
   }
   &__logo {
     height: 100%;
@@ -23,12 +31,18 @@
   }
   @include mq() {
     box-shadow: $shadow;
+    &--center {
+      box-shadow: none;
+    }
   }
 }
 
 .l-container {
   display: grid;
   grid-template-columns: $global-nav-width 1fr;
+  &--col1 {
+    grid-template-columns: 1fr;
+  }
   @include mq() {
     @include flex($direction: column-reverse);
   }
@@ -103,19 +117,35 @@
     //top: $header-height;
     //z-index: 50;
     //border-radius: 20px 0 0 0;
+    &--center {
+      @include flex($justify: center);
+    }
   }
   &__body {
     width: 100%;
     padding: 0 $side-margin 50px;
     @include flex($direction: column, $gap: 10);
+    &--full {
+      flex: 1;
+    }
+  }
+  &--full {
+    width: 100%;
+    min-height: calc(100vh - 150px);
   }
   @include mq() {
     width: 100%;
     min-height: calc(100dvh - $header-height - $global-nav-height);
+    &--full {
+      min-height: calc(100vh - 150px);
+    }
     &__body {
       padding: 0 0 50px;
       &--info {
         padding: 0 0 30+$global-nav-height;
+      }
+      &--full {
+        padding: 0;
       }
     }
   }

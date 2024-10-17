@@ -1,7 +1,7 @@
 <?php
-include_view('head', $data['head']);
-include_view('header');
-include_view('globalNav');
+view_parts('head', $data);
+view_parts('header');
+view_parts('globalNav');
 ?>
 <main class="l-main">
     <div class="l-main__head">
@@ -145,7 +145,7 @@ include_view('globalNav');
             </ul>
         </div>
     </div>
-    <section id="exportModal" class="c-modal">
+    <div id="exportModal" class="c-modal">
         <div class="c-modal__content js-targetExportModal">
             <div class="c-modal__head">
                 <h2 class="c-modal__title">
@@ -171,8 +171,8 @@ include_view('globalNav');
                 </div>
             </div>
         </div>
-    </section>
-    <section id="deleteModal" class="c-modal">
+    </div>
+    <div id="deleteModal" class="c-modal">
         <div class="c-modal__content js-targetDeleteModal">
             <div class="c-modal__head">
                 <h2 class="c-modal__title c-modal__title--delete">
@@ -198,7 +198,7 @@ include_view('globalNav');
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </main>
-<?php include_view('footer'); ?>
+<?php view_parts('footer'); ?>
 

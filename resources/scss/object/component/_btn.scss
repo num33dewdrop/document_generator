@@ -33,7 +33,7 @@
         transform: rotate(-90deg);
       }
       &:hover {
-        background-color: $emerald-sub;
+        //background-color: $emerald-sub;
         box-shadow: $shadow2;
       }
     }
@@ -45,7 +45,7 @@
       width: 150px;
       @include tranSet();
       &:hover {
-        background-color: $emerald-sub;
+        //background-color: $emerald-sub;
         box-shadow: $shadow2;
       }
     }
@@ -58,7 +58,7 @@
       width: 150px;
       @include tranSet();
       &:hover {
-        background-color: $emerald-sub;
+        //background-color: $emerald-sub;
         box-shadow: $shadow2;
       }
     }

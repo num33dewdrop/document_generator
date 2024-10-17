@@ -485,7 +485,7 @@
 </ul>
         </div>
     </div>
-    <section id="deleteModal" class="c-modal">
+    <div id="deleteModal" class="c-modal">
         <div class="c-modal__content js-targetDeleteModal">
             <div class="c-modal__head">
                 <h2 class="c-modal__title c-modal__title--delete">
@@ -511,7 +511,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </main>
 </div>
 <footer>

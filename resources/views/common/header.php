@@ -1,13 +1,15 @@
 <header class="l-header">
 	<div class="l-header__inner c-menu js-parentMenu">
 		<div class="l-header__logo">
-			<a href="./"><img src="./assets/img/whole/logo.svg" alt="ロゴ"></a>
+			<a href="<?php echo route('documents.list'); ?>" class="test">
+                <img src="<?php echo assets('img/whole/logo.svg'); ?>" alt="ロゴ">
+            </a>
 		</div>
 		<button class="c-menu__btn js-handleMenu"><span></span></button>
 		<div class="c-menu__target">
 			<div class="c-user c-menu__name">
 				<div class="c-user__img">
-					<img src="./assets/img/whole/no-user.svg" alt="">
+					<img src="<?php echo assets('img/whole/no-user.svg'); ?>" alt="">
 				</div>
 				<p class="c-user__name">結城 羽津子</p>
 			</div>

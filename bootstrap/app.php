@@ -20,12 +20,13 @@ ini_set('log_errors', 'on');
 ini_set('error_log', __DIR__ . '/../log/php.log');
 
 //=================================================
-//ヘルパー関数・ルーティングの初期化・クラスの読み込み
+//ルーティングの初期化・ヘルパー関数・クラスの読み込み
 //=================================================
 require_once __DIR__ . '/../app/Utilities/Debug.php';
 require_once __DIR__ . '/../app/Routes/Route.php';
 require_once __DIR__ . '/../app/Views/View.php';
 
+require_once __DIR__ . '/../app/Controllers/Controller.php';
 require_once __DIR__ . '/../app/Controllers/DocumentsController.php';
 
 require_once __DIR__ . '/../app/helpers.php';

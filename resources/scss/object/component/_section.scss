@@ -4,6 +4,10 @@
 
 .c-section {
   width: 100%;
+  &--max {
+    max-width: 430px;
+    margin: 0 auto;
+  }
   &__inner {
     @include flex($direction: column, $gap: 15);
   }

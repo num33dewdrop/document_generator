@@ -4,7 +4,7 @@
 
 .c-form {
   width: 100%;
-  @include flex($direction: column, $gap: 10);
+  @include flex($direction: column, $gap: 15);
   &:not(:last-child) {
     padding-bottom: 20px;
     border-bottom: 1px solid $gray-light2;

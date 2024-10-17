@@ -14,7 +14,6 @@ class View {
 			// ビューが見つからない場合はエラーメッセージを表示
 			http_response_code(404); // 404ステータスコードを返す
 			echo "View not found: $view";
-			// エラーログに記録することも可能
 			error_log("View not found: $view");
 		}
 	}
@@ -31,7 +30,6 @@ class View {
 			// ビューが見つからない場合はエラーメッセージを表示
 			http_response_code(404); // 404ステータスコードを返す
 			echo "View not found: $view";
-			// エラーログに記録することも可能
 			error_log("View not found: $view");
 		}
 	}

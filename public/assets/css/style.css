@@ -316,6 +316,12 @@ Layout
   z-index: 50;
   background-color: #fff;
 }
+.l-header--center {
+  padding-top: 40px;
+  height: 150px;
+  position: relative;
+  background-color: #f8f8f8;
+}
 .l-header__inner {
   display: flex;
   align-items: center;
@@ -325,6 +331,14 @@ Layout
   gap: 0px;
   height: 100%;
   padding: 0 15px;
+}
+.l-header__inner--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0px;
 }
 .l-header__logo {
   height: 100%;
@@ -342,11 +356,17 @@ Layout
   .l-header {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
   }
+  .l-header--center {
+    box-shadow: none;
+  }
 }
 
 .l-container {
   display: grid;
   grid-template-columns: 75px 1fr;
+}
+.l-container--col1 {
+  grid-template-columns: 1fr;
 }
 @media screen and (max-width: 768px) {
   .l-container {
@@ -455,6 +475,14 @@ Layout
   gap: 0px;
   background-color: #f8f8f8;
 }
+.l-main__head--center {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0px;
+}
 .l-main__body {
   width: 100%;
   padding: 0 15px 50px;
@@ -465,16 +493,29 @@ Layout
   flex-wrap: nowrap;
   gap: 10px;
 }
+.l-main__body--full {
+  flex: 1;
+}
+.l-main--full {
+  width: 100%;
+  min-height: calc(100vh - 150px);
+}
 @media screen and (max-width: 768px) {
   .l-main {
     width: 100%;
     min-height: calc(100dvh - 50px - 70px);
+  }
+  .l-main--full {
+    min-height: calc(100vh - 150px);
   }
   .l-main__body {
     padding: 0 0 50px;
   }
   .l-main__body--info {
     padding: 0 0 100px;
+  }
+  .l-main__body--full {
+    padding: 0;
   }
 }
 
@@ -769,6 +810,9 @@ Component
           background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.c-title--center {
+  align-items: center;
+}
 
 .c-btn a, .c-btn button, .c-btn input[type=submit] {
   font-size: 1.4rem;
@@ -808,7 +852,6 @@ Component
   transform: rotate(-90deg);
 }
 .c-btn--create a:hover, .c-btn--create button:hover {
-  background-color: #6CB0A4;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
 }
 .c-btn--primary a, .c-btn--primary button, .c-btn--primary input[type=submit] {
@@ -818,7 +861,6 @@ Component
   transition: all 0.3s ease-out 0s;
 }
 .c-btn--primary a:hover, .c-btn--primary button:hover, .c-btn--primary input[type=submit]:hover {
-  background-color: #6CB0A4;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
 }
 .c-btn--frame a, .c-btn--frame button, .c-btn--frame input[type=submit] {
@@ -829,7 +871,6 @@ Component
   transition: all 0.3s ease-out 0s;
 }
 .c-btn--frame a:hover, .c-btn--frame button:hover, .c-btn--frame input[type=submit]:hover {
-  background-color: #6CB0A4;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
 }
 .c-btn--center {
@@ -963,6 +1004,10 @@ Component
 .c-section {
   width: 100%;
 }
+.c-section--max {
+  max-width: 430px;
+  margin: 0 auto;
+}
 .c-section__inner {
   display: flex;
   align-items: flex-start;
@@ -979,6 +1024,9 @@ Component
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
   width: 100%;
+}
+.c-box--wide {
+  padding: 30px 30px 40px;
 }
 .c-box__inner {
   display: flex;
@@ -1001,7 +1049,7 @@ Component
   justify-content: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 10px;
+  gap: 15px;
 }
 .c-form:not(:last-child) {
   padding-bottom: 20px;
@@ -1055,6 +1103,7 @@ Component
 .c-input input[type=text],
 .c-input input[type=number],
 .c-input input[type=tel],
+.c-input input[type=password],
 .c-input input[type=email] {
   border: 1px solid #999;
   border-radius: 4px;
@@ -1066,18 +1115,20 @@ Component
   letter-spacing: 0.04rem;
   font-weight: 400;
 }
-.c-input input[type=text]::-moz-placeholder, .c-input input[type=number]::-moz-placeholder, .c-input input[type=tel]::-moz-placeholder, .c-input input[type=email]::-moz-placeholder {
+.c-input input[type=text]::-moz-placeholder, .c-input input[type=number]::-moz-placeholder, .c-input input[type=tel]::-moz-placeholder, .c-input input[type=password]::-moz-placeholder, .c-input input[type=email]::-moz-placeholder {
   color: #cacaca;
 }
 .c-input input[type=text]::placeholder,
 .c-input input[type=number]::placeholder,
 .c-input input[type=tel]::placeholder,
+.c-input input[type=password]::placeholder,
 .c-input input[type=email]::placeholder {
   color: #cacaca;
 }
 .c-input input[type=text]:focus,
 .c-input input[type=number]:focus,
 .c-input input[type=tel]:focus,
+.c-input input[type=password]:focus,
 .c-input input[type=email]:focus {
   border-color: #222;
 }
@@ -1091,12 +1142,14 @@ Component
 .c-input--min input[type=text],
 .c-input--min input[type=number],
 .c-input--min input[type=tel],
+.c-input--min input[type=password],
 .c-input--min input[type=email] {
   width: 150px;
 }
 .c-input--mid input[type=text],
 .c-input--mid input[type=number],
 .c-input--mid input[type=tel],
+.c-input--mid input[type=password],
 .c-input--mid input[type=email] {
   width: 225px;
 }
@@ -1150,6 +1203,7 @@ Component
 .c-input--text input[type=text],
 .c-input--text input[type=number],
 .c-input--text input[type=tel],
+.c-input--text input[type=password],
 .c-input--text input[type=email] {
   width: 225px;
 }

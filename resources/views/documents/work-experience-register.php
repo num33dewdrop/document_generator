@@ -102,7 +102,7 @@
     
 </div>
     <div class="l-main__body">
-        <section class="c-section">
+        <div class="c-section">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="c-section__inner">
                     <div class="c-box">
@@ -226,7 +226,7 @@
                     </div>
                 </div>
             </form>
-        </section>
+        </div>
     </div>
 </main>
 </div>
