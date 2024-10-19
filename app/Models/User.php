@@ -1,8 +1,9 @@
 <?php
 
-namespace Model;
+namespace Models;
 
 use Database\Connection;
+use PDOStatement;
 
 class User {
 	private Connection $db;
@@ -21,8 +22,14 @@ class User {
 		return $this->db->fetchAssoc($sql, [':email' => $email]);
 	}
 
-	public function create(array $data): bool {
+	public function create(array $posts): PDOStatement | false {
 		$sql = "INSERT INTO users (name, email, password, create_at) VALUES (:name, :email, :password, :create_at)";
+		$data = [
+			':name'      => $posts['name'],
+			':email'     => $posts['email'],
+			':password'  => password_hash( $posts['password'], PASSWORD_DEFAULT ),
+			':create_at' => date( 'Y-m-d H:i:s' )
+		];
 		return $this->db->query($sql, $data);
 	}
 }

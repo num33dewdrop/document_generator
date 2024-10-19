@@ -23,11 +23,19 @@ ini_set('error_log', __DIR__ . '/../log/php.log');
 //ルーティングの初期化・ヘルパー関数・クラスの読み込み
 //=================================================
 require_once __DIR__ . '/../app/Utilities/Debug.php';
-require_once __DIR__ . '/../app/Routes/Route.php';
+require_once __DIR__ . '/../app/Database/Connection.php';
+require_once __DIR__ . '/../app/Validators/Validator.php';
+require_once __DIR__ . '/../app/Http/Requests/Request.php';
+require_once __DIR__ . '/../app/Http/Redirects/Redirect.php';
+require_once __DIR__ . '/../app/Http/Routes/Route.php';
 require_once __DIR__ . '/../app/Views/View.php';
 
-require_once __DIR__ . '/../app/Controllers/Controller.php';
-require_once __DIR__ . '/../app/Controllers/DocumentsController.php';
+require_once __DIR__ . '/../app/Models/User.php';
+
+require_once __DIR__ . '/../app/Http/Controllers/Controller.php';
+require_once __DIR__ . '/../app/Http/Controllers/DocumentsController.php';
+require_once __DIR__ . '/../app/Http/Controllers/Auth/RegisterController.php';
+require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
 require_once __DIR__ . '/../routes/web.php';

@@ -1,6 +1,7 @@
 <?php
 
-use Routes\Route;
+use Http\Redirects\Redirect;
+use Http\Routes\Route;
 use Views\View;
 
 if (!function_exists('assets')) {
@@ -67,6 +68,30 @@ if (!function_exists('view')) {
 if (!function_exists('view_parts')) {
 	function view_parts($view, $data = []): void {
 		View::include($view, $data);
+	}
+}
+
+
+if (!function_exists('displayErrors')) {
+	function displayErrors(array $errors): string {
+		if (empty($errors)) {
+			return '';
+		}
+
+		$output = '<div class="c-form__error">';
+		foreach ($errors as $error) {
+			$output .= '<p>' . htmlspecialchars($error) . '</p>';
+		}
+		$output .= '</div>';
+
+		return $output;
+	}
+}
+
+if (!function_exists('redirect')) {
+	function redirect(string $url = '', int $statusCode = 302, array $headers = []): Redirect
+	{
+		return new Redirect($url, $statusCode, $headers);
 	}
 }
 

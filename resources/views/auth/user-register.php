@@ -18,10 +18,11 @@ view_parts('header-general');
                             <div class="c-form">
                                 <div class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="email" class="c-form__label">氏名</label>
+                                        <label for="name" class="c-form__label">氏名</label>
                                         <div class="c-input">
                                             <input type="text" name="name" id="name" value="" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors($data['errors']['name'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -30,22 +31,25 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="email" id="email" value="" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors($data['errors']['email'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="pass" class="c-form__label">パスワード</label>
+                                        <label for="password" class="c-form__label">パスワード</label>
                                         <div class="c-input">
-                                            <input type="password" name="pass" id="pass" value="" autocomplete="off">
+                                            <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
+	                                    <?= displayErrors($data['errors']['password'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="pass_re" class="c-form__label">パスワード再入力</label>
+                                        <label for="password_re" class="c-form__label">パスワード再入力</label>
                                         <div class="c-input">
-                                            <input type="password" name="pass_re" id="pass_re" value="" autocomplete="off">
+                                            <input type="password" name="password_re" id="password_re" value="" autocomplete="off">
                                         </div>
+	                                    <?= displayErrors($data['errors']['password_re'] ?? []) ?>
                                     </div>
                                 </div>
                             </div>

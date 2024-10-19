@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers\Auth;
+namespace Http\Controllers\Auth;
 
 class LoginController {
 

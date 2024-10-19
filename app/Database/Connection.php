@@ -36,7 +36,7 @@ class Connection {
 	}
 
 	// 通常のクエリ実行
-	public function query(string $sql, array $params = []): PDOStatement|false {
+	public function query(string $sql, array $params = []): PDOStatement | false {
 		try {
 			$stmt = $this->pdo->prepare($sql);
 			if ( $stmt->execute( $params ) ) {

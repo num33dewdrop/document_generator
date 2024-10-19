@@ -37,7 +37,7 @@ view_parts('header-general');
                     </div>
                     <div class="c-btnBox">
                         <div class="c-btn c-btn--frame">
-                            <a href="<?php echo route('user.register'); ?>">新規登録</a>
+                            <a href="<?php echo route('user-register.index'); ?>">新規登録</a>
                         </div>
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="ログイン">
