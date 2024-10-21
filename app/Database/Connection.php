@@ -31,7 +31,7 @@ class Connection {
 	}
 
 	// 接続を取得
-	public function getConnection(): PDO {
+	public function getPdo(): PDO {
 		return $this->pdo;
 	}
 

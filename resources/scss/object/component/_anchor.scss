@@ -1,0 +1,12 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.c-anchor {
+  color: $gray;
+  text-decoration: underline;
+  @include font(14, normal, 4);
+  &:hover {
+    text-decoration: none;
+  }
+}

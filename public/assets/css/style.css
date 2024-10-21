@@ -1609,4 +1609,30 @@ Component
      object-fit: contain;
 }
 
+.c-anchor {
+  color: #444;
+  text-decoration: underline;
+  font-size: 1.4rem;
+  line-height: normal;
+  letter-spacing: 0.04rem;
+  font-weight: 400;
+}
+.c-anchor:hover {
+  text-decoration: none;
+}
+
+.c-textBox {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0px;
+}
+.c-textBox--center {
+  align-items: center;
+  justify-content: center;
+}
+
 /*# sourceMappingURL=style.css.map*/

@@ -32,6 +32,15 @@ view_parts('header-general');
                                         </div>
                                     </div>
                                 </div>
+                                <div class="c-form__group">
+                                    <div class="c-form__input">
+                                        <div class="c-form__input">
+                                            <div class="c-checkbox">
+                                                <label><input type="checkbox" name="save">次回ログインを省略する</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -42,6 +51,9 @@ view_parts('header-general');
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="ログイン">
                         </div>
+                    </div>
+                    <div class="c-textBox c-textBox--center">
+                        <a class="c-anchor" href="<?php echo route('user-register.index'); ?>">パスワードを忘れた方はこちら</a>
                     </div>
                 </div>
             </form>
