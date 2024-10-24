@@ -10,8 +10,8 @@ class Request {
 	protected array $rules;
 	protected Connection $db;
 
-	public function __construct(array $data, array $rules, Connection $db) {
-		$this->data = $data;
+	public function __construct(array $rules, Connection $db) {
+		$this->data = $_POST;
 		$this->rules = $rules;
 		$this->db = $db;
 	}

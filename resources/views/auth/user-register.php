@@ -12,6 +12,7 @@ view_parts('header-general');
     <div class="l-main__body l-main__body--full">
         <div class="c-section c-section--max">
             <form action="" method="post" enctype="multipart/form-data">
+	            <?= displayErrors($data['errors']['common'] ?? []) ?>
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">

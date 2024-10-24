@@ -35,13 +35,11 @@ class Route {
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?'); // クエリパラメータを取り除く
 		$method = $_SERVER['REQUEST_METHOD'];
 
-		// ルートディレクトリを取り除く
 		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); // スクリプト名からベースURIを取得
 		$path = str_replace($baseUri, '', $requestUri); // ベースURIをリクエストURIから取り除く
 
 		// ルートが登録されているか確認
 		if (!isset(self::$routes[$method][$path])) {
-
 			self::handleNotFound($path);
 			return;
 		}
@@ -56,14 +54,14 @@ class Route {
 
 		if (is_string($action)) {
 			list($controller, $method) = explode('@', $action);
-			// クラスを動的にインスタンス化し、メソッドを呼び出す
-			$controllerClass = "Http\\Controllers\\" . $controller;
-			if (class_exists($controllerClass)) {
-				$controllerInstance = new $controllerClass();
-				if (method_exists($controllerInstance, $method)) {
+			$controller = 'Http\\Controllers\\' . $controller;
+			if (class_exists($controller)) {
+				$controllerInstance = new $controller;
+				if(method_exists($controllerInstance, $method)) {
 					call_user_func([$controllerInstance, $method]);
 					return;
 				}
+
 			}
 		}
 

@@ -12,6 +12,7 @@ view_parts('header-general');
     <div class="l-main__body l-main__body--full">
         <div class="c-section c-section--max">
             <form action="" method="post" enctype="multipart/form-data">
+	            <?= displayErrors($data['errors']['common'] ?? []) ?>
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">
@@ -22,21 +23,23 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="email" id="email" value="" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors($data['errors']['email'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="pass" class="c-form__label">パスワード</label>
+                                        <label for="password" class="c-form__label">パスワード</label>
                                         <div class="c-input">
-                                            <input type="password" name="pass" id="pass" value="" autocomplete="off">
+                                            <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
+	                                    <?= displayErrors($data['errors']['password'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
                                     <div class="c-form__input">
                                         <div class="c-form__input">
                                             <div class="c-checkbox">
-                                                <label><input type="checkbox" name="save">次回ログインを省略する</label>
+                                                <label><input type="checkbox" name="password_save">次回ログインを省略する</label>
                                             </div>
                                         </div>
                                     </div>

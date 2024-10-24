@@ -2,8 +2,6 @@
 
 namespace Http\Redirects;
 
-use JetBrains\PhpStorm\NoReturn;
-
 class Redirect
 {
 	protected string $url;

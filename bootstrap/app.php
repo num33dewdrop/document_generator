@@ -29,8 +29,9 @@ require_once __DIR__ . '/../app/Http/Requests/Request.php';
 require_once __DIR__ . '/../app/Http/Redirects/Redirect.php';
 require_once __DIR__ . '/../app/Http/Routes/Route.php';
 require_once __DIR__ . '/../app/Views/View.php';
-
 require_once __DIR__ . '/../app/Models/User.php';
+
+require_once __DIR__ . '/../app/Auth/Auth.php';
 
 require_once __DIR__ . '/../app/Http/Controllers/Controller.php';
 require_once __DIR__ . '/../app/Http/Controllers/DocumentsController.php';

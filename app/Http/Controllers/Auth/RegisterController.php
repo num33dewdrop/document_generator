@@ -26,12 +26,12 @@ class RegisterController extends Controller {
 		// バリデーションルール
 		$rules = [
 			'name' => 'required|string|max:12',
-			'email' => 'required|email',
+			'email' => 'required|email|email-duplicate',
 			'password' => 'required|min:8',
 			'password_re' => 'required|same:password',
 		];
 
-		$request = new Request($_POST, $rules, $this->db);
+		$request = new Request($rules, $this->db);
 
 		if(!$request->validate()) {
 			$_SESSION['errors'] = Validator::getErrors();

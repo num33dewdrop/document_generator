@@ -31,10 +31,12 @@ class Validator {
 				}
 				break;
 			case 'email':
-				$user = new User($db);
 				if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 					self::addError($field, 'email');
 				}
+				break;
+			case 'email-duplicate':
+				$user = new User($db);
 				if ($user->findByEmail($value)) {
 					self::addError($field, 'duplicate');
 				}
