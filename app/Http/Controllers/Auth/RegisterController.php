@@ -21,7 +21,7 @@ class RegisterController extends Controller {
 		view('auth.user-register', $this->data);
 		Debug::end('USER REGISTER INDEX');
 	}
-	public function store(): void {
+	public function store(Request $request, User $user): void {
 		Debug::start('USER REGISTER STORE');
 		// バリデーションルール
 		$rules = [
@@ -31,15 +31,13 @@ class RegisterController extends Controller {
 			'password_re' => 'required|same:password',
 		];
 
-		$request = new Request($rules, $this->db);
+		$request->setRules($rules);
 
 		if(!$request->validate()) {
 			$_SESSION['errors'] = Validator::getErrors();
 			redirect()->back();
 			return;
 		}
-
-		$user = new User($this->db);
 
 		if (!$user->create($request->all())) {
 			redirect()->back();
@@ -52,6 +50,5 @@ class RegisterController extends Controller {
 
 		redirect()->route('documents.list');
 		Debug::end('USER REGISTER STORE');
-		exit;
 	}
 }

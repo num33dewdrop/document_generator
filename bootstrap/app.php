@@ -1,8 +1,9 @@
 <?php
-//=================================================
-//sessionの準備・sessionの有効期限を延ばす
-//=================================================
-//sessionの置き場の変更("/var/tmp/")に置くと30日は削除されない
+
+use Containers\Container;
+use Http\Middleware\AuthMiddleware;
+use Http\Routes\Route;
+
 session_save_path('/var/tmp/');
 //ガーベージコレクションが削除するsessionの有効期限を設定
 ini_set('session.gc_maxlifetime', 60*60*24*30);
@@ -28,6 +29,9 @@ require_once __DIR__ . '/../app/Validators/Validator.php';
 require_once __DIR__ . '/../app/Http/Requests/Request.php';
 require_once __DIR__ . '/../app/Http/Redirects/Redirect.php';
 require_once __DIR__ . '/../app/Http/Routes/Route.php';
+require_once __DIR__ . '/../app/Http/Middleware/MiddlewareInterface.php';
+require_once __DIR__ . '/../app/Http/Middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../app/Containers/Container.php';
 require_once __DIR__ . '/../app/Views/View.php';
 require_once __DIR__ . '/../app/Models/User.php';
 
@@ -39,5 +43,15 @@ require_once __DIR__ . '/../app/Http/Controllers/Auth/RegisterController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
+// コンテナを作成
+$container = new Container();
+
+// コンテナをRouteクラスにセット
+Route::setContainer($container);
+Route::registerMiddlewareAliases([
+	'auth' => [AuthMiddleware::class],
+]);
+
 require_once __DIR__ . '/../routes/web.php';
 
+Route::handleRequest();

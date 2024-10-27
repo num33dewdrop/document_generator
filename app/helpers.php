@@ -59,6 +59,12 @@ if (!function_exists('route')) {
 	}
 }
 
+if (!function_exists('sanitize')) {
+	function sanitize( $str ): string {
+		return htmlspecialchars( $str, ENT_QUOTES );
+	}
+}
+
 if (!function_exists('view')) {
 	function view($view, $data = []): void {
 		View::render(str_replace('.', '/', $view), $data);
@@ -78,11 +84,11 @@ if (!function_exists('displayErrors')) {
 			return '';
 		}
 
-		$output = '<div class="c-form__error">';
+		$output = '<ul class="c-error">';
 		foreach ($errors as $error) {
-			$output .= '<p>' . htmlspecialchars($error) . '</p>';
+			$output .= '<li class="c-error__item">' . htmlspecialchars($error) . '</li>';
 		}
-		$output .= '</div>';
+		$output .= '</ul>';
 
 		return $output;
 	}

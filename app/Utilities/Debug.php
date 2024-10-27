@@ -3,7 +3,7 @@ namespace Utilities;
 
 class Debug {
 	private static bool $debug_flg = true;
-	public static function echo($str) {
+	public static function echo($str): void {
 		if(!empty(self::$debug_flg)) {
 			error_log('デバッグ：'.$str);
 		}

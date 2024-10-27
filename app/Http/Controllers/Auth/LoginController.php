@@ -4,13 +4,10 @@ namespace Http\Controllers\Auth;
 
 use Http\Controllers\Controller;
 use Http\Requests\Request;
-use Models\User;
 use Utilities\Debug;
 use Validators\Validator;
 
 class LoginController extends Controller  {
-	protected User $user;
-
 	public function index(): void {
 		Debug::start('USER LOGIN INDEX');
 		// セッションからエラーメッセージを取得
@@ -24,7 +21,7 @@ class LoginController extends Controller  {
 		Debug::end('USER LOGIN INDEX');
 	}
 
-	public function login(): void {
+	public function login(Request $request): void {
 		Debug::start('USER LOGIN');
 		// バリデーションルール
 		$rules = [
@@ -32,7 +29,8 @@ class LoginController extends Controller  {
 			'password' => 'required',
 		];
 
-		$request = new Request($rules, $this->db);
+		$request->setRules($rules);
+
 		if(!$request->validate()) {
 			$_SESSION['errors'] = Validator::getErrors();
 			redirect()->back();
@@ -40,7 +38,7 @@ class LoginController extends Controller  {
 		}
 
 		if (!$this->auth->attempt($request->all())){
-			$_SESSION['errors'] = ['common' => ['ログインに失敗しました。']];
+			$_SESSION['errors'] = $this->auth->getErrors();
 			redirect()->back();
 			return;
 		}

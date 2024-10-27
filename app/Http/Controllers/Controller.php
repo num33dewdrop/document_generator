@@ -15,9 +15,8 @@ class Controller {
 	protected Connection $db;
 	protected Auth $auth;
 
-	public function __construct() {
-		$config = require base_path('config/database.php');
-		$this->db = new Connection($config);
-		$this->auth = new Auth($this->db);
+	public function __construct(Auth $auth, Connection $db) {
+		$this->db = $db;
+		$this->auth = $auth;
 	}
 }

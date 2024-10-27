@@ -10,9 +10,15 @@ class Request {
 	protected array $rules;
 	protected Connection $db;
 
-	public function __construct(array $rules, Connection $db) {
-		$this->data = $_POST;
+	/**
+	 * @param array $rules
+	 */
+	public function setRules( array $rules ): void {
 		$this->rules = $rules;
+	}
+
+	public function __construct(Connection $db) {
+		$this->data = $_POST;
 		$this->db = $db;
 	}
 

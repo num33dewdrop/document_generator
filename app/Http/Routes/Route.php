@@ -1,17 +1,34 @@
 <?php
 namespace Http\Routes;
 
+use Containers\Container;
+use Http\Middleware\MiddlewareInterface;
+use ReflectionException;
+
 class Route {
 	private static array $routes = [];
 	protected static array $namedRoutes = [];
+	protected static Container $container;
+	private static array $currentMiddleware = [];
+
+	// コンテナの初期化
+	protected static array $middlewareAliases = [];
+
+	public static function setContainer(Container $container): void {
+		self::$container = $container;
+	}
+
+	public static function registerMiddlewareAliases(array $aliases): void {
+		self::$middlewareAliases = $aliases;
+	}
 
 	public static function get($uri, $callback): static {
-		self::$routes['GET'][$uri] = $callback;
+		self::registerRoute('GET', $uri, $callback);
 		return new static;
 	}
 
 	public static function post($uri, $callback): static {
-		self::$routes['POST'][$uri] = $callback;
+		self::registerRoute('POST', $uri, $callback);
 		return new static;
 	}
 
@@ -31,6 +48,22 @@ class Route {
 		return false;
 	}
 
+	private static function registerRoute(string $method, string $uri, $callback): void {
+		self::$routes[$method][$uri] = [
+			'callback' => $callback,
+			'middleware' => self::$currentMiddleware // 現在のミドルウェアを登録
+		];
+	}
+
+	// グループ化されたルートにミドルウェアを適用するメソッド
+	public static function group(array $options, callable $callback): void {
+		if (isset($options['middleware'])) {
+			self::$currentMiddleware = self::$middlewareAliases[$options['middleware']]; // 現在のミドルウェアを設定
+		}
+		call_user_func($callback);
+		self::$currentMiddleware = []; // グループの後にリセット
+	}
+
 	public static function handleRequest(): void {
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?'); // クエリパラメータを取り除く
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -44,28 +77,59 @@ class Route {
 			return;
 		}
 
-		$action = self::$routes[$method][$path];
+		$route = self::$routes[$method][$path];
+		$action = $route['callback'];
+		$middlewares = $route['middleware'] ?? [];
 
+		self::applyMiddlewares($middlewares, $action, $path);
+	}
+	private static function applyMiddlewares(array $middlewares, $action, $path): void {
+		$next = function() use ( $path, $action) {
+			if(!self::isCallAction($action)) {
+				self::handleNotFound($path);
+			}
+		};
+
+		foreach ($middlewares as $middleware) {
+			try {
+				$middlewareInstance = self::$container->make($middleware);
+				if ($middlewareInstance instanceof MiddlewareInterface) {
+					$next = function() use ($middlewareInstance, $next) {
+						$middlewareInstance->handle($next);
+					};
+				}
+			} catch (ReflectionException $e) {
+				error_log("ReflectionException: $e"); // ログに残す
+				self::handleNotFound($path); // エラー発生時は404
+			}
+		}
+
+		$next(); // 最後にコールバックを実行
+	}
+
+	protected static function isCallAction($action): bool {
 		// コントローラーとメソッドを解析
 		if(is_callable($action)) {
 			call_user_func($action);
-			return;
+			return true;
 		}
-
 		if (is_string($action)) {
 			list($controller, $method) = explode('@', $action);
 			$controller = 'Http\\Controllers\\' . $controller;
 			if (class_exists($controller)) {
-				$controllerInstance = new $controller;
-				if(method_exists($controllerInstance, $method)) {
-					call_user_func([$controllerInstance, $method]);
-					return;
+				try {
+					$controllerInstance = self::$container->make( $controller );
+					if(method_exists($controllerInstance, $method)) {
+						self::$container->call($controllerInstance, $method);
+						return true;
+					}
+				} catch ( ReflectionException $e ) {
+					error_log("ReflectionException: $e"); // ログに残す
+					return false;
 				}
-
 			}
 		}
-
-		self::handleNotFound($path);
+		return false;
 	}
 
 	// 404エラー処理を共通化

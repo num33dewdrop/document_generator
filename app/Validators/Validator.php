@@ -23,7 +23,6 @@ class Validator {
 	}
 
 	private static function validateRule(string $field, $value, string $rule, $db): void {
-		var_dump($value);
 		switch (trim($rule)) {
 			case 'required':
 				if (empty($value)) {

@@ -7,11 +7,14 @@ use PDOStatement;
 
 class Connection {
 	private PDO $pdo;
-	public function __construct($config) {
+	protected array $config;
+
+	public function __construct() {
+		$this->config = require base_path('config/database.php');
 		//DBへの接続準備
-		$dsn      = "mysql:dbname={$config['database']};host={$config['host']};charset=utf8";
-		$user     = $config['username'];
-		$password = $config['password'];
+		$dsn      = "mysql:dbname={$this->config['database']};host={$this->config['host']};charset=utf8";
+		$user     = $this->config['username'];
+		$password = $this->config['password'];
 		$options  = [
 			// SQL実行失敗時にはエラーコードのみ設定
 			PDO::ATTR_ERRMODE                  => PDO::ERRMODE_SILENT,

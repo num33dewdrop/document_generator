@@ -1,7 +1,6 @@
 <?php
 return [
 	'system' => 'エラーが発生しました。しばらく経ってからやり直して下さい。',
-	'auth' => 'ログインに失敗しました。入力内容をご確認の上、再度送信してください。',
 	'required' => ':attributeを入力してください。',
 	'email' => ':attributeを正しい正式で入力してください。',
 	'duplicate' => ':attributeはすでに登録されています。',

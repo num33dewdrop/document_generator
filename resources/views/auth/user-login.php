@@ -12,10 +12,10 @@ view_parts('header-general');
     <div class="l-main__body l-main__body--full">
         <div class="c-section c-section--max">
             <form action="" method="post" enctype="multipart/form-data">
-	            <?= displayErrors($data['errors']['common'] ?? []) ?>
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">
+                           <?= displayErrors($data['errors']['common'] ?? []) ?>
                             <div class="c-form">
                                 <div class="c-form__group">
                                     <div class="c-form__input">
@@ -23,7 +23,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="email" id="email" value="" placeholder="例：">
                                         </div>
-	                                    <?= displayErrors($data['errors']['email'] ?? []) ?>
+                                         <?= displayErrors($data['errors']['email'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -32,7 +32,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
-	                                    <?= displayErrors($data['errors']['password'] ?? []) ?>
+                                        <?= displayErrors($data['errors']['password'] ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
