@@ -7,18 +7,18 @@ use ReflectionException;
 
 class Route {
 	private static array $routes = [];
-	protected static array $namedRoutes = [];
-	protected static Container $container;
 	private static array $currentMiddleware = [];
+	private static array $middlewareAliases = [];
+	private static array $namedRoutes = [];
+	private static Container $container;
 
 	// コンテナの初期化
-	protected static array $middlewareAliases = [];
-
 	public static function setContainer(Container $container): void {
 		self::$container = $container;
 	}
 
 	public static function registerMiddlewareAliases(array $aliases): void {
+		//Aliases定義のセット
 		self::$middlewareAliases = $aliases;
 	}
 
@@ -33,14 +33,17 @@ class Route {
 	}
 
 	public static function name(string $name): void {
+		//最後の要素の値の取得
 		$lastRoute = end(self::$routes['GET']) ?? end(self::$routes['POST']);
 		if ($lastRoute) {
+			//routeの名前を定義
 			self::$namedRoutes[$name] = $lastRoute;
 		}
 	}
 
 	public static function route(string $name): bool|int|string {
 		foreach (self::$routes as $method => $routes) {
+			//routeに定義した名前があれば、uriを返却
 			if (($uri = array_search(self::$namedRoutes[$name], $routes)) !== false) {
 				return $uri;
 			}
@@ -58,18 +61,23 @@ class Route {
 	// グループ化されたルートにミドルウェアを適用するメソッド
 	public static function group(array $options, callable $callback): void {
 		if (isset($options['middleware'])) {
-			self::$currentMiddleware = self::$middlewareAliases[$options['middleware']]; // 現在のミドルウェアを設定
+			// 現在のミドルウェアを設定
+			self::$currentMiddleware = self::$middlewareAliases[$options['middleware']];
 		}
+		// コールバックを実行
 		call_user_func($callback);
-		self::$currentMiddleware = []; // グループの後にリセット
+		// グループの後にリセット
+		self::$currentMiddleware = [];
 	}
 
 	public static function handleRequest(): void {
-		$requestUri = strtok($_SERVER['REQUEST_URI'], '?'); // クエリパラメータを取り除く
+		// クエリパラメータを取り除く
+		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 		$method = $_SERVER['REQUEST_METHOD'];
-
-		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); // スクリプト名からベースURIを取得
-		$path = str_replace($baseUri, '', $requestUri); // ベースURIをリクエストURIから取り除く
+		// スクリプト名からベースURIを取得
+		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+		// ベースURIをリクエストURIから取り除く
+		$path = str_replace($baseUri, '', $requestUri);
 
 		// ルートが登録されているか確認
 		if (!isset(self::$routes[$method][$path])) {

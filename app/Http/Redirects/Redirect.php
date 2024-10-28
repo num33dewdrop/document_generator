@@ -26,6 +26,7 @@ class Redirect
 		$url = route($name);
 
 		if (!empty($params)) {
+			//URL エンコードされたクエリ文字列を生成
 			$query = http_build_query($params);
 			$url .= '?' . $query;
 		}

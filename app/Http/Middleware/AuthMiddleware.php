@@ -6,6 +6,7 @@ use Auth\Auth;
 use Closure;
 
 class AuthMiddleware implements MiddlewareInterface {
+	//インターフェイスに含まれる全てのメソッドを実装する必要がある
 	protected Auth $auth;
 
 	public function __construct(Auth $auth) {

@@ -11,12 +11,8 @@ use Validators\Validator;
 class RegisterController extends Controller {
 	public function index(): void {
 		Debug::start('USER REGISTER INDEX');
-		// セッションからエラーメッセージを取得
-		$errors = $_SESSION['errors'] ?? [];
-		unset($_SESSION['errors']); // エラーメッセージを削除
 		$this->data['head']['title'] = 'USER REGISTER';
 		$this->data['head']['description'] = 'REGISTERの説明';
-		$this->data['errors'] = $errors;
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-register', $this->data);
 		Debug::end('USER REGISTER INDEX');
@@ -35,6 +31,7 @@ class RegisterController extends Controller {
 
 		if(!$request->validate()) {
 			$_SESSION['errors'] = Validator::getErrors();
+			$_SESSION['old'] = $request->all();
 			redirect()->back();
 			return;
 		}

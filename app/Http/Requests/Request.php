@@ -10,9 +10,6 @@ class Request {
 	protected array $rules;
 	protected Connection $db;
 
-	/**
-	 * @param array $rules
-	 */
 	public function setRules( array $rules ): void {
 		$this->rules = $rules;
 	}

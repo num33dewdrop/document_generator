@@ -10,12 +10,8 @@ use Validators\Validator;
 class LoginController extends Controller  {
 	public function index(): void {
 		Debug::start('USER LOGIN INDEX');
-		// セッションからエラーメッセージを取得
-		$errors = $_SESSION['errors'] ?? [];
-		unset($_SESSION['errors']); // エラーメッセージを削除
 		$this->data['head']['title'] = 'USER REGISTER';
 		$this->data['head']['description'] = 'REGISTERの説明';
-		$this->data['errors'] = $errors;
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-login', $this->data);
 		Debug::end('USER LOGIN INDEX');
@@ -33,11 +29,12 @@ class LoginController extends Controller  {
 
 		if(!$request->validate()) {
 			$_SESSION['errors'] = Validator::getErrors();
+			$_SESSION['old'] = $request->all();
 			redirect()->back();
 			return;
 		}
 
-		if (!$this->auth->attempt($request->all())){
+		if (!$this->auth->attempt($request->all())) {
 			$_SESSION['errors'] = $this->auth->getErrors();
 			redirect()->back();
 			return;
