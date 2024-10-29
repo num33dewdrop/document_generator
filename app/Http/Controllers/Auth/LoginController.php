@@ -14,6 +14,8 @@ class LoginController extends Controller  {
 		$this->data['head']['description'] = 'REGISTERの説明';
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-login', $this->data);
+		session()->remove('errors');
+		session()->remove('old');
 		Debug::end('USER LOGIN INDEX');
 	}
 
@@ -28,18 +30,20 @@ class LoginController extends Controller  {
 		$request->setRules($rules);
 
 		if(!$request->validate()) {
-			$_SESSION['errors'] = Validator::getErrors();
-			$_SESSION['old'] = $request->all();
+			session()->put('errors', Validator::getErrors());
+			session()->put('old', $request->all());
 			redirect()->back();
 			return;
 		}
 
 		if (!$this->auth->attempt($request->all())) {
-			$_SESSION['errors'] = $this->auth->getErrors();
+			session()->put('errors', $this->auth->getErrors());
 			redirect()->back();
 			return;
 		}
 
+		session()->remove('errors');
+		session()->remove('old');
 		redirect()->route('documents.list');
 		Debug::end('USER LOGIN');
 	}

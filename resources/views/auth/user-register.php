@@ -15,7 +15,7 @@ view_parts('header-general');
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">
-                            <?= displayErrors($data['errors']['common'] ?? []) ?>
+                            <?= displayErrors(error('common') ?? []) ?>
                             <div class="c-form">
                                 <div class="c-form__group">
                                     <div class="c-form__input">
@@ -23,7 +23,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="name" id="name" value="" placeholder="例：">
                                         </div>
-                                        <?= displayErrors($data['errors']['name'] ?? []) ?>
+                                        <?= displayErrors(error('name') ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -32,7 +32,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="email" id="email" value="" placeholder="例：">
                                         </div>
-                                        <?= displayErrors($data['errors']['email'] ?? []) ?>
+                                        <?= displayErrors(error('email') ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -41,7 +41,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
-                                        <?= displayErrors($data['errors']['password'] ?? []) ?>
+                                        <?= displayErrors(error('password') ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -50,7 +50,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="password" name="password_re" id="password_re" value="" autocomplete="off">
                                         </div>
-                                        <?= displayErrors($data['errors']['password_re'] ?? []) ?>
+                                        <?= displayErrors(error('password_re') ?? []) ?>
                                     </div>
                                 </div>
                             </div>

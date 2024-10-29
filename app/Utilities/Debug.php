@@ -12,21 +12,21 @@ class Debug {
 	//画面表示処理開始ログ吐き出し関数
 	//=================================================
 	public static function start($str): void {
-		Debug::echo('『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『');
-		Debug::echo('『　'.$str.'　『');
-		Debug::echo('『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『');
-		Debug::echo('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理開始');
-		Debug::echo('sessionID：'.session_id());
-		Debug::echo('session変数の中身：'.print_r($_SESSION, true));
-		Debug::echo('現在日時タイムスタンプ'.time());
-		if(!empty($_SESSION['login_time']) && !empty($_SESSION['login_limit'])){
-			Debug::echo('ログイン有効期限タイムスタンプ：'.($_SESSION['login_time'] + $_SESSION['login_limit']));
+		self::echo('『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『');
+		self::echo('『　'.$str.'　『');
+		self::echo('『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『『');
+		self::echo('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理開始');
+		self::echo('sessionID：'.session_id());
+		self::echo('session変数の中身：'.print_r($_SESSION, true));
+		self::echo('現在日時タイムスタンプ'.time());
+		if(!empty(session()->get('login_date')) && !empty(session()->get('limit'))){
+			self::echo('ログイン有効期限タイムスタンプ：'.(session()->get('login_date') + session()->get('login_date')));
 		}
 	}
 	public static function end($str): void {
-		Debug::echo('』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』');
-		Debug::echo('』　'.$str.'　』');
-		Debug::echo('』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』');
-		Debug::echo('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理終了');
+		self::echo('』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』');
+		self::echo('』　'.$str.'　』');
+		self::echo('』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』』');
+		self::echo('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>画面表示処理終了');
 	}
 }

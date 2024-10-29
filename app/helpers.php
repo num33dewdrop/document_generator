@@ -2,6 +2,7 @@
 
 use Http\Redirects\Redirect;
 use Http\Routes\Route;
+use Session\Session;
 use Views\View;
 
 if (!function_exists('assets')) {
@@ -47,6 +48,18 @@ if (!function_exists('env')) {
 			}
 		}
 		return $variables[ $key ] ?? $default;
+	}
+}
+
+if (!function_exists('error')) {
+	function error($key): array {
+		return session()->get('errors', [])[$key]?? [];
+	}
+}
+
+if (!function_exists('old')) {
+	function old($key): array {
+		return session()->get('old', [])[$key]?? [];
 	}
 }
 
@@ -101,3 +114,14 @@ if (!function_exists('redirect')) {
 	}
 }
 
+if (!function_exists('session')) {
+	function session(): Session
+	{
+		static $session = null;
+		// 一度だけインスタンスを作成
+		if ($session === null) {
+			$session = new Session();
+		}
+		return $session;
+	}
+}

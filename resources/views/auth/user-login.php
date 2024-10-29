@@ -15,7 +15,7 @@ view_parts('header-general');
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">
-                           <?= displayErrors($data['errors']['common'] ?? []) ?>
+                           <?= displayErrors(error('common') ?? []) ?>
                             <div class="c-form">
                                 <div class="c-form__group">
                                     <div class="c-form__input">
@@ -23,7 +23,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="text" name="email" id="email" value="" placeholder="例：">
                                         </div>
-                                         <?= displayErrors($data['errors']['email'] ?? []) ?>
+                                         <?= displayErrors(error('email') ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -32,7 +32,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
-                                        <?= displayErrors($data['errors']['password'] ?? []) ?>
+                                        <?= displayErrors(error('password') ?? []) ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -49,14 +49,14 @@ view_parts('header-general');
                     </div>
                     <div class="c-btnBox">
                         <div class="c-btn c-btn--frame">
-                            <a href="<?php echo route('user-register.index'); ?>">新規登録</a>
+                            <a href="<?= route('user-register.index'); ?>">新規登録</a>
                         </div>
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="ログイン">
                         </div>
                     </div>
                     <div class="c-textBox c-textBox--center">
-                        <a class="c-anchor" href="<?php echo route('user-register.index'); ?>">パスワードを忘れた方はこちら</a>
+                        <a class="c-anchor" href="<?= route('user-register.index'); ?>">パスワードを忘れた方はこちら</a>
                     </div>
                 </div>
             </form>

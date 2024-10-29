@@ -15,6 +15,8 @@ class RegisterController extends Controller {
 		$this->data['head']['description'] = 'REGISTERの説明';
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-register', $this->data);
+		session()->remove('errors');
+		session()->remove('old');
 		Debug::end('USER REGISTER INDEX');
 	}
 	public function store(Request $request, User $user): void {
@@ -30,8 +32,8 @@ class RegisterController extends Controller {
 		$request->setRules($rules);
 
 		if(!$request->validate()) {
-			$_SESSION['errors'] = Validator::getErrors();
-			$_SESSION['old'] = $request->all();
+			session()->put('errors', Validator::getErrors());
+			session()->put('old', $request->all());
 			redirect()->back();
 			return;
 		}
@@ -40,10 +42,13 @@ class RegisterController extends Controller {
 			redirect()->back();
 		}
 
-		$sesLimit                = 60 * 60;
-		$_SESSION['login_date']  = time();
-		$_SESSION['login_limit'] = $sesLimit;
-		$_SESSION['user_id']     = $this->db->getPdo()->lastInsertId();
+		session()->remove('errors');
+		session()->remove('old');
+
+		$sesLimit = 60 * 60;
+		session()->put('login_date', time());
+		session()->put('login_limit', $sesLimit);
+		session()->put('user_id', $this->db->getPdo()->lastInsertId());
 
 		redirect()->route('documents.list');
 		Debug::end('USER REGISTER STORE');

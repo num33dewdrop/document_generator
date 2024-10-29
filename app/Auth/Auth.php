@@ -22,10 +22,10 @@ class Auth {
 			return false; // 認証失敗
 		}
 		// 認証成功
-		$sesLimit                = 60 * 60;
-		$_SESSION['login_date']  = time();
-		$_SESSION['login_limit'] = $credentials['password_save'] ? $sesLimit * 24 * 30 : $sesLimit;
-		$_SESSION['user_id']     = $user['id'];
+		$sesLimit = 60 * 60;
+		session()->put('login_date', time());
+		session()->put('login_limit', $credentials['password_save'] ? $sesLimit * 24 * 30 : $sesLimit);
+		session()->put('user_id', $user['id']);
 		return true;
 	}
 
@@ -34,21 +34,19 @@ class Auth {
 	}
 
 	public function logout(): void {
-		session_destroy();
+		session()->destroy();
 	}
 
 	public function check(): bool {
-		if(empty($_SESSION['user_id'])) {
+		if(empty(session()->get('user_id'))) {
 			return false;
 		}
-
-		if($_SESSION['login_date'] + $_SESSION['login_limit'] < time()) {
+		if(session()->get('login_date') + session()->get('login_limit') < time()) {
 			//ログアウト
 			$this->logout();
 			return false;
 		}
-
-		$_SESSION['login_date'] = time();
+		session()->put('login_date', time());
 		return true;
 	}
 }

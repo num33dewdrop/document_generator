@@ -71,6 +71,7 @@ class Route {
 	}
 
 	public static function handleRequest(): void {
+		session()->start();
 		// クエリパラメータを取り除く
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 		$method = $_SERVER['REQUEST_METHOD'];

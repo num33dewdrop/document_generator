@@ -4,16 +4,6 @@ use Containers\Container;
 use Http\Middleware\AuthMiddleware;
 use Http\Routes\Route;
 
-session_save_path('/var/tmp/');
-//ガーベージコレクションが削除するsessionの有効期限を設定
-ini_set('session.gc_maxlifetime', 60*60*24*30);
-//ブラウザを閉じても削除されないようにクッキー自体の有効期限を延ばす
-ini_set('session.cookie_lifetime', 60*60*24*30);
-//sessionを使う
-session_start();
-//現在のsessionIDを新しく生成したものに置き換える
-session_regenerate_id();
-
 //=================================================
 //log設定
 //=================================================
@@ -23,6 +13,7 @@ ini_set('error_log', __DIR__ . '/../log/php.log');
 //=================================================
 //ルーティングの初期化・ヘルパー関数・クラスの読み込み
 //=================================================
+require_once __DIR__ . '/../app/Session/Session.php';
 require_once __DIR__ . '/../app/Utilities/Debug.php';
 require_once __DIR__ . '/../app/Database/Connection.php';
 require_once __DIR__ . '/../app/Validators/Validator.php';
@@ -43,11 +34,9 @@ require_once __DIR__ . '/../app/Http/Controllers/Auth/RegisterController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
-// コンテナを作成
-$container = new Container();
 
 // コンテナをRouteクラスにセット
-Route::setContainer($container);
+Route::setContainer(new Container());
 Route::registerMiddlewareAliases([
 	'auth' => [AuthMiddleware::class],
 ]);
