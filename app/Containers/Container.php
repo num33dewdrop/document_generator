@@ -7,6 +7,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 
 class Container {
+
 	/**
 	 * @throws ReflectionException
 	 */

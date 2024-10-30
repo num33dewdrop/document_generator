@@ -58,8 +58,8 @@ if (!function_exists('error')) {
 }
 
 if (!function_exists('old')) {
-	function old($key): array {
-		return session()->get('old', [])[$key]?? [];
+	function old($key): string {
+		return session()->get('old', [])[$key]?? '';
 	}
 }
 

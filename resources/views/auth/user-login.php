@@ -21,7 +21,7 @@ view_parts('header-general');
                                     <div class="c-form__input">
                                         <label for="email" class="c-form__label">メールアドレス</label>
                                         <div class="c-input">
-                                            <input type="text" name="email" id="email" value="" placeholder="例：">
+                                            <input type="text" name="email" id="email" value="<?= old('email') ?>" placeholder="例：">
                                         </div>
                                          <?= displayErrors(error('email') ?? []) ?>
                                     </div>
@@ -39,7 +39,7 @@ view_parts('header-general');
                                     <div class="c-form__input">
                                         <div class="c-form__input">
                                             <div class="c-checkbox">
-                                                <label><input type="checkbox" name="password_save">次回ログインを省略する</label>
+                                                <label><input type="checkbox" name="password_save[]" value="save">次回ログインを省略する</label>
                                             </div>
                                         </div>
                                     </div>
