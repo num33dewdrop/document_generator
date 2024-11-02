@@ -26,12 +26,16 @@ require_once __DIR__ . '/../app/Http/Middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middleware/GuestMiddleware.php';
 require_once __DIR__ . '/../app/Containers/Container.php';
 require_once __DIR__ . '/../app/Views/View.php';
+
+require_once __DIR__ . '/../app/Models/Model.php';
 require_once __DIR__ . '/../app/Models/User.php';
+require_once __DIR__ . '/../app/Models/Qualification.php';
 
 require_once __DIR__ . '/../app/Auth/Auth.php';
 
 require_once __DIR__ . '/../app/Http/Controllers/Controller.php';
 require_once __DIR__ . '/../app/Http/Controllers/DocumentsController.php';
+require_once __DIR__ . '/../app/Http/Controllers/QualificationsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Auth/RegisterController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 

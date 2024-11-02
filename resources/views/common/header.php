@@ -1,7 +1,7 @@
 <header class="l-header">
 	<div class="l-header__inner c-menu js-parentMenu">
 		<div class="l-header__logo">
-			<a href="<?= route('documents.list'); ?>" class="test">
+			<a href="<?= route('documents-list.show'); ?>" class="test">
                 <img src="<?= assets('img/whole/logo.svg'); ?>" alt="ロゴ">
             </a>
 		</div>
@@ -18,7 +18,7 @@
 				<li class="c-menu__item"><a href="">資料一覧</a></li>
 				<li class="c-menu__item"><a href="">職歴一覧</a></li>
 				<li class="c-menu__item"><a href="">学歴一覧</a></li>
-				<li class="c-menu__item"><a href="">資格一覧</a></li>
+				<li class="c-menu__item"><a href="<?= route('qualifications-list.show'); ?>">資格一覧</a></li>
 				<li class="c-menu__item"><a href="<?= route('user-logout.store') ?>">ログアウト</a></li>
 				<li class="c-menu__item"><a href="">退会</a></li>
 			</ul>

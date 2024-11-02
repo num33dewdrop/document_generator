@@ -13,5 +13,7 @@ return [
 		"name" => "氏名",
 		"password" => "パスワード",
 		"password_re" => "パスワード再入力",
+		"qualification_name" => "資格名",
+		"acquisition_date" => "取得年月日",
 	],
 ];

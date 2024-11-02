@@ -1,7 +1,7 @@
 @use '_variable' as *;
 @use '_mixin' as *;
 @use '_keyframes' as *;
-
+@import 'flatpickr/dist/flatpickr.min.css';
 body, html {
   color: $font-color_default;
   line-height: 1.6;

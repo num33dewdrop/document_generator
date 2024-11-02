@@ -15,15 +15,15 @@ view_parts('header-general');
                 <div class="c-section__inner">
                     <div class="c-box c-box--wide">
                         <div class="c-box__inner">
-                           <?= displayErrors(error('common') ?? []) ?>
+                           <?= displayErrors(error('common')); ?>
                             <div class="c-form">
                                 <div class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="email" class="c-form__label">メールアドレス</label>
                                         <div class="c-input">
-                                            <input type="text" name="email" id="email" value="<?= old('email') ?>" placeholder="例：">
+                                            <input type="text" name="email" id="email" value="<?= old('email'); ?>" placeholder="例：">
                                         </div>
-                                         <?= displayErrors(error('email') ?? []) ?>
+                                         <?= displayErrors(error('email')); ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">
@@ -32,7 +32,7 @@ view_parts('header-general');
                                         <div class="c-input">
                                             <input type="password" name="password" id="password" value="" autocomplete="off">
                                         </div>
-                                        <?= displayErrors(error('password') ?? []) ?>
+                                        <?= displayErrors(error('password')); ?>
                                     </div>
                                 </div>
                                 <div class="c-form__group">

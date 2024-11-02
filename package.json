@@ -64,5 +64,8 @@
     ],
     "ext": "php,html,js,ejs,ts,scss,css",
     "exec": "npm run dev"
+  },
+  "dependencies": {
+    "flatpickr": "^4.6.13"
   }
 }

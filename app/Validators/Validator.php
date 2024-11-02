@@ -63,7 +63,7 @@ class Validator {
 
 	private static function addError(string $field, string $rule, array $replace = []): void {
 		$message = self::$messages[$rule] ?? 'Validation error.';
-		$otherField = $replace[':other'];
+		$otherField = $replace[':other']?? '';
 		$message = str_replace(':other', self::$messages['attributes'][$otherField] ?? $otherField, $message);
 		$message = str_replace(':attribute', self::$messages['attributes'][$field] ?? $field, $message);
 

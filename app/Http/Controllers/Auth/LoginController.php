@@ -44,7 +44,7 @@ class LoginController extends Controller  {
 
 		session()->remove('errors');
 		session()->remove('old');
-		redirect()->route('documents.list');
+		redirect()->route('documents-list.show');
 		Debug::end('USER LOGIN');
 	}
 

@@ -16,7 +16,7 @@ class GuestMiddleware implements MiddlewareInterface {
 		// ユーザーが認証されているか確認
 		if ($this->auth->check()) {
 			// 認証されている場合、特定のページにリダイレクト
-			redirect()->route('documents.list');
+			redirect()->route('documents-list.show');
 		}
 		return $next(); // 認証されていない場合は次の処理へ
 	}

@@ -2,6 +2,7 @@ import ImgDrop from './modules/_imgDrop';
 import ToggleIsOpen from './modules/_toggleIsOpen';
 import Slide from './modules/_slide';
 import Popup from './modules/_popup';
+import Flatpickr from './modules/_flatpickr';
 import '../scss/style.scss';
 
 const imgDropObj = {
@@ -29,10 +30,16 @@ const deleteModalObj = {
     targetClass: 'js-targetDeleteModal',
     parentId: 'deleteModal'
 };
+const flatpickrObj = {
+    handleClass: 'js-flatpickr',
+    handleRangeClass: 'js-flatpickr--range',
+    inputClass: 'js-flatpickr__input'
+};
+
 
 new ImgDrop(imgDropObj);
 new ToggleIsOpen(menuObj);
 new Slide(slideObj);
 new Popup(exportModalObj);
 new Popup(deleteModalObj);
-
+new Flatpickr(flatpickrObj);

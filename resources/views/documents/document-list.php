@@ -10,7 +10,7 @@ view_parts('globalNav');
             <p>DOCUMENT LIST</p>
         </hgroup>
         <div class="c-btn c-btn--create">
-            <a href="">新規追加</a>
+            <a href="<?= route('documents-register.show'); ?>">新規追加</a>
         </div>
     </div>
     <div class="l-main__body">
@@ -64,7 +64,7 @@ view_parts('globalNav');
                     </div>
                     <div class="c-card__foot">
                         <div class="c-card__btn">
-                            <a href="">
+                            <a href="<?= route('documents-edit.show'); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="./assets/img/symbol/control.svg#edit"></use>
                                 </svg>
@@ -72,7 +72,7 @@ view_parts('globalNav');
                             </a>
                         </div>
                         <div class="c-card__btn">
-                            <a href="">
+                            <a href="<?= route('documents-copy.show'); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="./assets/img/symbol/control.svg#copy"></use>
                                 </svg>

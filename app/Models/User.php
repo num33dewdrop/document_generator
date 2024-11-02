@@ -2,16 +2,9 @@
 
 namespace Models;
 
-use Database\Connection;
 use PDOStatement;
 
-class User {
-	private Connection $db;
-
-	public function __construct(Connection $db) {
-		$this->db = $db;
-	}
-
+class User extends Model {
 	public function findById(int $id): array {
 		$sql = "SELECT * FROM users WHERE id = :id";
 		return $this->db->fetchAssoc($sql, [':id' => $id]);

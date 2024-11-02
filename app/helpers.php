@@ -78,6 +78,14 @@ if (!function_exists('sanitize')) {
 	}
 }
 
+if (!function_exists('randomKey')) {
+	function randomKey( $length = 8 ): string {
+		$char = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		return substr( str_shuffle( str_repeat( $char, $length ) ), 0, $length );
+	}
+}
+
+
 if (!function_exists('view')) {
 	function view($view, $data = []): void {
 		View::render(str_replace('.', '/', $view), $data);
