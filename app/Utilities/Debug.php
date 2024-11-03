@@ -5,7 +5,7 @@ class Debug {
 	private static bool $debug_flg = true;
 	public static function echo($str): void {
 		if(!empty(self::$debug_flg)) {
-			error_log('デバッグ：'.$str);
+			error_log('デバッグ：'.print_r($str, true));
 		}
 	}
 	//=================================================

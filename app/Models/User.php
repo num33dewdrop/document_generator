@@ -23,6 +23,7 @@ class User extends Model {
 			':password'  => password_hash( $posts['password'], PASSWORD_DEFAULT ),
 			':create_at' => date( 'Y-m-d H:i:s' )
 		];
-		return $this->db->query($sql, $data);
+		$this->db->query($sql, $data);
+		return $this->db->stmt;
 	}
 }

@@ -1,73 +1,72 @@
 <?php
+$data = !empty($data)? $data: [];
 view_parts('head', $data);
 view_parts('header');
 view_parts('globalNav');
 ?>
 <main class="l-main">
     <div class="l-main__head">
-    <hgroup class="c-title">
-        <h1>資格一覧</h1>
-        <p>QUALIFICATION LIST</p>
-    </hgroup>
-    
-    <div class="c-btn c-btn--create">
-        <a href="<?= route('qualifications-register.show'); ?>">新規追加</a>
+        <hgroup class="c-title">
+            <h1>資格一覧</h1>
+            <p>QUALIFICATION LIST</p>
+        </hgroup>
+        <div class="c-btn c-btn--create">
+            <a href="<?= route('qualifications-register.show'); ?>">新規追加</a>
+        </div>
     </div>
-    
-</div>
     <div class="l-main__body">
         <div class="c-pager c-pager--pc">
             <p class="c-pager__count">全999件中 1 - 100件表示</p>
             <ul class="c-pager__list">
-    <li>
-        <a href="" class="c-pager__link" disabled="">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#first"></use>
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a href="" class="c-pager__link" disabled="">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#prev"></use>
-            </svg>
-        </a>
-    </li>
-    <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-    <li><a href="" class="c-pager__link">2</a></li>
-    <li><a href="" class="c-pager__link">3</a></li>
-    <li><a href="" class="c-pager__link">4</a></li>
-    <li><a href="" class="c-pager__link">5</a></li>
-    <li>
-        <a href="" class="c-pager__link">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#next"></use>
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a href="" class="c-pager__link">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#last"></use>
-            </svg>
-        </a>
-    </li>
-</ul>
+                <li>
+                    <a href="" class="c-pager__link" disabled="">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#first'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="c-pager__link" disabled="">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#prev'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
+                <li><a href="" class="c-pager__link">2</a></li>
+                <li><a href="" class="c-pager__link">3</a></li>
+                <li><a href="" class="c-pager__link">4</a></li>
+                <li><a href="" class="c-pager__link">5</a></li>
+                <li>
+                    <a href="" class="c-pager__link">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#next'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="c-pager__link">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#last'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
         </div>
         <ul class="c-list">
-            
+            <?php foreach ($data['list']['records'] as $key => $value): ?>
                 <li class="c-card js-parentSlide">
                     <div class="c-card__content js-handleSlide">
                         <div class="c-card__body">
                             <p class="c-card__time">
-                                <time datetime="2024-06-13">2024-06-13</time>
+                                <time datetime="2024-06-13"><?= sanitize($value['update_at']); ?></time>
                                 <span class="c-label">更新</span>
                             </p>
-                            <h2 class="c-card__title">基本情報技術者</h2>
+                            <h2 class="c-card__title"><?= sanitize($value['name']); ?></h2>
                         </div>
                         <div class="c-card__foot">
                             <div class="c-card__btn">
-                                <a href="<?= route('qualifications-edit.show'); ?>">
+                                <a href="<?= route('qualifications-edit.show'); ?>" id="<?= sanitize($value['id']); ?>">
                                     <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                         <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                     </svg>
@@ -76,7 +75,7 @@ view_parts('globalNav');
                             </div>
                         </div>
                         <div class="c-slide c-slide--delete js-targetSlide">
-                            <button class="js-handleDelete">
+                            <button class="js-handleDelete" id="<?= sanitize($value['id']); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
                                 </svg>
@@ -85,46 +84,44 @@ view_parts('globalNav');
                         </div>
                     </div>
                 </li>
-            
-
-            
+            <?php endforeach; ?>
         </ul>
         <div class="c-pager--end">
             <ul class="c-pager__list">
-    <li>
-        <a href="" class="c-pager__link" disabled="">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#first"></use>
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a href="" class="c-pager__link" disabled="">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#prev"></use>
-            </svg>
-        </a>
-    </li>
-    <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-    <li><a href="" class="c-pager__link">2</a></li>
-    <li><a href="" class="c-pager__link">3</a></li>
-    <li><a href="" class="c-pager__link">4</a></li>
-    <li><a href="" class="c-pager__link">5</a></li>
-    <li>
-        <a href="" class="c-pager__link">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#next"></use>
-            </svg>
-        </a>
-    </li>
-    <li>
-        <a href="" class="c-pager__link">
-            <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                <use href="./img/symbol/arrow.svg#last"></use>
-            </svg>
-        </a>
-    </li>
-</ul>
+                <li>
+                    <a href="" class="c-pager__link" disabled="">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#first'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="c-pager__link" disabled="">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#prev'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
+                <li><a href="" class="c-pager__link">2</a></li>
+                <li><a href="" class="c-pager__link">3</a></li>
+                <li><a href="" class="c-pager__link">4</a></li>
+                <li><a href="" class="c-pager__link">5</a></li>
+                <li>
+                    <a href="" class="c-pager__link">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#next'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" class="c-pager__link">
+                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+                            <use href="<?= assets('img/symbol/arrow.svg#last'); ?>"></use>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
     <div id="deleteModal" class="c-modal">
@@ -132,7 +129,7 @@ view_parts('globalNav');
             <div class="c-modal__head">
                 <h2 class="c-modal__title c-modal__title--delete">
                     <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-                        <use href="./img/symbol/control.svg#delete"></use>
+                        <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
                     </svg>
                     削除
                 </h2>

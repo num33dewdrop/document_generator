@@ -4,15 +4,15 @@ namespace Http\Controllers;
 
 use Http\Requests\Request;
 use Models\Qualification;
-use Models\User;
 use Utilities\Debug;
 use Validators\Validator;
 
 class QualificationsController extends Controller {
-	public function list(): void {
+	public function list(Qualification $qualification): void {
 		Debug::start('QUALIFICATION LIST');
 		$this->data['head']['title'] = 'QUALIFICATION LIST';
 		$this->data['head']['description'] = 'QUALIFICATION LISTの説明';
+		$this->data['list'] = $qualification->list();
 		// ビューにデータを渡して表示
 		view('qualifications.qualification-list', $this->data);
 		Debug::end('QUALIFICATION LIST');
