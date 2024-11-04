@@ -12,11 +12,6 @@ class Route {
 	private static array $namedRoutes = [];
 	private static Container $container;
 
-	// コンテナの初期化
-	public static function setContainer(Container $container): void {
-		self::$container = $container;
-	}
-
 	public static function registerMiddlewareAliases(array $aliases): void {
 		//Aliases定義のセット
 		self::$middlewareAliases = $aliases;
@@ -72,6 +67,7 @@ class Route {
 
 	public static function handleRequest(): void {
 		session()->start();
+		self::$container = app();
 		// クエリパラメータを取り除く
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 		$method = $_SERVER['REQUEST_METHOD'];

@@ -4,7 +4,6 @@ namespace Validators;
 
 use Database\Connection;
 use Models\User;
-use Utilities\Debug;
 
 class Validator {
 	private static array $errors;
@@ -43,8 +42,6 @@ class Validator {
 				break;
 			case (bool) preg_match( '/^max:(\d+)$/', $rule, $matches ):
 				$max = (int)$matches[1];
-				Debug::echo(strlen($value));
-				Debug::echo($max);
 				if (mb_strlen($value) > $max) {
 					self::addError($field, 'max', [':max' => $max]);
 				}

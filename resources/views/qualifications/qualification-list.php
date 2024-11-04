@@ -18,39 +18,7 @@ view_parts('globalNav');
         <div class="c-pager c-pager--pc">
             <p class="c-pager__count">全999件中 1 - 100件表示</p>
             <ul class="c-pager__list">
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#first'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#prev'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-                <li><a href="" class="c-pager__link">2</a></li>
-                <li><a href="" class="c-pager__link">3</a></li>
-                <li><a href="" class="c-pager__link">4</a></li>
-                <li><a href="" class="c-pager__link">5</a></li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#next'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#last'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
+                <?php if(!empty($paginator)) $paginator->links(); ?>
             </ul>
         </div>
         <ul class="c-list">
@@ -88,39 +56,7 @@ view_parts('globalNav');
         </ul>
         <div class="c-pager--end">
             <ul class="c-pager__list">
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#first'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#prev'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-                <li><a href="" class="c-pager__link">2</a></li>
-                <li><a href="" class="c-pager__link">3</a></li>
-                <li><a href="" class="c-pager__link">4</a></li>
-                <li><a href="" class="c-pager__link">5</a></li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#next'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="<?= assets('img/symbol/arrow.svg#last'); ?>"></use>
-                        </svg>
-                    </a>
-                </li>
+	            <?php if(!empty($paginator)) $paginator->links(); ?>
             </ul>
         </div>
     </div>

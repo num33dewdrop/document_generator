@@ -32,6 +32,7 @@ require_once __DIR__ . '/../app/Models/User.php';
 require_once __DIR__ . '/../app/Models/Qualification.php';
 
 require_once __DIR__ . '/../app/Auth/Auth.php';
+require_once __DIR__ . '/../app/Utilities/Paginator.php';
 
 require_once __DIR__ . '/../app/Http/Controllers/Controller.php';
 require_once __DIR__ . '/../app/Http/Controllers/DocumentsController.php';
@@ -41,8 +42,6 @@ require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
 
-// コンテナをRouteクラスにセット
-Route::setContainer(new Container());
 Route::registerMiddlewareAliases([
 	'auth' => [AuthMiddleware::class],
 	'guest' => [GuestMiddleware::class],

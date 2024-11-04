@@ -73,7 +73,7 @@ class Connection {
 		$this->query($sql, $params);
 		return $this->stmt? [
 			'total' => $this->stmt->rowCount(),//総レコード数
-			'records' => $this->stmt->fetchAll()
+			'records' => $this->stmt->fetchAll() ?: []
 		]: [];
 	}
 
@@ -90,13 +90,13 @@ class Connection {
 		$params = array_merge( $params, [':limit' => $limit, ':offset' => $offset]);
 
 		$this->query($sql, $params);
-		$result['records'] = $this->stmt? $this->stmt->fetchAll(): [];
+		$result['records'] = $this->stmt? $this->stmt->fetchAll() ?: [] : [];
 		return $result;
 	}
 
 	public function fetchAssoc(string $sql, array $params = []): array {
 		$this->query($sql, $params);
-		return $this->stmt? $this->stmt->fetch( PDO::FETCH_ASSOC ): [];
+		return $this->stmt? $this->stmt->fetch( PDO::FETCH_ASSOC ) ?: [] : [];
 	}
 
 }

@@ -48,7 +48,7 @@ class RegisterController extends Controller {
 		$sesLimit = 60 * 60;
 		session()->put('login_date', time());
 		session()->put('login_limit', $sesLimit);
-		session()->put('user_id', $this->db->getPdo()->lastInsertId());
+		session()->put('user_id', $user->getDatabase()->getPdo()->lastInsertId());
 
 		redirect()->route('documents-list.show');
 		Debug::end('USER REGISTER STORE');

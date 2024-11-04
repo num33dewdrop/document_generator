@@ -1,9 +1,16 @@
 <?php
 
+use Containers\Container;
 use Http\Redirects\Redirect;
 use Http\Routes\Route;
 use Session\Session;
 use Views\View;
+
+if (!function_exists('app')) {
+	function app(): Container {
+		return new Container();
+	}
+}
 
 if (!function_exists('assets')) {
 	function assets(string $path): string {
