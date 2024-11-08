@@ -7,7 +7,10 @@ use Session\Session;
 use Views\View;
 
 if (!function_exists('app')) {
-	function app($class): Container | null {
+	function app($class = ''): Container | null {
+		if($class === '') {
+			return new Container();
+		}
 		try {
 			return ( new Container() )->make( $class );
 		} catch ( ReflectionException $e ) {
