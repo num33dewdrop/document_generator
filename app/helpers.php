@@ -7,8 +7,32 @@ use Session\Session;
 use Views\View;
 
 if (!function_exists('app')) {
-	function app(): Container {
-		return new Container();
+	function app($class): Container | null {
+		try {
+			return ( new Container() )->make( $class );
+		} catch ( ReflectionException $e ) {
+			error_log('create class failed : '. $e->getMessage());
+			return null;
+		}
+	}
+}
+
+if (!function_exists('appendGetParam')) {
+	function appendGetParam($get ,$arr_del_key = array(), $arr_in = array()): string {
+		$str = '?';
+		if( ! empty( $arr_in ) ) {
+			foreach ( $arr_in as $key => $val ) {
+				$str .= $key . '=' . $val . '&';
+			}
+		}
+		if ( ! empty( $get ) ) {
+			foreach ( $get as $key => $val ) {
+				if ( ! in_array( $key, $arr_del_key, true ) ) {
+					$str .= $key . '=' . $val . '&';
+				}
+			}
+		}
+		return  mb_substr( $str, 0, - 1, "UTF-8" );
 	}
 }
 

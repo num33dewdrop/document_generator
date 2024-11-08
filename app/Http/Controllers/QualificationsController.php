@@ -4,21 +4,15 @@ namespace Http\Controllers;
 
 use Http\Requests\Request;
 use Models\Qualification;
-use ReflectionException;
 use Utilities\Debug;
-use Utilities\Paginator;
 use Validators\Validator;
 
 class QualificationsController extends Controller {
-	public function list(Qualification $qualification, Request $request): void {
+	public function list(Qualification $qualification): void {
 		Debug::start('QUALIFICATION LIST');
-
 		$this->data['head']['title'] = 'QUALIFICATION LIST';
 		$this->data['head']['description'] = 'QUALIFICATION LISTの説明';
-		$this->data['list'] = $qualification->list();
-
-		$this->data['paginator'] = new Paginator($request, $this->data['list']['total_page']);
-		Debug::echo($this->data['paginator']);
+		$this->data['result'] = $qualification->list(10);
 		// ビューにデータを渡して表示
 		view('qualifications.qualification-list', $this->data);
 		Debug::end('QUALIFICATION LIST');

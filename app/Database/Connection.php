@@ -91,6 +91,8 @@ class Connection {
 
 		$this->query($sql, $params);
 		$result['records'] = $this->stmt? $this->stmt->fetchAll() ?: [] : [];
+		$result['min'] = $this->stmt? $offset + 1: 0;
+		$result['max'] = $this->stmt? $offset + count($result['records']): 0;
 		return $result;
 	}
 

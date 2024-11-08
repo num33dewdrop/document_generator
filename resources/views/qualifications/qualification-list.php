@@ -1,6 +1,13 @@
 <?php
-$data = !empty($data)? $data: [];
-view_parts('head', $data);
+$head = empty($data['head'])? []: $data['head'];
+$result = empty($data['result'])? []: $data['result'];
+$list = empty($result['list'])? []: $result['list'];
+$total = empty($list['total'])? 0: $list['total'];
+$min = empty($list['min'])? 0: $list['min'];
+$max = empty($list['max'])? 0: $list['max'];
+$records = empty($list['records'])? []: $list['records'];
+
+view_parts('head', $head);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -16,13 +23,13 @@ view_parts('globalNav');
     </div>
     <div class="l-main__body">
         <div class="c-pager c-pager--pc">
-            <p class="c-pager__count">全999件中 1 - 100件表示</p>
+            <p class="c-pager__count">全<?= $total; ?>件中 <?= $min; ?> - <?= $max; ?>件表示</p>
             <ul class="c-pager__list">
-                <?php if(!empty($paginator)) $paginator->links(); ?>
+                <?php if(!empty($result['paginator'])) $result['paginator']->links(); ?>
             </ul>
         </div>
         <ul class="c-list">
-            <?php foreach ($data['list']['records'] as $key => $value): ?>
+            <?php foreach ($records as $key => $value): ?>
                 <li class="c-card js-parentSlide">
                     <div class="c-card__content js-handleSlide">
                         <div class="c-card__body">
@@ -56,7 +63,7 @@ view_parts('globalNav');
         </ul>
         <div class="c-pager--end">
             <ul class="c-pager__list">
-	            <?php if(!empty($paginator)) $paginator->links(); ?>
+	            <?php if(!empty($result['paginator'])) $result['paginator']->links(); ?>
             </ul>
         </div>
     </div>
