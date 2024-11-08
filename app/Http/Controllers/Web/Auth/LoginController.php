@@ -13,7 +13,7 @@ class LoginController extends Controller  {
 	public function index(): void {
 		Debug::start('USER LOGIN INDEX');
 		// ビューにエラーメッセージを渡して表示
-		view('auth.user-login', $this->data);
+		view('users.auth.login', $this->data);
 		session()->remove('errors');
 		session()->remove('old');
 		Debug::end('USER LOGIN INDEX');

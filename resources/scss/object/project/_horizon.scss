@@ -1,0 +1,10 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.p-horizon {
+  @include flex(center);
+  &--5 {
+    gap: 5px;
+  }
+}

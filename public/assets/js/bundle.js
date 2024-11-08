@@ -131,7 +131,9 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 var Flatpickr = /*#__PURE__*/_createClass(function Flatpickr(_ref) {
   var _this = this;
   var handleClass = _ref.handleClass,
-    inputClass = _ref.inputClass;
+    inputClass = _ref.inputClass,
+    _ref$range = _ref.range,
+    range = _ref$range === void 0 ? false : _ref$range;
   _classCallCheck(this, Flatpickr);
   this.nodeList = document.querySelectorAll(".".concat(handleClass));
   this.inputClass = inputClass;
@@ -140,8 +142,9 @@ var Flatpickr = /*#__PURE__*/_createClass(function Flatpickr(_ref) {
     if (input instanceof HTMLInputElement) {
       (0,flatpickr__WEBPACK_IMPORTED_MODULE_0__["default"])(input, {
         locale: flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_1__.Japanese,
-        dateFormat: "Y-m-d",
-        disableMobile: true
+        dateFormat: "Y.m.d",
+        disableMobile: true,
+        mode: range ? 'range' : 'single'
       });
     }
   });
@@ -3441,7 +3444,7 @@ if (typeof Object.assign !== "function") {
           ],
       },
       time_24hr: true,
-      rangeSeparator: " から ",
+      rangeSeparator: " - ",
       monthAriaLabel: "月",
       amPM: ["午前", "午後"],
       yearAriaLabel: "年",
@@ -3604,8 +3607,13 @@ var deleteModalObj = {
 };
 var flatpickrObj = {
   handleClass: 'js-flatpickr',
-  // handleRangeClass: 'js-flatpickr--range',
-  inputClass: 'js-flatpickr__input'
+  inputClass: 'js-flatpickr__input',
+  range: false
+};
+var flatpickrRangeObj = {
+  handleClass: 'js-flatpickr--range',
+  inputClass: 'js-flatpickr__input',
+  range: true
 };
 var flashMessageObj = {
   targetClass: 'js-flash'
@@ -3614,6 +3622,7 @@ new _modules_imgDrop__WEBPACK_IMPORTED_MODULE_0__["default"](imgDropObj);
 new _modules_toggleIsOpen__WEBPACK_IMPORTED_MODULE_1__["default"](menuObj);
 new _modules_slide__WEBPACK_IMPORTED_MODULE_2__["default"](slideObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrObj);
+new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrRangeObj);
 new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](exportModalObj);
 var DeleteModal = new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](deleteModalObj);
 new _modules_flashMessage__WEBPACK_IMPORTED_MODULE_5__["default"](flashMessageObj);

@@ -29,7 +29,7 @@ view_parts('globalNav');
                     <div class="c-card__content js-handleSlide">
                         <div class="c-card__body">
                             <p class="c-card__time">
-                                <time datetime="2024-06-13"><?= sanitize($value['update_at']); ?></time>
+                                <time datetime="<?= sanitize($value['update_at']); ?>"><?= sanitize($value['update_at']); ?></time>
                                 <span class="c-label">更新</span>
                             </p>
                             <h2 class="c-card__title"><?= sanitize($value['name']); ?></h2>

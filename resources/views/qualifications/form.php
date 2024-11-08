@@ -51,7 +51,7 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="acquisition_date" class="c-form__label">取得年月日</label>
                                         <div class="c-input c-input--date js-flatpickr">
-                                            <input type="text" class="js-flatpickr__input" name="acquisition_date" id="acquisition_date" value="<?= old('acquisition_date', $is_register? []: ['acquisition_date' => sanitize($qualification['acquisition_date']) ?? '']); ?>">
+                                            <input type="text" class="js-flatpickr__input" name="acquisition_date" id="acquisition_date" value="<?= old('acquisition_date', $is_register? []: ['acquisition_date' => sanitize($qualification['acquisition_date']) ?? '']); ?>" readonly>
                                             <label for="acquisition_date">
                                                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
                                                     <use href="<?= assets('img/symbol/common.svg#calendar'); ?>"></use>
@@ -78,7 +78,7 @@ view_parts('globalNav');
     </div>
 	<?php
     if(!$is_register):
-    view_parts('deleteModal', ['id' => sanitize($qualification['id']), 'name' => sanitize($qualification['name'])]);
+        view_parts('deleteModal', ['id' => sanitize($qualification['id']), 'name' => sanitize($qualification['name'])]);
     endif;
     ?>
 </main>

@@ -4,12 +4,13 @@ interface FlatpickrOptions {
     handleClass: string;
     // handleRangeClass: string;
     inputClass: string;
+    range: boolean;
 }
 
 export default class Flatpickr {
     private nodeList: NodeListOf<Element>;
     private readonly inputClass: string;
-    constructor({handleClass, inputClass}: FlatpickrOptions) {
+    constructor({handleClass, inputClass, range = false}: FlatpickrOptions) {
         this.nodeList = document.querySelectorAll(`.${handleClass}`);
         this.inputClass = inputClass;
         this.nodeList.forEach(elem => {
@@ -17,8 +18,9 @@ export default class Flatpickr {
             if (input instanceof HTMLInputElement) {
                 flatpickr(input, {
                     locale: Japanese,
-                    dateFormat: "Y-m-d",
-                    disableMobile: true
+                    dateFormat: "Y.m.d",
+                    disableMobile: true,
+                    mode: range? 'range':'single'
                 });
             }
         });

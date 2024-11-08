@@ -40,8 +40,13 @@ const deleteModalObj = {
 };
 const flatpickrObj = {
     handleClass: 'js-flatpickr',
-    // handleRangeClass: 'js-flatpickr--range',
-    inputClass: 'js-flatpickr__input'
+    inputClass: 'js-flatpickr__input',
+    range: false
+};
+const flatpickrRangeObj = {
+    handleClass: 'js-flatpickr--range',
+    inputClass: 'js-flatpickr__input',
+    range: true
 };
 const flashMessageObj = {
     targetClass: 'js-flash'
@@ -51,6 +56,7 @@ new ImgDrop(imgDropObj);
 new ToggleIsOpen(menuObj);
 new Slide(slideObj);
 new Flatpickr(flatpickrObj);
+new Flatpickr(flatpickrRangeObj);
 
 new Popup(exportModalObj);
 const DeleteModal = new Popup(deleteModalObj);

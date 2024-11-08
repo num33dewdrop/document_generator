@@ -18,7 +18,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="./academic-background-list">
+                <a class="" href="<?= route('academic-backgrounds-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#academic'); ?>"></use>
                     </svg>

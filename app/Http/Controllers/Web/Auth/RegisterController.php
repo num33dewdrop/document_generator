@@ -12,7 +12,7 @@ class RegisterController extends Controller {
 	public function index(): void {
 		Debug::start('USER REGISTER INDEX');
 		// ビューにエラーメッセージを渡して表示
-		view('auth.user-register', $this->data);
+		view('users.auth.register', $this->data);
 		session()->remove('errors');
 		session()->remove('old');
 		Debug::end('USER REGISTER INDEX');

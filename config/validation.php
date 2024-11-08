@@ -15,5 +15,9 @@ return [
 		"password_re" => "パスワード再入力",
 		"qualification_name" => "資格名",
 		"acquisition_date" => "取得年月日",
+		"academic_name" => "学校名",
+		"first_date" => "期間（始）",
+		"last_date" => "期間（終）",
+		"last_career" => "最終経歴"
 	],
 ];

@@ -1604,6 +1604,7 @@ Component
   font-weight: 400;
   background-position: right;
   background-origin: content-box;
+  background-image: url(../726bb43a855531e9068d.svg);
 }
 .c-select select:focus {
   border-color: #222;
@@ -1708,6 +1709,18 @@ Component
 }
 .c-text--center {
   text-align: center;
+}
+
+.p-horizon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0px;
+}
+.p-horizon--5 {
+  gap: 5px;
 }
 
 /*# sourceMappingURL=style.css.map*/
