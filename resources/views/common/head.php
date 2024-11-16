@@ -7,8 +7,8 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
-	<title><?= isset($head['title'])? $head['title'] . ' | ': ''; ?><?= config('name'); ?></title>
-	<meta name="description" content="<?= $head['description'] ?? '' ?>">
+	<title><?= isset($parts_data['title'])? $parts_data['title'] . ' | ': ''; ?><?= config('name'); ?></title>
+	<meta name="description" content="<?= $parts_data['description'] ?? '' ?>">
 	<link href="<?= assets('css/style.css') ?>" rel="stylesheet">
 </head>
 <body>

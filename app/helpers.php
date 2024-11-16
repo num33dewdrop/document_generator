@@ -7,7 +7,7 @@ use Session\Session;
 use Views\View;
 
 if (!function_exists('app')) {
-	function app($class = ''): Container | null {
+	function app($class = '') {
 		if($class === '') {
 			return new Container();
 		}
@@ -86,22 +86,26 @@ if (!function_exists('env')) {
 }
 
 if (!function_exists('error')) {
-	function error($key): array {
-		return session()->get('errors', [])[$key]?? [];
+	function error(string $key, array $default = []): array {
+		return session()->get('errors', $default)[$key]?? [];
 	}
 }
 
 if (!function_exists('old')) {
-	function old($key): string {
-		return session()->get('old', [])[$key]?? '';
+	function old(string $key, array $default = []): string {
+		return session()->get('old', $default)[$key]?? '';
 	}
 }
 
 // ルートのURLを生成するヘルパー関数
 if (!function_exists('route')) {
-	function route(string $name): string {
+	function route(string $name, array $params = []): string {
 		// 定義されたルートを取得
 		$uri = Route::route($name);
+		// パラメータを置換
+		foreach ($params as $key => $value) {
+			$uri = str_replace('{' . $key . '}', $value, $uri);
+		}
 		return base_url() . $uri; // ベースURLを付加
 	}
 }
@@ -127,8 +131,8 @@ if (!function_exists('view')) {
 }
 
 if (!function_exists('view_parts')) {
-	function view_parts($view, $data = []): void {
-		View::include($view, $data);
+	function view_parts($view, $parts_data = []): void {
+		View::include($view, $parts_data);
 	}
 }
 

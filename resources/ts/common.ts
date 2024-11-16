@@ -22,13 +22,17 @@ const exportModalObj = {
     handleShowClass: 'js-showExportModal',
     handleHideClass: 'js-hideModal',
     targetClass: 'js-targetExportModal',
-    parentId: 'exportModal'
+    parentId: 'exportModal',
+    insertIdClass: 'js-insertExportId',
+    insertNameClass: 'js-insertExportName',
 };
 const deleteModalObj = {
     handleShowClass: 'js-showDeleteModal',
     handleHideClass: 'js-hideModal',
     targetClass: 'js-targetDeleteModal',
-    parentId: 'deleteModal'
+    parentId: 'deleteModal',
+    insertIdClass: 'js-insertDeleteId',
+    insertNameClass: 'js-insertDeleteName',
 };
 const flatpickrObj = {
     handleClass: 'js-flatpickr',

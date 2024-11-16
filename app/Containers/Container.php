@@ -5,6 +5,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use Utilities\Debug;
 
 class Container {
 
@@ -37,13 +38,15 @@ class Container {
 	/**
 	 * @throws ReflectionException
 	 */
-	public function call(object $instance, string $method) {
+	public function call(array $callable, array $params) {
 		try {
+			// 配列の形式でインスタンスとメソッドを取得
+			[$instance, $method] = $callable;
 			//ReflectionMethod クラスは メソッドについての情報を報告
 			$reflectionMethod = new ReflectionMethod($instance, $method);
 			//メソッドのパラメーターを取得
 			$parameters = $reflectionMethod->getParameters();
-			$dependencies = $this->resolveDependencies($parameters);
+			$dependencies = $this->resolveDependencies($parameters, $params);
 			//実行 $instanceメソッドを実行するオブジェクト $dependenciesメソッドに渡すパラメータを配列で指定
 			return $reflectionMethod->invokeArgs($instance, $dependencies);
 		} catch (ReflectionException $e) {
@@ -54,9 +57,15 @@ class Container {
 	/**
 	 * @throws ReflectionException
 	 */
-	protected function resolveDependencies(array $parameters): array {
+	protected function resolveDependencies(array $parameters, array $params = []): array {
 		$dependencies = [];
 		foreach ($parameters as $parameter) {
+			$name = $parameter->getName();
+			if (!empty($params) && array_key_exists($name, $params)) {
+				// `$params` に指定されている場合はその値を使用
+				$dependencies[] = $params[$name];
+				continue;
+			}
 			//パラメーターの型を取得
 			$type = $parameter->getType();
 			//組み込みの型であるかを調べる

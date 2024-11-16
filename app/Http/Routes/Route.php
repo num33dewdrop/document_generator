@@ -4,6 +4,7 @@ namespace Http\Routes;
 use Containers\Container;
 use Http\Middleware\MiddlewareInterface;
 use ReflectionException;
+use Utilities\Debug;
 
 class Route {
 	private static array $routes = [];
@@ -11,6 +12,7 @@ class Route {
 	private static array $middlewareAliases = [];
 	private static array $namedRoutes = [];
 	private static Container $container;
+	private static string $lastMethod;
 
 	public static function registerMiddlewareAliases(array $aliases): void {
 		//Aliases定義のセット
@@ -27,26 +29,52 @@ class Route {
 		return new static;
 	}
 
+	public static function put($uri, $callback): static {
+		self::registerRoute('PUT', $uri, $callback);
+		return new static;
+	}
+
+	public static function delete($uri, $callback): static {
+		self::registerRoute('DELETE', $uri, $callback);
+		return new static;
+	}
+
 	public static function name(string $name): void {
-		//最後の要素の値の取得
-		$lastRoute = end(self::$routes['GET']) ?? end(self::$routes['POST']);
+		$lastRoute = end(self::$routes[self::$lastMethod]);
+		// 名前付きルートを定義
 		if ($lastRoute) {
-			//routeの名前を定義
 			self::$namedRoutes[$name] = $lastRoute;
 		}
 	}
 
-	public static function route(string $name): bool|int|string {
-		foreach (self::$routes as $method => $routes) {
-			//routeに定義した名前があれば、uriを返却
-			if (($uri = array_search(self::$namedRoutes[$name], $routes)) !== false) {
-				return $uri;
+	public static function route(string $name, array $params = []): false | string {
+		if (!isset(self::$namedRoutes[$name])) {
+			return false;
+		}
+		// すべてのHTTPメソッドを対象に探索
+		$httpMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+		$uri = false;
+		foreach ($httpMethods as $method) {
+			if (isset(self::$routes[$method])) {
+				$uri = array_search(self::$namedRoutes[$name], self::$routes[$method]);
+				if ($uri !== false) {
+					break;
+				}
 			}
 		}
-		return false;
+		if ($uri === false) {
+			return false;
+		}
+		// パラメータの解決
+		foreach ($params as $key => $value) {
+			$uri = str_replace('{' . $key . '}', $value, $uri);
+		}
+
+		return $uri;
 	}
 
 	private static function registerRoute(string $method, string $uri, $callback): void {
+		self::$lastMethod = $method;
 		self::$routes[$method][$uri] = [
 			'callback' => $callback,
 			'middleware' => self::$currentMiddleware // 現在のミドルウェアを登録
@@ -56,7 +84,7 @@ class Route {
 	// グループ化されたルートにミドルウェアを適用するメソッド
 	public static function group(array $options, callable $callback): void {
 		if (isset($options['middleware'])) {
-			// 現在のミドルウェアを設定
+				// 現在のミドルウェアを設定
 			self::$currentMiddleware = self::$middlewareAliases[$options['middleware']];
 		}
 		// コールバックを実行
@@ -68,29 +96,43 @@ class Route {
 	public static function handleRequest(): void {
 		session()->start();
 		self::$container = app();
-		// クエリパラメータを取り除く
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 		$method = $_SERVER['REQUEST_METHOD'];
-		// スクリプト名からベースURIを取得
 		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-		// ベースURIをリクエストURIから取り除く
 		$path = str_replace($baseUri, '', $requestUri);
-
-		// ルートが登録されているか確認
-		if (!isset(self::$routes[$method][$path])) {
-			self::handleNotFound($path);
-			return;
+		// _method フィールドが存在する場合、それを優先
+		if ($method === 'POST' && isset($_POST['_method'])) {
+			$method = strtoupper($_POST['_method']);
 		}
 
-		$route = self::$routes[$method][$path];
-		$action = $route['callback'];
-		$middlewares = $route['middleware'] ?? [];
-
-		self::applyMiddlewares($middlewares, $action, $path);
+		foreach (self::$routes[$method] as $routePath => $route) {
+			if (self::matchRoute($routePath, $path, $params)) {
+				$action = $route['callback'];
+				$middlewares = $route['middleware'] ?? [];
+				self::applyMiddlewares($middlewares, $action, $params, $path);
+				return;
+			}
+		}
+		self::handleNotFound($path);
 	}
-	private static function applyMiddlewares(array $middlewares, $action, $path): void {
-		$next = function() use ( $path, $action) {
-			if(!self::isCallAction($action)) {
+
+	// ルートパラメータの解決
+	private static function matchRoute(string $routePath, string $path, &$params): bool {
+		$regex = preg_replace('/{(\w+)}/', '(?P<$1>[^/]+)', $routePath);
+		if (preg_match('#^' . $regex . '$#', $path, $matches)) {
+			foreach ($matches as $key => $value) {
+				if(! is_int($key)) $params[$key] = $value;
+			}
+			if(is_null($params)) $params = [];
+			return true;
+		}
+		$params = [];
+		return false;
+	}
+
+	private static function applyMiddlewares(array $middlewares, $action, $params, $path): void {
+		$next = function() use ($action, $params, $path) {
+			if (!self::isCallAction($action, $params)) {
 				self::handleNotFound($path);
 			}
 		};
@@ -104,33 +146,31 @@ class Route {
 					};
 				}
 			} catch (ReflectionException $e) {
-				error_log("ReflectionException: $e"); // ログに残す
-				self::handleNotFound($path); // エラー発生時は404
+				error_log("ReflectionException: $e");
+				self::handleNotFound($path);
 			}
 		}
-
-		$next(); // 最後にコールバックを実行
+		$next();
 	}
 
-	protected static function isCallAction($action): bool {
-		// コントローラーとメソッドを解析
-		if(is_callable($action)) {
-			call_user_func($action);
+	protected static function isCallAction($action, array $params): bool {
+		if (is_callable($action)) {
+			call_user_func_array($action, $params);
 			return true;
 		}
 		if (is_string($action)) {
-			list($controller, $method) = explode('@', $action);
+			[$controller, $method] = explode('@', $action);
 			$controller = 'Http\\Controllers\\' . $controller;
 			if (class_exists($controller)) {
 				try {
-					$controllerInstance = self::$container->make( $controller );
-					if(method_exists($controllerInstance, $method)) {
-						self::$container->call($controllerInstance, $method);
+					$controllerInstance = self::$container->make($controller);
+					if (method_exists($controllerInstance, $method)) {
+
+						self::$container->call([$controllerInstance, $method], $params);
 						return true;
 					}
-				} catch ( ReflectionException $e ) {
-					error_log("ReflectionException: $e"); // ログに残す
-					return false;
+				} catch (ReflectionException $e) {
+					error_log("ReflectionException: $e");
 				}
 			}
 		}

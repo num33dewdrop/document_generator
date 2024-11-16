@@ -205,16 +205,19 @@ var Popup = /*#__PURE__*/function () {
     var parentId = _ref.parentId,
       handleShowClass = _ref.handleShowClass,
       handleHideClass = _ref.handleHideClass,
-      targetClass = _ref.targetClass;
+      targetClass = _ref.targetClass,
+      insertIdClass = _ref.insertIdClass,
+      insertNameClass = _ref.insertNameClass;
     _classCallCheck(this, Popup);
     _defineProperty(this, "bg", document.createElement('div'));
     this.parent = this.getElement("#".concat(parentId));
-
     // 要素が存在しない場合は早期リターン
     if (!this.parent) return;
     this.handleShow = this.getElements(".".concat(handleShowClass));
     this.handleHide = this.getElementsFromParent(this.parent, ".".concat(handleHideClass));
     this.target = this.getElementFromParent(this.parent, ".".concat(targetClass));
+    this.insertId = this.getElementFromParent(this.parent, ".".concat(insertIdClass));
+    this.insertName = this.getElementFromParent(this.parent, ".".concat(insertNameClass));
     this.setupBackground();
     this.addEventListeners();
   }
@@ -234,7 +237,7 @@ var Popup = /*#__PURE__*/function () {
       var _this2 = this;
       this.handleShow.forEach(function (elem) {
         elem.addEventListener('click', function () {
-          return _this2.onShowPopup();
+          return _this2.onShowPopup(elem.dataset);
         });
       });
       this.handleHide.forEach(function (elem) {
@@ -245,8 +248,14 @@ var Popup = /*#__PURE__*/function () {
     }
   }, {
     key: "onShowPopup",
-    value: function onShowPopup() {
+    value: function onShowPopup(data) {
       if (!this.warnIfNull(this.target, "Target element not found.")) return;
+      if (this.insertId && data.id) {
+        this.insertId.innerText = data.id;
+      }
+      if (this.insertName && data.name) {
+        this.insertName.innerText = data.name;
+      }
       (0,_fadeIn__WEBPACK_IMPORTED_MODULE_0__.fadeIn)(this.target);
       (0,_fadeIn__WEBPACK_IMPORTED_MODULE_0__.fadeIn)(this.bg);
     }
@@ -3417,13 +3426,17 @@ var exportModalObj = {
   handleShowClass: 'js-showExportModal',
   handleHideClass: 'js-hideModal',
   targetClass: 'js-targetExportModal',
-  parentId: 'exportModal'
+  parentId: 'exportModal',
+  insertIdClass: 'js-insertExportId',
+  insertNameClass: 'js-insertExportName'
 };
 var deleteModalObj = {
   handleShowClass: 'js-showDeleteModal',
   handleHideClass: 'js-hideModal',
   targetClass: 'js-targetDeleteModal',
-  parentId: 'deleteModal'
+  parentId: 'deleteModal',
+  insertIdClass: 'js-insertDeleteId',
+  insertNameClass: 'js-insertDeleteName'
 };
 var flatpickrObj = {
   handleClass: 'js-flatpickr',

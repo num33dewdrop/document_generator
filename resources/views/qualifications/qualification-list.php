@@ -1,13 +1,7 @@
 <?php
-$head = empty($data['head'])? []: $data['head'];
-$result = empty($data['result'])? []: $data['result'];
-$list = empty($result['list'])? []: $result['list'];
-$total = empty($list['total'])? 0: $list['total'];
-$min = empty($list['min'])? 0: $list['min'];
-$max = empty($list['max'])? 0: $list['max'];
-$records = empty($list['records'])? []: $list['records'];
-
-view_parts('head', $head);
+$list = empty($data['list'])? []: $data['list'];
+$paginate = empty($data['paginator'])? '': $data['paginator']->links();
+view_parts('head', ['title' => 'QUALIFICATION LIST', 'description' => 'QUALIFICATION LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -22,14 +16,15 @@ view_parts('globalNav');
         </div>
     </div>
     <div class="l-main__body">
+        <?php if(!empty($list['records'])): ?>
         <div class="c-pager c-pager--pc">
-            <p class="c-pager__count">全<?= $total; ?>件中 <?= $min; ?> - <?= $max; ?>件表示</p>
+            <p class="c-pager__count">全<?= $list['total']; ?>件中 <?= $list['min']; ?> - <?= $list['max']; ?>件表示</p>
             <ul class="c-pager__list">
-                <?php if(!empty($result['paginator'])) $result['paginator']->links(); ?>
+                <?= $paginate; ?>
             </ul>
         </div>
         <ul class="c-list">
-            <?php foreach ($records as $key => $value): ?>
+            <?php foreach ($list['records'] as $key => $value): ?>
                 <li class="c-card js-parentSlide">
                     <div class="c-card__content js-handleSlide">
                         <div class="c-card__body">
@@ -41,7 +36,7 @@ view_parts('globalNav');
                         </div>
                         <div class="c-card__foot">
                             <div class="c-card__btn">
-                                <a href="<?= route('qualifications-edit.show'); ?>" id="<?= sanitize($value['id']); ?>">
+                                <a href="<?= route('qualifications-edit.show', ['id' => sanitize($value['id'])]); ?>">
                                     <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                         <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                     </svg>
@@ -50,7 +45,7 @@ view_parts('globalNav');
                             </div>
                         </div>
                         <div class="c-slide c-slide--delete js-targetSlide">
-                            <button class="js-handleDelete" id="<?= sanitize($value['id']); ?>">
+                            <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
                                 </svg>
@@ -63,36 +58,13 @@ view_parts('globalNav');
         </ul>
         <div class="c-pager--end">
             <ul class="c-pager__list">
-	            <?php if(!empty($result['paginator'])) $result['paginator']->links(); ?>
+	            <?= $paginate; ?>
             </ul>
         </div>
+        <?php else: ?>
+        結果なし
+        <?php endif; ?>
     </div>
-    <div id="deleteModal" class="c-modal">
-        <div class="c-modal__content js-targetDeleteModal">
-            <div class="c-modal__head">
-                <h2 class="c-modal__title c-modal__title--delete">
-                    <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-                        <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
-                    </svg>
-                    削除
-                </h2>
-                <button class="c-close js-hideModal"></button>
-            </div>
-            <div class="c-modal__body">
-                <div class="c-info">
-                    <h3 class="c-info__title">WEBプログラマー応募用（フロント）</h3>
-                    <p class="c-info__note">※この操作は元に戻せません。本当に削除してもよろしいですか？</p>
-                </div>
-            </div>
-            <div class="c-modal__foot">
-                <div class="c-btn c-btn--cansel">
-                    <button class="js-hideModal">キャンセル</button>
-                </div>
-                <div class="c-btn c-btn--delete">
-                    <button class="js-exportReport">削除する</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	<?php view_parts('deleteModal'); ?>
 </main>
 <?php view_parts('footer'); ?>

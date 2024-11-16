@@ -1,18 +1,26 @@
 <?php
-view_parts('head', $data);
+$qualification = $data ?? [];
+$is_register = empty($qualification);
+
+$page_name = $is_register?
+    ['en' =>'QUALIFICATION REGISTER', 'ja' => '資格登録']:
+    ['en' =>'QUALIFICATION EDIT', 'ja' => '資格編集'];
+
+view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
 <main class="l-main">
     <div class="l-main__head">
         <hgroup class="c-title">
-            <h1>資格登録</h1>
-            <p>QUALIFICATION REGISTER</p>
+            <h1><?= $page_name['ja']; ?></h1>
+            <p><?= $page_name['en']; ?></p>
         </hgroup>
     </div>
     <div class="l-main__body">
         <div class="c-section">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="<?= route( $is_register? 'qualifications-register.store': 'qualifications-edit.store', $is_register? []: ['id' => sanitize($qualification['id'])]);?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="<?= $is_register? 'POST' :'PUT'?>">
                 <div class="c-section__inner">
                     <div class="c-box">
                         <div class="c-box__inner">
@@ -23,7 +31,7 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="qualification_name" class="c-form__label">資格名</label>
                                         <div class="c-input">
-                                            <input type="text" name="qualification_name" id="qualification_name" value="<?= old('qualification_name'); ?>" placeholder="例：">
+                                            <input type="text" name="qualification_name" id="qualification_name" value="<?= old('qualification_name', ['qualification_name' => $qualification['name'] ?? '']); ?>" placeholder="例：">
                                         </div>
 	                                    <?= displayErrors(error('qualification_name')) ?>
                                     </div>
@@ -32,7 +40,7 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="acquisition_date" class="c-form__label">取得年月日</label>
                                         <div class="c-input c-input--date js-flatpickr">
-                                            <input type="text" class="js-flatpickr__input" name="acquisition_date" id="acquisition_date" value="<?= old('acquisition_date'); ?>">
+                                            <input type="text" class="js-flatpickr__input" name="acquisition_date" id="acquisition_date" value="<?= old('acquisition_date', ['acquisition_date' => $qualification['acquisition_date'] ?? '']); ?>">
                                             <label for="acquisition_date">
                                                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
                                                     <use href="<?= assets('img/symbol/common.svg#calendar'); ?>"></use>

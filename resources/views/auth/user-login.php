@@ -1,5 +1,5 @@
 <?php
-view_parts('head');
+view_parts('head', ['title'=>'USER LOGIN', 'description'=>'USER LOGINの説明']);
 view_parts('header-general');
 ?>
 <main class="l-main l-main--full">

@@ -42,6 +42,7 @@ class Auth {
 			return false;
 		}
 		if(session()->get('login_date') + session()->get('login_limit') < time()) {
+
 			//ログアウト
 			$this->logout();
 			return false;

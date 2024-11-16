@@ -1,5 +1,5 @@
 <?php
-view_parts('head', $data);
+view_parts('head',  ['title'=>'DEPARTMENT LIST','description'=>'DEPARTMENT LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>

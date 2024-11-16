@@ -1,5 +1,5 @@
 <?php
-view_parts('head', $data);
+view_parts('head', ['title'=>'EDIT MEMBER INFORMATION', 'description'=> 'EDIT MEMBER INFORMATIONの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -7,7 +7,7 @@ view_parts('globalNav');
     <div class="l-main__head">
     <hgroup class="c-title">
         <h1>会員情報編集</h1>
-        <p>EDIT MEMBER INFOMATION</p>
+        <p>EDIT MEMBER INFORMATION</p>
     </hgroup>
     
 </div>

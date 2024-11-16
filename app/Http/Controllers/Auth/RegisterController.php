@@ -11,8 +11,6 @@ use Validators\Validator;
 class RegisterController extends Controller {
 	public function index(): void {
 		Debug::start('USER REGISTER INDEX');
-		$this->data['head']['title'] = 'USER REGISTER';
-		$this->data['head']['description'] = 'REGISTERの説明';
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-register', $this->data);
 		session()->remove('errors');

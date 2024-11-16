@@ -10,8 +10,6 @@ use Validators\Validator;
 class LoginController extends Controller  {
 	public function index(): void {
 		Debug::start('USER LOGIN INDEX');
-		$this->data['head']['title'] = 'USER REGISTER';
-		$this->data['head']['description'] = 'REGISTERの説明';
 		// ビューにエラーメッセージを渡して表示
 		view('auth.user-login', $this->data);
 		session()->remove('errors');

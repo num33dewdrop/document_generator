@@ -2,45 +2,48 @@
 
 namespace Http\Controllers;
 
+use Auth\Auth;
 use Http\Requests\Request;
 use Models\Qualification;
 use Utilities\Debug;
 use Validators\Validator;
 
 class QualificationsController extends Controller {
-	public function list(Qualification $qualification): void {
+	private Qualification $qualification;
+
+	public function __construct( Auth $auth, Qualification $qualification) {
+		parent::__construct( $auth );
+		$this->qualification = $qualification;
+	}
+
+	public function list(): void {
 		Debug::start('QUALIFICATION LIST');
-		$this->data['head']['title'] = 'QUALIFICATION LIST';
-		$this->data['head']['description'] = 'QUALIFICATION LISTの説明';
-		$this->data['result'] = $qualification->list(10);
+		$data = $this->qualification->list(10);
 		// ビューにデータを渡して表示
-		view('qualifications.qualification-list', $this->data);
+		view('qualifications.qualification-list', $data);
 		Debug::end('QUALIFICATION LIST');
 	}
 
 	public function register():void {
 		Debug::start('QUALIFICATION REGISTER');
-		$this->data['head']['title'] = 'QUALIFICATION REGISTER';
-		$this->data['head']['description'] = 'QUALIFICATION REGISTERの説明';
 		// ビューにデータを渡して表示
-		view('qualifications.qualification-register', $this->data);
+		view('qualifications.qualification-register');
 		session()->remove('errors');
 		session()->remove('old');
 		Debug::end('QUALIFICATION REGISTER');
 	}
 
-	public function edit():void {
+	public function edit($id):void {
 		Debug::start('QUALIFICATION EDIT');
-		$this->data['head']['title'] = 'QUALIFICATION EDIT';
-		$this->data['head']['description'] = 'QUALIFICATION EDITの説明';
+		$data = $this->qualification->findById($id);
 		// ビューにデータを渡して表示
-		view('qualifications.qualification-register', $this->data);
+		view('qualifications.qualification-register', $data);
 		session()->remove('errors');
 		session()->remove('old');
 		Debug::end('QUALIFICATION EDIT');
 	}
 
-	public function create(Request $request, Qualification $qualification):void {
+	public function create(Request $request):void {
 		Debug::start('QUALIFICATION REGISTER STORE');
 		$rules = [
 			'qualification_name' => 'required|string|max:12',
@@ -56,7 +59,7 @@ class QualificationsController extends Controller {
 			return;
 		}
 
-		if (!$qualification->create($request->all())) {
+		if (!$this->qualification->create($request->all())) {
 			redirect()->back();
 		}
 
@@ -67,8 +70,30 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION REGISTER STORE');
 	}
 
-	public function update():void {
+	public function update($id, Request $request):void {
 		Debug::start('QUALIFICATION EDIT STORE');
+		$rules = [
+			'qualification_name' => 'required|string|max:12',
+			'acquisition_date' => 'required',
+		];
+
+		$request->setRules($rules);
+
+		if(!$request->validate()) {
+			session()->put('errors', Validator::getErrors());
+			session()->put('old', $request->all());
+			redirect()->back();
+			return;
+		}
+
+		if (!$this->qualification->update($id ,$request->all())) {
+			redirect()->back();
+		}
+
+		session()->remove('errors');
+		session()->remove('old');
+
+		redirect()->route('qualifications-list.show');
 
 		Debug::end('QUALIFICATION EDIT STORE');
 	}

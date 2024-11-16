@@ -18,12 +18,12 @@ class View {
 		}
 	}
 
-	public static function include($view, $data = []):void {
+	public static function include($view, $parts_data = []):void {
 		$viewPath = base_path('resources/views/common/' . $view . '.php');
 		// ビューが存在するか確認
 		if (file_exists($viewPath)) {
 			// データを変数として展開
-			extract($data);
+			extract($parts_data);
 			// ビューを読み込み
 			include $viewPath;
 		} else {

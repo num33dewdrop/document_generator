@@ -4,6 +4,7 @@ namespace Http\Middleware;
 
 use Auth\Auth;
 use Closure;
+use Utilities\Debug;
 
 class AuthMiddleware implements MiddlewareInterface {
 	//インターフェイスに含まれる全てのメソッドを実装する必要がある

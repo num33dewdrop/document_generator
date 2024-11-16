@@ -1,5 +1,5 @@
 <?php
-view_parts('head', $data);
+view_parts('head', ['title'=>'DOCUMENT REGISTER', 'description'=>'DOCUMENT REGISTERの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>

@@ -25,7 +25,8 @@ class Paginator {
 		return $this->request;
 	}
 
-	public function links(): void {
+	public function links(): string {
+		$links = '';
 		if ( $this->pageCol <= 1 ) {
 			$minPage = $this->currentPage;
 			$maxPage = $this->currentPage;
@@ -46,20 +47,21 @@ class Paginator {
 		}
 
 		if ( $this->currentPage !== 1 ) {
-			echo '<li><a href="'.appendGetParam($this->request->getParam('p'), array('p'), array('p'=>1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#first').'"></use></svg></a></li>';
-			echo '<li><a href="'.appendGetParam($this->request->getParam('p'), array('p'), array('p'=>$this->currentPage-1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#prev').'"></use></svg></a></li>';
+			$links .= '<li><a href="'.appendGetParam($this->request->getAll(), array('p'), array('p'=>1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#first').'"></use></svg></a></li>';
+			$links .= '<li><a href="'.appendGetParam($this->request->getAll(), array('p'), array('p'=>$this->currentPage-1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#prev').'"></use></svg></a></li>';
 		}
 
 		if (! empty( $this->pageCol ) ) {
 			for ( $i = $minPage; $i <= $maxPage; $i ++ ) {
 				$useClass = ($this->currentPage === (int)$i)? ' c-pager__link--active': '';
-				echo '<li><a href="'.appendGetParam($this->request->getParam('p'), array('p'), array('p'=>$i)).'" class="c-pager__link'.$useClass.'">'.$i.'</a></li>';
+				$links .= '<li><a href="'.appendGetParam($this->request->getAll(), array('p'), array('p'=>$i)).'" class="c-pager__link'.$useClass.'">'.$i.'</a></li>';
 			}
 		}
 
-		if (! empty ( $this->totalPage ) && $this->currentPage !== $this->totalPage ) {
-			echo '<li><a href="'.appendGetParam($this->request->getParam('p'), array('p'), array('p'=>$this->currentPage+1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#next').'"></use></svg></a></li>';
-			echo '<li><a href="'.appendGetParam($this->request->getParam('p'), array('p'), array('p'=>$this->totalPage)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#last').'"></use></svg></a></li>';
+		if ( ! empty($this->totalPage) && $this->currentPage !== $this->totalPage ) {
+			$links .= '<li><a href="'.appendGetParam($this->request->getAll(), array('p'), array('p'=>$this->currentPage+1)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#next').'"></use></svg></a></li>';
+			$links .= '<li><a href="'.appendGetParam($this->request->getAll(), array('p'), array('p'=>$this->totalPage)).'" class="c-pager__link"><svg width="10" height="10" xmlns="http://www.w3.org/2000/svg"><use href="'.assets('img/symbol/arrow.svg#last').'"></use></svg></a></li>';
 		}
+		return $links;
 	}
 }

@@ -5,8 +5,6 @@ use Utilities\Debug;
 class DocumentsController extends Controller {
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');
-		$this->data['head']['title'] = 'DOCUMENT LIST';
-		$this->data['head']['description'] = 'DOCUMENT LISTの説明';
 		// ビューにデータを渡して表示
 		view('documents.document-list', $this->data);
 		Debug::end('DOCUMENT LIST');
@@ -14,17 +12,14 @@ class DocumentsController extends Controller {
 
 	public function register():void {
 		Debug::start('DOCUMENT REGISTER');
-		$this->data['head']['title'] = 'DOCUMENT REGISTER';
-		$this->data['head']['description'] = 'DOCUMENT REGISTERの説明';
 		// ビューにデータを渡して表示
 		view('documents.document-register', $this->data);
 		Debug::end('DOCUMENT REGISTER');
 	}
 
-	public function edit():void {
+	public function edit($id):void {
+
 		Debug::start('DOCUMENT EDIT');
-		$this->data['head']['title'] = 'DOCUMENT EDIT';
-		$this->data['head']['description'] = 'DOCUMENT EDITの説明';
 		// ビューにデータを渡して表示
 		view('documents.document-register', $this->data);
 		Debug::end('DOCUMENT EDIT');
@@ -32,8 +27,6 @@ class DocumentsController extends Controller {
 
 	public function copy():void {
 		Debug::start('DOCUMENT COPY');
-		$this->data['head']['title'] = 'DOCUMENT COPY';
-		$this->data['head']['description'] = 'DOCUMENT COPYの説明';
 		// ビューにデータを渡して表示
 		view('documents.document-register', $this->data);
 		Debug::end('DOCUMENT COPY');

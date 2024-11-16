@@ -2,13 +2,13 @@
 
 namespace Models;
 
-use Http\Requests\Request;
 use PDOStatement;
+use Utilities\Debug;
 
 class Qualification extends Model {
 	public function findById(int $id): array {
-		$sql = "SELECT * FROM qualifications WHERE id = :id AND delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':id' => $id]);
+		$sql = "SELECT * FROM qualifications WHERE user_id = :user_id AND  id = :id AND delete_flg = 0";
+		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list($limit = 20): array {
@@ -29,6 +29,19 @@ class Qualification extends Model {
 			':name'             => $posts['qualification_name'],
 			':acquisition_date' => $posts['acquisition_date'],
 			':create_at'        => date( 'Y-m-d H:i:s' )
+		];
+		$this->db->query($sql, $data);
+		return $this->db->stmt;
+	}
+
+	public function update($id, array $posts): PDOStatement | false {
+		var_dump('update : '.$id);
+		$sql = "UPDATE qualifications SET name = :name, acquisition_date = :acquisition_date WHERE user_id = :user_id AND id = :q_id";
+		$data = [
+			':q_id'             => $id,
+			':user_id'          => session()->get('user_id'),
+			':name'             => $posts['qualification_name'],
+			':acquisition_date' => $posts['acquisition_date']
 		];
 		$this->db->query($sql, $data);
 		return $this->db->stmt;
