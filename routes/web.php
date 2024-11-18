@@ -6,6 +6,8 @@ Route::get('/', function() {
 	view('welcome');
 })->name('welcome');
 
+//ログイン済みユーザーがアクセスした場合にリダイレクトする。
+//未認証ユーザーのアクセスを許可する。
 Route::group(['middleware' => 'guest'], function() {
 	Route::get('/user/login', 'Auth\LoginController@index')->name('user-login.index');
 	Route::post('/user/login', 'Auth\LoginController@login')->name('user-login.store');
@@ -14,7 +16,8 @@ Route::group(['middleware' => 'guest'], function() {
 	Route::post('/user/register', 'Auth\RegisterController@store')->name('user-register.store');
 });
 
-
+//未認証ユーザーがアクセスした場合にログインページへリダイレクトする。
+//認証済みユーザーのアクセスを許可する。
 Route::group(['middleware' => 'auth'], function() {
 	Route::get('/user/logout', 'Auth\LoginController@logout')->name('user-logout.store');
 
@@ -26,8 +29,10 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/qualification', 'QualificationsController@list')->name('qualifications-list.show');
 	Route::get('/qualification/register', 'QualificationsController@register')->name('qualifications-register.show');
 	Route::get('/qualification/edit/{id}', 'QualificationsController@edit')->name('qualifications-edit.show');
-	Route::post('/qualification', 'QualificationsController@create')->name('qualifications-register.store');
-	Route::put('/qualification/{id}', 'QualificationsController@update')->name('qualifications-edit.store');
-	Route::delete('/qualification/{id}', 'QualificationsController@delete')->name('qualifications-delete.store');
 
+	Route::group(['middleware' => 'csrf'], function() {
+		Route::post('/qualification', 'QualificationsController@create')->name('qualifications-register.store');
+		Route::put('/qualification/{id}', 'QualificationsController@update')->name('qualifications-edit.store');
+		Route::delete('/qualification/{id}', 'QualificationsController@delete')->name('qualifications-delete.store');
+	});
 });

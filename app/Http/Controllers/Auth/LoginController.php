@@ -29,12 +29,12 @@ class LoginController extends Controller  {
 
 		if(!$request->validate()) {
 			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->all());
+			session()->put('old', $request->postAll());
 			redirect()->back();
 			return;
 		}
 
-		if (!$this->auth->attempt($request->all())) {
+		if (!$this->auth->attempt($request->postAll())) {
 			session()->put('errors', $this->auth->getErrors());
 			redirect()->back();
 			return;

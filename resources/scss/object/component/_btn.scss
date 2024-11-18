@@ -81,9 +81,25 @@
       width: 150px;
       @include tranSet();
       &:hover {
-
         box-shadow: $shadow2;
       }
+    }
+  }
+  &--deleteFrame {
+    a, button, input[type="submit"] {
+      border: 1px solid $rose;
+      background-color: $white;
+      color: $rose;
+      width: 150px;
+      @include tranSet();
+      &:hover {
+        box-shadow: $shadow2;
+      }
+    }
+  }
+  &--auto {
+    a, button, input[type="submit"] {
+      width: auto;
     }
   }
 }

@@ -31,12 +31,12 @@ class RegisterController extends Controller {
 
 		if(!$request->validate()) {
 			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->all());
+			session()->put('old', $request->postAll());
 			redirect()->back();
 			return;
 		}
 
-		if (!$user->create($request->all())) {
+		if (!$user->create($request->postAll())) {
 			redirect()->back();
 		}
 

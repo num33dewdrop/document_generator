@@ -2,6 +2,8 @@
 
 namespace Session;
 
+use RuntimeException;
+
 class Session {
 	protected const FLASH_KEY = '_flash';
 
@@ -18,6 +20,15 @@ class Session {
 			session_start();
 			//現在のsessionIDを新しく生成したものに置き換える
 			session_regenerate_id();
+
+			if (empty($this->get('_token'))) {
+				try {
+					$this->put('_token', csrf_token());
+				} catch (RuntimeException $e) {
+					// トークン生成に失敗した場合の処理
+					die('予期しないエラーが発生しました。時間をおいて再試行してください。');
+				}
+			}
 		}
 	}
 	// データの取得

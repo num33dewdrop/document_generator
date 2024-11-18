@@ -2,6 +2,7 @@
 
 use Containers\Container;
 use Http\Middleware\AuthMiddleware;
+use Http\Middleware\CsrfMiddleware;
 use Http\Middleware\GuestMiddleware;
 use Http\Routes\Route;
 
@@ -24,6 +25,7 @@ require_once __DIR__ . '/../app/Http/Routes/Route.php';
 require_once __DIR__ . '/../app/Http/Middleware/MiddlewareInterface.php';
 require_once __DIR__ . '/../app/Http/Middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middleware/GuestMiddleware.php';
+require_once __DIR__ . '/../app/Http/Middleware/CsrfMiddleware.php';
 require_once __DIR__ . '/../app/Containers/Container.php';
 require_once __DIR__ . '/../app/Views/View.php';
 
@@ -45,6 +47,7 @@ require_once __DIR__ . '/../app/helpers.php';
 Route::registerMiddlewareAliases([
 	'auth' => [AuthMiddleware::class],
 	'guest' => [GuestMiddleware::class],
+	'csrf' => [CsrfMiddleware::class],
 ]);
 
 require_once __DIR__ . '/../routes/web.php';

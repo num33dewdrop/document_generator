@@ -904,6 +904,19 @@ Component
 .c-btn--delete a:hover, .c-btn--delete button:hover, .c-btn--delete input[type=submit]:hover {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
 }
+.c-btn--deleteFrame a, .c-btn--deleteFrame button, .c-btn--deleteFrame input[type=submit] {
+  border: 1px solid #F04D62;
+  background-color: #fff;
+  color: #F04D62;
+  width: 150px;
+  transition: all 0.3s ease-out 0s;
+}
+.c-btn--deleteFrame a:hover, .c-btn--deleteFrame button:hover, .c-btn--deleteFrame input[type=submit]:hover {
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
+}
+.c-btn--auto a, .c-btn--auto button, .c-btn--auto input[type=submit] {
+  width: auto;
+}
 
 .c-pager {
   width: 100%;

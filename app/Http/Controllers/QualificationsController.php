@@ -33,7 +33,7 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION REGISTER');
 	}
 
-	public function edit($id):void {
+	public function edit(int $id):void {
 		Debug::start('QUALIFICATION EDIT');
 		$data = $this->qualification->findById($id);
 		// ビューにデータを渡して表示
@@ -54,12 +54,12 @@ class QualificationsController extends Controller {
 
 		if(!$request->validate()) {
 			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->all());
+			session()->put('old', $request->postAll());
 			redirect()->back();
 			return;
 		}
 
-		if (!$this->qualification->create($request->all())) {
+		if (!$this->qualification->create($request->postAll())) {
 			redirect()->back();
 		}
 
@@ -70,7 +70,7 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION REGISTER STORE');
 	}
 
-	public function update($id, Request $request):void {
+	public function update(int $id, Request $request):void {
 		Debug::start('QUALIFICATION EDIT STORE');
 		$rules = [
 			'qualification_name' => 'required|string|max:12',
@@ -81,12 +81,12 @@ class QualificationsController extends Controller {
 
 		if(!$request->validate()) {
 			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->all());
+			session()->put('old', $request->postAll());
 			redirect()->back();
 			return;
 		}
 
-		if (!$this->qualification->update($id ,$request->all())) {
+		if (!$this->qualification->update($id ,$request->postAll())) {
 			redirect()->back();
 		}
 
@@ -98,9 +98,12 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION EDIT STORE');
 	}
 
-	public function delete():void {
+	public function delete(int $id):void {
 		Debug::start('QUALIFICATION DELETE');
-
+		if (!$this->qualification->delete($id)) {
+			redirect()->back();
+		}
+		redirect()->route('qualifications-list.show');
 		Debug::end('QUALIFICATION DELETE');
 	}
 }
