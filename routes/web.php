@@ -30,9 +30,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/qualification/register', 'QualificationsController@register')->name('qualifications-register.show');
 	Route::get('/qualification/edit/{id}', 'QualificationsController@edit')->name('qualifications-edit.show');
 
-	Route::group(['middleware' => 'csrf'], function() {
-		Route::post('/qualification', 'QualificationsController@create')->name('qualifications-register.store');
-		Route::put('/qualification/{id}', 'QualificationsController@update')->name('qualifications-edit.store');
-		Route::delete('/qualification/{id}', 'QualificationsController@delete')->name('qualifications-delete.store');
-	});
+	Route::post('/qualification', 'QualificationsController@create')->name('qualifications-register.store');
+	Route::put('/qualification/{id}', 'QualificationsController@update')->name('qualifications-edit.store');
+	Route::delete('/qualification/{id}', 'QualificationsController@delete')->name('qualifications-delete.store');
 });

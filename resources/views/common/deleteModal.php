@@ -11,7 +11,7 @@
         </div>
         <form action="<?= route('qualifications-delete.store', ['id' => $parts_data['id']?? '{id}' ]) ?>" method="post">
             <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="_token" value="<?= session()->get('_token'); ?>">
+	        <?= csrf(); ?>
             <div class="c-modal__body">
                 <div class="c-info">
                     <h3 class="c-info__title js-insertDeleteName"><?= $parts_data['name']?? '該当データ'; ?></h3>

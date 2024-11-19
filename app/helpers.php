@@ -168,6 +168,12 @@ if (!function_exists('displayErrors')) {
 	}
 }
 
+if (!function_exists('csrf')) {
+	function csrf(): string {
+		return '<input type="hidden" name="_token" value="'.session()->get('_token').'">';
+	}
+}
+
 if (!function_exists('redirect')) {
 	function redirect(string $url = '', int $statusCode = 302, array $headers = []): Redirect
 	{

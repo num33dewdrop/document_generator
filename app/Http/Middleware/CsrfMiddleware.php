@@ -16,7 +16,7 @@ class CsrfMiddleware implements MiddlewareInterface {
 	}
 	public function handle( Closure $next ) {
 		// 1. リクエスト検証
-		if (!$this->tokensMatch()) {
+		if ($this->request->method() !== 'GET' && !$this->tokensMatch()) {
 			http_response_code(403);
 			die('CSRF token validation failed.');
 		}

@@ -10,13 +10,13 @@ class Request {
 	private array $rules;
 	private array $data;
 
-	public function setRules( array $rules ): void {
-		$this->rules = $rules;
-	}
 	public function __construct() {
 		$this->post = $_POST;
 		$this->get = $_GET;
 		$this->data = $_REQUEST;
+	}
+	public function setRules( array $rules ): void {
+		$this->rules = $rules;
 	}
 	public function validate(): bool {
 		return Validator::make($this->post, $this->rules);
@@ -35,5 +35,13 @@ class Request {
 	}
 	public function input($key , $default = null): mixed {
 		return $this->post[$key] ?? $default;
+	}
+
+	public function method(): string {
+		$method = $_SERVER['REQUEST_METHOD'];
+		if ($method === 'POST' && $this->input( '_method' ) !== null ) {
+			$method = strtoupper($this->input( '_method' ));
+		}
+		return $method;
 	}
 }

@@ -2,21 +2,29 @@
 namespace Http\Routes;
 
 use Containers\Container;
+use Http\Kernel;
 use Http\Middleware\MiddlewareInterface;
 use ReflectionException;
 use Utilities\Debug;
 
 class Route {
 	private static array $routes = [];
+	private static array $middlewareStack = [];
 	private static array $currentMiddleware = [];
-	private static array $middlewareAliases = [];
 	private static array $namedRoutes = [];
-	private static Container $container;
 	private static string $lastMethod;
+	private static Container $container;
 
-	public static function registerMiddlewareAliases(array $aliases): void {
-		//Aliases定義のセット
-		self::$middlewareAliases = $aliases;
+	public static function load(string $path): void {
+		// ルートファイルの読み込み
+		require_once $path;
+	}
+	public static function middleware(string $group): self
+	{
+		// ミドルウェアグループを追加
+		$middlewares = Kernel::getMiddlewareGroup($group);
+		self::$middlewareStack = array_merge(self::$middlewareStack, $middlewares);
+		return new self;
 	}
 
 	public static function get($uri, $callback): static {
@@ -84,8 +92,9 @@ class Route {
 	// グループ化されたルートにミドルウェアを適用するメソッド
 	public static function group(array $options, callable $callback): void {
 		if (isset($options['middleware'])) {
-				// 現在のミドルウェアを設定
-			self::$currentMiddleware = self::$middlewareAliases[$options['middleware']];
+			$middlewares = Kernel::getRouteMiddleware($options['middleware']);
+			// 現在のミドルウェアを設定
+			self::$currentMiddleware = array_merge(self::$middlewareStack, $middlewares);
 		}
 		// コールバックを実行
 		call_user_func($callback);
@@ -97,21 +106,21 @@ class Route {
 		session()->start();
 		self::$container = app();
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
-		$method = $_SERVER['REQUEST_METHOD'];
 		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 		$path = str_replace($baseUri, '', $requestUri);
-		// _method フィールドが存在する場合、それを優先
-		if ($method === 'POST' && isset($_POST['_method'])) {
-			$method = strtoupper($_POST['_method']);
-		}
-
-		foreach (self::$routes[$method] as $routePath => $route) {
-			if (self::matchRoute($routePath, $path, $params)) {
-				$action = $route['callback'];
-				$middlewares = $route['middleware'] ?? [];
-				self::applyMiddlewares($middlewares, $action, $params, $path);
-				return;
+		try {
+			self::$container->make('Providers\RouteServiceProvider');
+			$method = self::$container->make('Http\Requests\Request')->method();
+			foreach (self::$routes[$method] as $routePath => $route) {
+				if (self::matchRoute($routePath, $path, $params)) {
+					$action = $route['callback'];
+					$middlewares = $route['middleware'] ?? [];
+					self::applyMiddlewares($middlewares, $action, $params, $path);
+					return;
+				}
 			}
+		} catch (ReflectionException $e) {
+			error_log("ReflectionException: $e");
 		}
 		self::handleNotFound($path);
 	}

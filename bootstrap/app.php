@@ -1,9 +1,4 @@
 <?php
-
-use Containers\Container;
-use Http\Middleware\AuthMiddleware;
-use Http\Middleware\CsrfMiddleware;
-use Http\Middleware\GuestMiddleware;
 use Http\Routes\Route;
 
 //=================================================
@@ -19,6 +14,7 @@ require_once __DIR__ . '/../app/Session/Session.php';
 require_once __DIR__ . '/../app/Utilities/Debug.php';
 require_once __DIR__ . '/../app/Database/Connection.php';
 require_once __DIR__ . '/../app/Validators/Validator.php';
+require_once __DIR__ . '/../app/Http/Kernel.php';
 require_once __DIR__ . '/../app/Http/Requests/Request.php';
 require_once __DIR__ . '/../app/Http/Redirects/Redirect.php';
 require_once __DIR__ . '/../app/Http/Routes/Route.php';
@@ -26,6 +22,7 @@ require_once __DIR__ . '/../app/Http/Middleware/MiddlewareInterface.php';
 require_once __DIR__ . '/../app/Http/Middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middleware/GuestMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middleware/CsrfMiddleware.php';
+require_once __DIR__ . '/../app/Providers/RouteServiceProvider.php';
 require_once __DIR__ . '/../app/Containers/Container.php';
 require_once __DIR__ . '/../app/Views/View.php';
 
@@ -43,13 +40,5 @@ require_once __DIR__ . '/../app/Http/Controllers/Auth/RegisterController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Auth/LoginController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
-
-Route::registerMiddlewareAliases([
-	'auth' => [AuthMiddleware::class],
-	'guest' => [GuestMiddleware::class],
-	'csrf' => [CsrfMiddleware::class],
-]);
-
-require_once __DIR__ . '/../routes/web.php';
 
 Route::handleRequest();

@@ -31,7 +31,7 @@ view_parts('globalNav');
         <div class="c-section">
             <form action="<?= route( $is_register? 'qualifications-register.store': 'qualifications-edit.store', $is_register? []: ['id' => sanitize($qualification['id'])]);?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="_method" value="<?= $is_register? 'POST' :'PUT'?>">
-                <input type="hidden" name="_token" value="<?= session()->get('_token'); ?>">
+                <?= csrf(); ?>
                 <div class="c-section__inner">
                     <div class="c-box">
                         <div class="c-box__inner">
