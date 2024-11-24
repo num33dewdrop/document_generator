@@ -23,12 +23,12 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('/document', 'DocumentsController@list')->name('documents-list.show');
 	Route::get('/document/register', 'DocumentsController@register')->name('documents-register.show');
-	Route::get('/document/edit/{id}', 'DocumentsController@edit')->name('documents-edit.show');
-	Route::get('/document/copy/{id}', 'DocumentsController@copy')->name('documents-copy.show');
+	Route::get('/document/{id}/edit', 'DocumentsController@edit')->name('documents-edit.show');
+	Route::get('/document/{id}/copy', 'DocumentsController@copy')->name('documents-copy.show');
 
 	Route::get('/qualification', 'QualificationsController@list')->name('qualifications-list.show');
 	Route::get('/qualification/register', 'QualificationsController@register')->name('qualifications-register.show');
-	Route::get('/qualification/edit/{id}', 'QualificationsController@edit')->name('qualifications-edit.show');
+	Route::get('/qualification/{id}/edit', 'QualificationsController@edit')->name('qualifications-edit.show');
 
 	Route::post('/qualification', 'QualificationsController@create')->name('qualifications-register.store');
 	Route::put('/qualification/{id}', 'QualificationsController@update')->name('qualifications-edit.store');

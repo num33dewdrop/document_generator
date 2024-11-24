@@ -1,9 +1,11 @@
 <?php
 
-namespace Http\Controllers;
+namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Http\Controllers\Controller;
 use Http\Requests\Request;
+use Http\Routes\Route;
 use Models\Qualification;
 use Utilities\Debug;
 use Validators\Validator;
@@ -35,7 +37,10 @@ class QualificationsController extends Controller {
 
 	public function edit(int $id):void {
 		Debug::start('QUALIFICATION EDIT');
-		$data = $this->qualification->findById($id);
+		if (! $data = $this->qualification->findById($id)) {
+			// ビューにデータを渡して表示
+			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('qualifications-list.show');
+		}
 		// ビューにデータを渡して表示
 		view('qualifications.qualification-register', $data);
 		session()->remove('errors');

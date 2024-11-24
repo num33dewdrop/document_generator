@@ -2,6 +2,8 @@
 
 namespace Http\Redirects;
 
+use Utilities\Debug;
+
 class Redirect
 {
 	protected string $url;
@@ -32,6 +34,13 @@ class Redirect
 		}
 
 		$this->to($url)->send();
+	}
+
+	public function carry( array $with): self {
+		foreach ($with as $key => $value){
+			session()->flash($key, $value);
+		}
+		return $this;
 	}
 
 	public function back(): void

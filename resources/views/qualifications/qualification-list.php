@@ -5,6 +5,26 @@ view_parts('head', ['title' => 'QUALIFICATION LIST', 'description' => 'QUALIFICA
 view_parts('header');
 view_parts('globalNav');
 ?>
+<script>
+    const deleteApi = async id => {
+        if(id !== 0 && id !== null) {
+            const url = `<?= route("api.qualifications-delete.store") ?>?id=${id}`;
+            await fetch(url, {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/json",
+                    'X-HTTP-Method-Override': 'DELETE',
+                    'X-Auth-Token': 'your-secure-api-token',
+                }
+            });
+        }
+    }
+    document.addEventListener('DOMContentLoaded', e => {
+        document.querySelector('.js-handleDelete').addEventListener('click', e => {
+            deleteApi(document.querySelector('.js-apiTargetId').value);
+        });
+    });
+</script>
 <main class="l-main">
     <div class="l-main__head">
         <hgroup class="c-title">
@@ -65,6 +85,6 @@ view_parts('globalNav');
         結果なし
         <?php endif; ?>
     </div>
-	<?php view_parts('deleteModal'); ?>
+	<?php view_parts('apiDeleteModal'); ?>
 </main>
 <?php view_parts('footer'); ?>

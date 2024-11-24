@@ -15,8 +15,8 @@ export default class Popup {
     private readonly target!: HTMLElement | null;
     private readonly bg: HTMLDivElement = document.createElement('div');
     private readonly parent: HTMLElement | null;
-    public insertId!: HTMLElement | null;
-    private insertName!: HTMLElement | null;
+    private readonly insertId!: HTMLInputElement | null;
+    private readonly insertName!: HTMLElement | null;
 
     constructor({ parentId, handleShowClass, handleHideClass, targetClass, insertIdClass, insertNameClass }: PopupElements) {
         this.parent = this.getElement<HTMLElement>(`#${parentId}`);
@@ -26,7 +26,7 @@ export default class Popup {
         this.handleShow = this.getElements<HTMLButtonElement>(`.${handleShowClass}`);
         this.handleHide = this.getElementsFromParent<HTMLElement>(this.parent, `.${handleHideClass}`);
         this.target = this.getElementFromParent<HTMLElement>(this.parent, `.${targetClass}`);
-        this.insertId = this.getElementFromParent<HTMLElement>(this.parent, `.${insertIdClass}`);
+        this.insertId = this.getElementFromParent<HTMLInputElement>(this.parent, `.${insertIdClass}`);
         this.insertName = this.getElementFromParent<HTMLElement>(this.parent, `.${insertNameClass}`);
         this.setupBackground();
         this.addEventListeners();
@@ -51,7 +51,7 @@ export default class Popup {
     private onShowPopup(data: DOMStringMap): void {
         if (!this.warnIfNull(this.target, "Target element not found.")) return;
         if (this.insertId && data.id) {
-            this.insertId.innerText = data.id;
+            this.insertId.value = data.id;
         }
         if (this.insertName && data.name) {
             this.insertName.innerText = data.name;

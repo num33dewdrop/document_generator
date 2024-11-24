@@ -1661,4 +1661,45 @@ Component
   justify-content: center;
 }
 
+.c-flash {
+  display: none;
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+.c-flash--error {
+  color: #F04D62;
+  background-color: rgba(255, 239, 241, 0.92);
+}
+.c-flash__message {
+  padding: 10px 15px;
+}
+
+.c-text--s {
+  font-size: 1.2rem;
+  line-height: normal;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+.c-text--m {
+  font-size: 1.4rem;
+  line-height: normal;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+.c-text--l {
+  font-size: 1.8rem;
+  line-height: normal;
+  letter-spacing: normal;
+  font-weight: 400;
+}
+.c-text--error {
+  color: #F04D62;
+}
+.c-text--center {
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.css.map*/

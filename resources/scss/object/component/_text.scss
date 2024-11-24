@@ -1,0 +1,21 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.c-text {
+  &--s {
+    @include font(12);
+  }
+  &--m {
+    @include font(14);
+  }
+  &--l {
+    @include font(18);
+  }
+  &--error {
+    color: $rose;
+  }
+  &--center {
+    text-align: center;
+  }
+}

@@ -3,6 +3,7 @@ import ToggleIsOpen from './modules/_toggleIsOpen';
 import Slide from './modules/_slide';
 import Popup from './modules/_popup';
 import Flatpickr from './modules/_flatpickr';
+import FlashMessage from './modules/_flashMessage';
 import '../scss/style.scss';
 
 const imgDropObj = {
@@ -36,8 +37,11 @@ const deleteModalObj = {
 };
 const flatpickrObj = {
     handleClass: 'js-flatpickr',
-    handleRangeClass: 'js-flatpickr--range',
+    // handleRangeClass: 'js-flatpickr--range',
     inputClass: 'js-flatpickr__input'
+};
+const flashMessageObj = {
+    targetClass: 'js-flash'
 };
 
 
@@ -47,3 +51,4 @@ new Slide(slideObj);
 new Popup(exportModalObj);
 new Popup(deleteModalObj);
 new Flatpickr(flatpickrObj);
+new FlashMessage(flashMessageObj);

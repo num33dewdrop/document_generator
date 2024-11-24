@@ -3,9 +3,11 @@
 namespace Session;
 
 use RuntimeException;
+use Utilities\Debug;
 
 class Session {
 	protected const FLASH_KEY = '_flash';
+	const FLASH_NEXT_KEY = '_flash_next';
 
 	public function __construct() {}
 
@@ -52,17 +54,15 @@ class Session {
 
 	// フラッシュデータのセット
 	public function flash(string $key, $value): void {
-		$_SESSION[self::FLASH_KEY][$key] = $value;
+		$_SESSION[self::FLASH_NEXT_KEY][$key] = $value;
 	}
 
 	// リクエストの終了時にフラッシュデータをクリア
 	public function clearFlashData(): void {
-		unset($_SESSION[self::FLASH_KEY]);
-	}
-
-	// フラッシュデータの読み込み
-	protected function loadFlashData(): void {
-		$_SESSION[self::FLASH_KEY] = $_SESSION[self::FLASH_KEY] ?? [];
+		// 現在のフラッシュデータを移動
+		$_SESSION[self::FLASH_KEY] = $_SESSION[self::FLASH_NEXT_KEY] ?? [];
+		// 次回用のフラッシュデータをリセット
+		unset($_SESSION[self::FLASH_NEXT_KEY]);
 	}
 
 	// フラッシュデータの取得
@@ -70,7 +70,6 @@ class Session {
 		return $_SESSION[self::FLASH_KEY][$key] ?? $default;
 	}
 
-	// リクエストが終了したときの処理
 	public function __destruct() {
 		$this->clearFlashData();
 	}

@@ -2,6 +2,7 @@
 
 use Containers\Container;
 use Http\Redirects\Redirect;
+use Http\Responses\Response;
 use Http\Routes\Route;
 use Session\Session;
 use Views\View;
@@ -180,6 +181,13 @@ if (!function_exists('redirect')) {
 		return new Redirect($url, $statusCode, $headers);
 	}
 }
+
+if (!function_exists('response')) {
+	function response(): Response {
+		return new Response();
+	}
+}
+
 
 if (!function_exists('session')) {
 	function session(): Session

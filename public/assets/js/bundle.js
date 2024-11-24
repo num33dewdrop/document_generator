@@ -11,7 +11,9 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   fadeIn: () => (/* binding */ fadeIn),
-/* harmony export */   fadeOut: () => (/* binding */ fadeOut)
+/* harmony export */   fadeOut: () => (/* binding */ fadeOut),
+/* harmony export */   slideIn: () => (/* binding */ slideIn),
+/* harmony export */   slideOut: () => (/* binding */ slideOut)
 /* harmony export */ });
 var fadeIn = function fadeIn(elem) {
   var display = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'block';
@@ -50,6 +52,93 @@ var fadeOut = function fadeOut(elem) {
     }, delay);
   }
 };
+var slideIn = function slideIn(elem) {
+  var display = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'block';
+  var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 300;
+  var delay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 30;
+  if (elem.style.display === 'none' || elem.style.display === '') {
+    var coefficient = 1 / (duration / delay);
+    elem.style.display = display;
+    var endHeight = Number(elem.clientHeight);
+    elem.style.height = String(0);
+    var height = 0;
+    var animation = setInterval(function () {
+      height += Math.round(endHeight * coefficient);
+      elem.style.height = String(height) + 'px';
+      if (height >= endHeight) {
+        elem.style.height = String(endHeight) + 'px';
+        clearInterval(animation);
+      }
+    }, delay);
+  }
+};
+var slideOut = function slideOut(elem) {
+  var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
+  var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 30;
+  if (elem.style.display !== 'none') {
+    var coefficient = 1 / (duration / delay);
+    var endHeight = Number(elem.clientHeight);
+    var height = endHeight;
+    var animation = setInterval(function () {
+      height -= Math.round(endHeight * coefficient);
+      elem.style.height = String(height) + 'px';
+      if (height <= 0) {
+        elem.style.height = '0px';
+        clearInterval(animation);
+      }
+    }, delay);
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/ts/modules/_flashMessage.ts":
+/*!***********************************************!*\
+  !*** ./resources/ts/modules/_flashMessage.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FlashMessage)
+/* harmony export */ });
+/* harmony import */ var _fadeIn__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_fadeIn */ "./resources/ts/modules/_fadeIn.ts");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+var FlashMessage = /*#__PURE__*/function () {
+  function FlashMessage(_ref) {
+    var _this = this;
+    var targetClass = _ref.targetClass;
+    _classCallCheck(this, FlashMessage);
+    this.target = document.querySelector(".".concat(targetClass));
+    if (!this.warnIfNull(this.target, "Handle element not found.")) return;
+    var message = this.target.innerText.trim();
+    if (message.length) {
+      (0,_fadeIn__WEBPACK_IMPORTED_MODULE_0__.slideIn)(this.target);
+      setTimeout(function () {
+        if (!_this.warnIfNull(_this.target, "Handle element not found.")) return;
+        (0,_fadeIn__WEBPACK_IMPORTED_MODULE_0__.slideOut)(_this.target);
+      }, 3000);
+    }
+  }
+  return _createClass(FlashMessage, [{
+    key: "warnIfNull",
+    value: function warnIfNull(element, msg) {
+      if (!element) {
+        console.warn(msg);
+        return false;
+      }
+      return true;
+    }
+  }]);
+}();
+
 
 /***/ }),
 
@@ -78,11 +167,9 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 var Flatpickr = /*#__PURE__*/_createClass(function Flatpickr(_ref) {
   var _this = this;
   var handleClass = _ref.handleClass,
-    handleRangeClass = _ref.handleRangeClass,
     inputClass = _ref.inputClass;
   _classCallCheck(this, Flatpickr);
   this.nodeList = document.querySelectorAll(".".concat(handleClass));
-  console.log(handleRangeClass);
   this.inputClass = inputClass;
   this.nodeList.forEach(function (elem) {
     var input = elem.querySelector(".".concat(_this.inputClass));
@@ -251,7 +338,7 @@ var Popup = /*#__PURE__*/function () {
     value: function onShowPopup(data) {
       if (!this.warnIfNull(this.target, "Target element not found.")) return;
       if (this.insertId && data.id) {
-        this.insertId.innerText = data.id;
+        this.insertId.value = data.id;
       }
       if (this.insertName && data.name) {
         this.insertName.innerText = data.name;
@@ -3401,7 +3488,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slide__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/_slide */ "./resources/ts/modules/_slide.ts");
 /* harmony import */ var _modules_popup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/_popup */ "./resources/ts/modules/_popup.ts");
 /* harmony import */ var _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/_flatpickr */ "./resources/ts/modules/_flatpickr.ts");
-/* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../scss/style.scss */ "./resources/scss/style.scss");
+/* harmony import */ var _modules_flashMessage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/_flashMessage */ "./resources/ts/modules/_flashMessage.ts");
+/* harmony import */ var _scss_style_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../scss/style.scss */ "./resources/scss/style.scss");
+
 
 
 
@@ -3440,8 +3529,11 @@ var deleteModalObj = {
 };
 var flatpickrObj = {
   handleClass: 'js-flatpickr',
-  handleRangeClass: 'js-flatpickr--range',
+  // handleRangeClass: 'js-flatpickr--range',
   inputClass: 'js-flatpickr__input'
+};
+var flashMessageObj = {
+  targetClass: 'js-flash'
 };
 new _modules_imgDrop__WEBPACK_IMPORTED_MODULE_0__["default"](imgDropObj);
 new _modules_toggleIsOpen__WEBPACK_IMPORTED_MODULE_1__["default"](menuObj);
@@ -3449,6 +3541,7 @@ new _modules_slide__WEBPACK_IMPORTED_MODULE_2__["default"](slideObj);
 new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](exportModalObj);
 new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](deleteModalObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrObj);
+new _modules_flashMessage__WEBPACK_IMPORTED_MODULE_5__["default"](flashMessageObj);
 })();
 
 /******/ })()

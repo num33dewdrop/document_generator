@@ -1,5 +1,6 @@
 <?php
-namespace Http\Controllers;
+namespace Http\Controllers\Web;
+use Http\Controllers\Controller;
 use Utilities\Debug;
 
 class DocumentsController extends Controller {

@@ -1,0 +1,19 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.c-flash {
+  display: none;
+  position: absolute;
+  top: $header-height;
+  width: 100%;
+  box-shadow: $shadow;
+  overflow: hidden;
+  &--error {
+    color: $rose;
+    background-color: $grad_rose_base3;
+  }
+  &__message {
+    padding: 10px 15px;
+  }
+}

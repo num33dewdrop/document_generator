@@ -1,9 +1,10 @@
 <?php
 namespace Http\Routes;
 
+use Closure;
 use Containers\Container;
 use Http\Kernel;
-use Http\Middleware\MiddlewareInterface;
+use Http\Middlewares\MiddlewareInterface;
 use ReflectionException;
 use Utilities\Debug;
 
@@ -14,16 +15,22 @@ class Route {
 	private static array $namedRoutes = [];
 	private static string $lastMethod;
 	private static Container $container;
+	private static string $groupNamespace;
 
 	public static function load(string $path): void {
 		// ルートファイルの読み込み
 		require_once $path;
 	}
+
+	public static function namespace(string $value): self {
+		self::$groupNamespace = $value;
+		return new self;
+	}
 	public static function middleware(string $group): self
 	{
 		// ミドルウェアグループを追加
-		$middlewares = Kernel::getMiddlewareGroup($group);
-		self::$middlewareStack = array_merge(self::$middlewareStack, $middlewares);
+		self::$middlewareStack = Kernel::getMiddlewareGroup($group);
+		self::$currentMiddleware = self::$middlewareStack;
 		return new self;
 	}
 
@@ -81,9 +88,10 @@ class Route {
 		return $uri;
 	}
 
-	private static function registerRoute(string $method, string $uri, $callback): void {
+	private static function registerRoute(string $method, string $uri, string | Closure $callback): void {
 		self::$lastMethod = $method;
 		self::$routes[$method][$uri] = [
+			'namespace' => self::$groupNamespace,
 			'callback' => $callback,
 			'middleware' => self::$currentMiddleware // 現在のミドルウェアを登録
 		];
@@ -113,9 +121,7 @@ class Route {
 			$method = self::$container->make('Http\Requests\Request')->method();
 			foreach (self::$routes[$method] as $routePath => $route) {
 				if (self::matchRoute($routePath, $path, $params)) {
-					$action = $route['callback'];
-					$middlewares = $route['middleware'] ?? [];
-					self::applyMiddlewares($middlewares, $action, $params, $path);
+					self::applyMiddlewares($route, $params, $path);
 					return;
 				}
 			}
@@ -126,7 +132,7 @@ class Route {
 	}
 
 	// ルートパラメータの解決
-	private static function matchRoute(string $routePath, string $path, &$params): bool {
+	private static function matchRoute(string $routePath, string $path, array | null &$params): bool {
 		$regex = preg_replace('/{(\w+)}/', '(?P<$1>[^/]+)', $routePath);
 		if (preg_match('#^' . $regex . '$#', $path, $matches)) {
 			foreach ($matches as $key => $value) {
@@ -139,13 +145,15 @@ class Route {
 		return false;
 	}
 
-	private static function applyMiddlewares(array $middlewares, $action, $params, $path): void {
-		$next = function() use ($action, $params, $path) {
-			if (!self::isCallAction($action, $params)) {
+	private static function applyMiddlewares(array $route, array $params, string $path): void {
+		$namespace = $route['namespace'];
+		$action = $route['callback'];
+		$middlewares = $route['middleware'] ?? [];
+		$next = function() use ($action, $namespace, $params, $path) {
+			if (!self::isCallAction($action, $namespace, $params)) {
 				self::handleNotFound($path);
 			}
 		};
-
 		foreach ($middlewares as $middleware) {
 			try {
 				$middlewareInstance = self::$container->make($middleware);
@@ -162,19 +170,18 @@ class Route {
 		$next();
 	}
 
-	protected static function isCallAction($action, array $params): bool {
+	protected static function isCallAction(string | Closure $action, string $namespace, array $params): bool {
 		if (is_callable($action)) {
 			call_user_func_array($action, $params);
 			return true;
 		}
 		if (is_string($action)) {
 			[$controller, $method] = explode('@', $action);
-			$controller = 'Http\\Controllers\\' . $controller;
+			$controller = $namespace . $controller;
 			if (class_exists($controller)) {
 				try {
 					$controllerInstance = self::$container->make($controller);
 					if (method_exists($controllerInstance, $method)) {
-
 						self::$container->call([$controllerInstance, $method], $params);
 						return true;
 					}
