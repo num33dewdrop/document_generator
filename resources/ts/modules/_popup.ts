@@ -1,4 +1,4 @@
-import { fadeIn, fadeOut } from "./_fadeIn";
+import { fadeIn, fadeOut } from "./_helpers";
 
 interface PopupElements {
     handleShowClass: string;
@@ -51,7 +51,7 @@ export default class Popup {
     private onShowPopup(data: DOMStringMap): void {
         if (!this.warnIfNull(this.target, "Target element not found.")) return;
         if (this.insertId && data.id) {
-            this.insertId.value = data.id;
+            this.insertId.dataset.id = data.id;
         }
         if (this.insertName && data.name) {
             this.insertName.innerText = data.name;
@@ -60,7 +60,7 @@ export default class Popup {
         fadeIn(this.bg);
     }
 
-    private onHidePopup(): void {
+    public onHidePopup(): void {
         if (!this.warnIfNull(this.target, "Target element not found.")) return;
         fadeOut(this.target);
         fadeOut(this.bg);

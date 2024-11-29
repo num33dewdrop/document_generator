@@ -24,9 +24,9 @@
 			</ul>
 		</div>
 	</div>
-    <div class="c-flash c-flash--error js-flash">
+    <div class="c-flash js-flash">
 		<?php if($error = session()->getFlash('error')): ?>
-            <p class="c-flash__message c-text--m c-text--center"><?= $error; ?></p>
+            <p class="c-flash__message c-flash__message--error c-text--m c-text--center"><?= $error; ?></p>
 	    <?php endif; ?>
     </div>
 </header>

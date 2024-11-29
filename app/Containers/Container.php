@@ -61,17 +61,37 @@ class Container {
 		$dependencies = [];
 		foreach ($parameters as $parameter) {
 			$name = $parameter->getName();
+			$type = $parameter->getType();
+
 			if (!empty($params) && array_key_exists($name, $params)) {
+				if ($type instanceof ReflectionNamedType) {
+					// 型チェック: 組み込み型かつ型が一致しない場合
+					$expectedType = $type->getName();
+					if ($type->isBuiltin() && gettype($params[$name]) !== $expectedType) {
+						throw new ReflectionException(
+							"Invalid type for parameter '{$name}'. Expected '{$expectedType}', got '" . gettype($params[$name]) . "'."
+						);
+					}
+				}
 				// `$params` に指定されている場合はその値を使用
 				$dependencies[] = $params[$name];
 				continue;
 			}
-			//パラメーターの型を取得
-			$type = $parameter->getType();
+
 			//組み込みの型であるかを調べる
-			if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
-				//型の名前の文字列を取得し、インスタンス化して配列に格納
-				$dependencies[] = $this->make($type->getName());
+			if ($type instanceof ReflectionNamedType) {
+				if ($type->isBuiltin()) {
+					// デフォルト値がある場合はそれを使用
+					if ($parameter->isDefaultValueAvailable()) {
+						$dependencies[] = $parameter->getDefaultValue();
+
+					} else {
+						throw new ReflectionException("Missing value for parameter: {$name}");
+					}
+				}else {
+					// 非組み込み型は依存解決を試みる
+					$dependencies[] = $this->make($type->getName());
+				}
 			} else {
 				throw new ReflectionException("Cannot resolve parameter: {$parameter->getName()}");
 			}

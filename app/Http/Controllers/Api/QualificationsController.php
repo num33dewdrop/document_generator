@@ -20,10 +20,13 @@ class QualificationsController extends Controller {
 	public function delete():void {
 		Debug::start('API QUALIFICATION DELETE');
 		$id = $this->request->getParam('id');
-		if (!$this->qualification->delete((int) $id)) {
-			response()->json(['error' => 'User not found'], 404);
+		$response = ['error' => '', 'success' => ''];
+		if (!$this->qualification->delete($id)) {
+			$response['error'] = '指定のIDが存在しません。';
+			response()->json($response, 404);
 		}
-		response()->json(['message' => 'User deleted']);
+		$response['success'] ='削除に成功しました。';
+		response()->json($response);
 		Debug::end('API QUALIFICATION DELETE');
 	}
 }

@@ -50,7 +50,7 @@ export const slideIn = (elem: HTMLElement, display: string = 'block', duration: 
     }
 };
 
-export const slideOut = (elem: HTMLElement, duration: number = 300, delay: number = 30) => {
+export const slideOut = (elem: HTMLElement, duration: number = 400, delay: number = 30) => {
     if (elem.style.display !== 'none') {
         const coefficient = 1 / (duration / delay);
         const endHeight = Number(elem.clientHeight);

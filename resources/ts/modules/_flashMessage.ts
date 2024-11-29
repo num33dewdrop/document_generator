@@ -1,4 +1,4 @@
-import {slideIn, slideOut} from "./_fadeIn";
+import {slideIn, slideOut} from "./_helpers";
 interface FlashElements {
     targetClass: string;
 }
@@ -9,12 +9,16 @@ export default class FlashMessage {
         if (!this.warnIfNull(this.target, "Handle element not found.")) return;
         const message = (this.target.innerText).trim();
         if(message.length) {
-            slideIn(this.target);
-            setTimeout(() => {
-                if (!this.warnIfNull(this.target, "Handle element not found.")) return;
-                slideOut(this.target);
-            }, 3000);
+            this.onShowMessage();
         }
+    }
+    public onShowMessage () {
+        if (!this.warnIfNull(this.target, "Handle element not found.")) return;
+        slideIn(this.target);
+        setTimeout(() => {
+            if (!this.warnIfNull(this.target, "Handle element not found.")) return;
+            slideOut(this.target);
+        }, 3000);
     }
     private warnIfNull<T>(element: T | null, msg: string): element is T {
         if (!element) {

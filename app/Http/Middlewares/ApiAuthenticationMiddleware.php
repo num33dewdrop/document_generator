@@ -14,10 +14,11 @@ class ApiAuthenticationMiddleware implements MiddlewareInterface {
 	public function handle(Closure $next)
 	{
 		$apiToken = $this->request->header('x-auth-token');
+		$response = ['error' => '', 'success' => ''];
 
 		if ($apiToken !== 'your-secure-api-token') {
-			response()->json(['error' => 'Unauthorized'], 401);
-			exit; // ここで終了
+			$response['error'] = '認証に失敗しました。';
+			response()->json($response, 401);
 		}
 
 		return $next();

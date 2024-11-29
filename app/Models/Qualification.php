@@ -6,7 +6,7 @@ use PDOStatement;
 use Utilities\Debug;
 
 class Qualification extends Model {
-	public function findById(int $id): array {
+	public function findById(string $id): array {
 		$sql = "SELECT * FROM qualifications WHERE user_id = :user_id AND  id = :id AND delete_flg = 0";
 		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
@@ -34,7 +34,7 @@ class Qualification extends Model {
 		return $this->db->stmt;
 	}
 
-	public function update(int $id, array $posts): PDOStatement | false {
+	public function update(string $id, array $posts): PDOStatement | false {
 		$sql = "UPDATE qualifications SET name = :name, acquisition_date = :acquisition_date WHERE user_id = :user_id AND id = :q_id AND delete_flg = 0";
 		$data = [
 			':q_id'             => $id,
@@ -46,7 +46,7 @@ class Qualification extends Model {
 		return $this->db->stmt;
 	}
 
-	public function delete(int $id): PDOStatement | false {
+	public function delete(string $id): PDOStatement | false {
 		$sql = "UPDATE qualifications SET delete_flg = 1 WHERE user_id = :user_id AND id = :q_id AND delete_flg = 0";
 		$data = [
 			':q_id'    => $id,

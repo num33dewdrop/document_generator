@@ -1669,12 +1669,16 @@ Component
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
   overflow: hidden;
 }
-.c-flash--error {
-  color: #F04D62;
-  background-color: rgba(255, 239, 241, 0.92);
-}
 .c-flash__message {
   padding: 10px 15px;
+}
+.c-flash__message--success {
+  color: #50A192;
+  background-color: rgba(229, 251, 247, 0.9);
+}
+.c-flash__message--error {
+  color: #F04D62;
+  background-color: rgba(255, 239, 241, 0.92);
 }
 
 .c-text--s {

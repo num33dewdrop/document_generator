@@ -9,7 +9,6 @@
 			</h2>
 			<button class="c-close js-hideModal"></button>
 		</div>
-		<input type="hidden" class="js-apiTargetId js-insertDeleteId" value="0">
 		<div class="c-modal__body">
 			<div class="c-info">
 				<h3 class="c-info__title js-insertDeleteName">該当データ</h3>
@@ -21,7 +20,7 @@
 				<button class="js-hideModal">キャンセル</button>
 			</div>
 			<div class="c-btn c-btn--delete">
-				<button type="submit" class="js-handleDelete" data-id="">削除する</button>
+				<button type="submit" class="js-handleDelete js-insertDeleteId" data-id="0">削除する</button>
 			</div>
 		</div>
 

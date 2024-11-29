@@ -35,7 +35,7 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION REGISTER');
 	}
 
-	public function edit(int $id):void {
+	public function edit(string $id):void {
 		Debug::start('QUALIFICATION EDIT');
 		if (! $data = $this->qualification->findById($id)) {
 			// ビューにデータを渡して表示
@@ -75,7 +75,7 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION REGISTER STORE');
 	}
 
-	public function update(int $id, Request $request):void {
+	public function update(string $id, Request $request):void {
 		Debug::start('QUALIFICATION EDIT STORE');
 		$rules = [
 			'qualification_name' => 'required|string|max:12',
@@ -103,7 +103,7 @@ class QualificationsController extends Controller {
 		Debug::end('QUALIFICATION EDIT STORE');
 	}
 
-	public function delete(int $id):void {
+	public function delete(string $id):void {
 		Debug::start('QUALIFICATION DELETE');
 		if (!$this->qualification->delete($id)) {
 			redirect()->back();

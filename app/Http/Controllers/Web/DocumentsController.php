@@ -18,7 +18,7 @@ class DocumentsController extends Controller {
 		Debug::end('DOCUMENT REGISTER');
 	}
 
-	public function edit($id):void {
+	public function edit(string $id):void {
 
 		Debug::start('DOCUMENT EDIT');
 		// ビューにデータを渡して表示

@@ -18,7 +18,7 @@ class Response {
 			header("{$key}: {$value}");
 		}
 		// JSONデータを出力
-		echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		echo json_encode($data);
 		exit; // スクリプトを終了
 	}
 

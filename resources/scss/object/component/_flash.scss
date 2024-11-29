@@ -9,11 +9,15 @@
   width: 100%;
   box-shadow: $shadow;
   overflow: hidden;
-  &--error {
-    color: $rose;
-    background-color: $grad_rose_base3;
-  }
   &__message {
     padding: 10px 15px;
+    &--success {
+      color: $emerald;
+      background-color: $emerald-alfa;
+    }
+    &--error {
+      color: $rose;
+      background-color: $rose-alfa;
+    }
   }
 }
