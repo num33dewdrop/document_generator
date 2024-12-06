@@ -22,11 +22,11 @@ export default class Slide {
 
             const bg = document.createElement('div');
             bg.classList.add('c-card__bg','js-resetOverlay');
-            bg.addEventListener('touchstart', ()=> this.onHideEvent(target, bg));
+            bg.addEventListener('touchstart', () => this.onHideEvent(target, bg, elem));
             elem.appendChild(bg);
             handle.addEventListener('touchstart', (e: TouchEvent) => this.onTouchStart(e, bg));
             handle.addEventListener('touchmove', (e: TouchEvent) => this.onTouchMove(e, target));
-            handle.addEventListener('touchend', (e: TouchEvent) => this.onTouchEnd(e, target, bg));
+            handle.addEventListener('touchend', (e: TouchEvent) => this.onTouchEnd(e, target, bg, elem));
         });
     }
 
@@ -42,27 +42,19 @@ export default class Slide {
         target.style.left = "";
         target.style.boxShadow = "";
     }
-    private resetTargetClass(target: HTMLElement): void {
+    private resetTargetClass(target: HTMLElement, parent: HTMLElement): void {
+        parent.classList.remove('is-show');
         target.classList.remove('is-show', 'is-delete');
     }
 
-    private onHideEvent(target: HTMLElement, overlay: HTMLElement): void {
+    private onHideEvent(target: HTMLElement, overlay: HTMLElement, parent: HTMLElement): void {
         this.resetTargetStyles(target);
-        this.resetTargetClass(target);
+        this.resetTargetClass(target, parent);
         this.hideOverlay(overlay);
     }
 
     private onTouchStart(e: TouchEvent, overlay:HTMLElement): void {
         e.stopPropagation();
-        this.parentSlide.forEach(elem => {
-            const thisTarget: HTMLElement | null = elem.querySelector(`.${this.targetClass}`);
-            const thisOverlay: HTMLElement | null = elem.querySelector(`.js-resetOverlay`);
-            if (!this.warnIfNull(thisTarget, "Target element not found.")) return;
-            if (!this.warnIfNull(thisOverlay, "Target element not found.")) return;
-            this.resetTargetStyles(thisTarget);
-            this.resetTargetClass(thisTarget);
-            this.hideOverlay(thisOverlay);
-        });
         this.initX = e.touches[0].clientX;
         this.showOverlay(overlay);
     }
@@ -77,20 +69,33 @@ export default class Slide {
         }
     }
 
-    private onTouchEnd(e: TouchEvent, target: HTMLElement, overlay: HTMLElement): void {
+    private onTouchEnd(e: TouchEvent, target: HTMLElement, overlay: HTMLElement, parent :HTMLElement): void {
         e.stopPropagation();
-        this.resetTargetStyles(target);
+
         const endX = e.changedTouches[0].clientX;
         const diff = this.initX - endX;
 
-        if (diff >= 50 && diff < 200) {
+        if (diff < 5 && diff !== 0) {
+            parent.classList.remove('is-show');
+            target.classList.remove('is-show', 'is-delete');
+            this.resetTargetStyles(target);
+            this.hideOverlay(overlay);
+            return;
+        }
+        if (diff >= 5 && diff < 200) {
+            console.log(parent);
+            parent.classList.add('is-show');
             target.classList.add('is-show');
-        } else if (diff >= 200) {
+            target.classList.remove('is-delete');
+            this.resetTargetStyles(target);
+            return;
+        }
+        if (diff >= 200) {
+            parent.classList.add('is-show');
             target.classList.remove('is-show');
             target.classList.add('is-delete');
-        } else {
-            target.classList.remove('is-show', 'is-delete');
-            this.hideOverlay(overlay);
+            this.resetTargetStyles(target);
+            return;
         }
     }
     private warnIfNull<T>(element: T | null, msg: string): element is T {

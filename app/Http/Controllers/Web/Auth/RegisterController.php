@@ -44,6 +44,7 @@ class RegisterController extends Controller {
 		session()->remove('old');
 
 		$sesLimit = 60 * 60;
+
 		session()->put('login_date', time());
 		session()->put('login_limit', $sesLimit);
 		session()->put('user_id', $user->getDatabase()->getPdo()->lastInsertId());

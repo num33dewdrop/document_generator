@@ -3,8 +3,8 @@ export const fetchApi = async (url: string, method: string, token: string, param
         "method": method,
         "headers": {
             "Content-Type": "application/json",
-            "X-HTTP-Method-Override": method,
-            "X-Auth-Token": token,
+            "X-Method-Override": method,
+            "X-CSRF-Token": token,
             "cache": "no-cache"
         },
         "body": JSON.stringify(params)

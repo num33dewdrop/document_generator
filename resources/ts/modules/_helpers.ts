@@ -65,3 +65,11 @@ export const slideOut = (elem: HTMLElement, duration: number = 400, delay: numbe
         }, delay);
     }
 };
+
+export const jump = (url: string = '') => {
+    if(url === '') {
+        location.reload();
+    }else {
+        location.href = url;
+    }
+};

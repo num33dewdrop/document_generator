@@ -26,6 +26,7 @@ class QualificationsController extends Controller {
 			response()->json($response, 404);
 		}
 		$response['success'] ='削除に成功しました。';
+		session()->flash('success', '削除に成功しました。');
 		response()->json($response);
 		Debug::end('API QUALIFICATION DELETE');
 	}

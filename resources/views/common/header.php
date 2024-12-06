@@ -25,8 +25,10 @@
 		</div>
 	</div>
     <div class="c-flash js-flash">
-		<?php if($error = session()->getFlash('error')): ?>
+		<?php if ($error = session()->getFlash('error')): ?>
             <p class="c-flash__message c-flash__message--error c-text--m c-text--center"><?= $error; ?></p>
+        <?php elseif ($success = session()->getFlash('success')): ?>
+            <p class="c-flash__message c-flash__message--success c-text--m c-text--center"><?= $success; ?></p>
 	    <?php endif; ?>
     </div>
 </header>

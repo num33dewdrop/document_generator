@@ -21,7 +21,7 @@ require_once __DIR__ . '/../app/Http/Redirects/Redirect.php';
 require_once __DIR__ . '/../app/Http/Routes/Route.php';
 require_once __DIR__ . '/../app/Http/Middlewares/MiddlewareInterface.php';
 require_once __DIR__ . '/../app/Http/Middlewares/AuthMiddleware.php';
-require_once __DIR__ . '/../app/Http/Middlewares/ApiAuthenticationMiddleware.php';
+require_once __DIR__ . '/../app/Http/Middlewares/ApiCsrfMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middlewares/GuestMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middlewares/CsrfMiddleware.php';
 require_once __DIR__ . '/../app/Providers/RouteServiceProvider.php';

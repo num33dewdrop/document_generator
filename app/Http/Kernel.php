@@ -2,7 +2,7 @@
 
 namespace Http;
 
-use Http\Middlewares\ApiAuthenticationMiddleware;
+use Http\Middlewares\ApiCsrfMiddleware;
 use Http\Middlewares\AuthMiddleware;
 use Http\Middlewares\CsrfMiddleware;
 use Http\Middlewares\GuestMiddleware;
@@ -18,7 +18,7 @@ class Kernel
 		],
 		'api' => [
 //			ThrottleMiddleware::class,
-			ApiAuthenticationMiddleware::class
+			ApiCsrfMiddleware::class
 		],
 	];
 

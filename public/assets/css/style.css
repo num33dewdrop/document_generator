@@ -679,6 +679,10 @@ Component
 .c-card {
   width: calc(50% - 5px / 2);
 }
+.c-card.is-show {
+  position: relative;
+  z-index: 2;
+}
 @media screen and (max-width: 768px) {
   .c-card {
     width: 100%;

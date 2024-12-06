@@ -66,16 +66,16 @@ if (!function_exists('config')) {
 	}
 }
 
-if (!function_exists('csrf_token')) {
-	function csrf_token(int $length = 32): string {
+if (!function_exists('token')) {
+	function token(int $length = 32): string {
 		try {
 			// 指定された長さのランダムバイトを生成し、16進数に変換
 			return bin2hex(random_bytes($length));
 		} catch (Exception $e) {
 			// ログを記録（必要に応じてエラー詳細を保存）
-			error_log('CSRFトークンの生成に失敗しました: ' . $e->getMessage());
+			error_log('トークンの生成に失敗しました: ' . $e->getMessage());
 			// カスタム例外をスロー
-			throw new RuntimeException('CSRFトークンの生成に失敗しました。再試行してください。', 0, $e);
+			throw new RuntimeException('トークンの生成に失敗しました。再試行してください。', 0, $e);
 		}
 	}
 }

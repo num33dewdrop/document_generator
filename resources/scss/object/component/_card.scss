@@ -4,6 +4,10 @@
 
 .c-card {
   width: calc(50% - #{$list-gap}px/2);
+  &.is-show {
+    position: relative;
+    z-index: 2;
+  }
   @include mq() {
     width: 100%;
   }

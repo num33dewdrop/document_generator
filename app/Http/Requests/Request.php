@@ -43,8 +43,8 @@ class Request {
 		if ($method === 'POST' && $this->input( '_method' ) !== null ) {
 			$method = strtoupper($this->input( '_method' ));
 		}
-		if($this->header('X-HTTP-Method-Override') !== null) {
-			$method = $this->header('X-HTTP-Method-Override');
+		if($this->header('X-Method-Override') !== null) {
+			$method = $this->header('X-Method-Override');
 		}
 		return $method;
 	}

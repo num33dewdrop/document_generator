@@ -2,12 +2,14 @@
 
 namespace Http\Controllers\Web\Auth;
 
+use Auth\Auth;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Utilities\Debug;
 use Validators\Validator;
 
 class LoginController extends Controller  {
+
 	public function index(): void {
 		Debug::start('USER LOGIN INDEX');
 		// ビューにエラーメッセージを渡して表示
@@ -34,7 +36,7 @@ class LoginController extends Controller  {
 			return;
 		}
 
-		if (!$this->auth->attempt($request->postAll())) {
+		if(!$this->auth->attempt($request->postAll())) {
 			session()->put('errors', $this->auth->getErrors());
 			redirect()->back();
 			return;

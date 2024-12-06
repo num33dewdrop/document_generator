@@ -3,7 +3,6 @@
 namespace Session;
 
 use RuntimeException;
-use Utilities\Debug;
 
 class Session {
 	protected const FLASH_KEY = '_flash';
@@ -25,7 +24,7 @@ class Session {
 
 			if (empty($this->get('_token'))) {
 				try {
-					$this->put('_token', csrf_token());
+					$this->put('_token', token());
 				} catch (RuntimeException $e) {
 					// トークン生成に失敗した場合の処理
 					die('予期しないエラーが発生しました。時間をおいて再試行してください。');
