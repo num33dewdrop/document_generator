@@ -14,7 +14,18 @@ class ApiToken extends Model {
 	 */
 	public function create(string $userId): PDOStatement | false {
 		$expires_at = date( 'Y-m-d H:i:s', strtotime( '+1 hour' ) ); // 有効期限: 1時間後
-		$sql = "INSERT INTO api_tokens (user_id, token, expires_at, created_at) VALUES (:user_id, :token, :expires_at, :create_at)";
+		$sql = "INSERT INTO api_tokens (
+					user_id,
+					token,
+					expires_at,
+					created_at
+				)
+				VALUES (
+					:user_id,
+					:token,
+					:expires_at,
+					:create_at
+				)";
 		$data = [
 			":user_id" => $userId,
 			":token" => token(),
@@ -34,7 +45,10 @@ class ApiToken extends Model {
 	 */
 	public function update (string $userId): PDOStatement | false {
 		$expires_at = date( 'Y-m-d H:i:s', strtotime( '+1 hour' ) ); // 有効期限: 1時間後
-		$sql = "UPDATE api_tokens SET token = :token, expires_at = :expires_at  WHERE user_id = :user_id";
+		$sql = "UPDATE api_tokens
+				SET token = :token,
+				    expires_at = :expires_at
+				WHERE user_id = :user_id";
 		$data = [
 			":user_id" => $userId,
 			":token" => token(),

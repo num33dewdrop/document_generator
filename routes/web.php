@@ -44,4 +44,12 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/academic-background', 'AcademicBackgroundsController@create')->name('academic-backgrounds-register.store');
 	Route::put('/academic-background/{id}', 'AcademicBackgroundsController@update')->name('academic-backgrounds-edit.store');
 	Route::delete('/academic-background/{id}', 'AcademicBackgroundsController@delete')->name('academic-backgrounds-delete.store');
+
+	//WORK EXPERIENCE
+	Route::get('/work-experience', 'WorkExperiencesController@list')->name('work-experiences-list.show');
+	Route::get('/work-experience/register', 'WorkExperiencesController@register')->name('work-experiences-register.show');
+	Route::get('/work-experience/{id}/edit', 'WorkExperiencesController@edit')->name('work-experiences-edit.show');
+	Route::post('/work-experience', 'WorkExperiencesController@create')->name('work-experiences-register.store');
+	Route::put('/work-experience/{id}', 'WorkExperiencesController@update')->name('work-experiences-edit.store');
+	Route::delete('/work-experience/{id}', 'WorkExperiencesController@delete')->name('work-experiences-delete.store');
 });

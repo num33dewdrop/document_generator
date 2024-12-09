@@ -14,7 +14,9 @@ class Qualification extends Model {
 	public function list(int $limit = 20): array {
 		$currentPage = empty($this->paginator->getRequest()->getParam('p'))? 1: (int) $this->paginator->getRequest()->getParam('p');
 		$offset = ($currentPage - 1) * $limit;
-		$sql = "SELECT * FROM qualifications WHERE user_id = :user_id AND delete_flg = 0";
+		$sql = "SELECT * FROM qualifications
+				WHERE user_id = :user_id
+				AND delete_flg = 0";
 		$result = $this->db->fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
 		return [
 			'list' => $result,
@@ -23,7 +25,18 @@ class Qualification extends Model {
 	}
 
 	public function create(array $posts): PDOStatement | false {
-		$sql = "INSERT INTO qualifications (user_id, name, acquisition_date, create_at) VALUES (:user_id, :name, :acquisition_date, :create_at)";
+		$sql = "INSERT INTO qualifications (
+					user_id,
+					name,
+					acquisition_date,
+					create_at
+				)
+				VALUES (
+					:user_id,
+					:name,
+					:acquisition_date,
+					:create_at
+				)";
 		$data = [
 			':user_id'          => session()->get('user_id'),
 			':name'             => $posts['qualification_name'],
@@ -35,7 +48,12 @@ class Qualification extends Model {
 	}
 
 	public function update(string $id, array $posts): PDOStatement | false {
-		$sql = "UPDATE qualifications SET name = :name, acquisition_date = :acquisition_date WHERE user_id = :user_id AND id = :q_id AND delete_flg = 0";
+		$sql = "UPDATE qualifications
+				SET name = :name,
+				    acquisition_date = :acquisition_date
+				WHERE user_id = :user_id
+				AND id = :q_id
+				AND delete_flg = 0";
 		$data = [
 			':q_id'             => $id,
 			':user_id'          => session()->get('user_id'),
@@ -47,7 +65,11 @@ class Qualification extends Model {
 	}
 
 	public function delete(string $id): PDOStatement | false {
-		$sql = "UPDATE qualifications SET delete_flg = 1 WHERE user_id = :user_id AND id = :q_id AND delete_flg = 0";
+		$sql = "UPDATE qualifications
+				SET delete_flg = 1
+				WHERE user_id = :user_id
+				AND id = :q_id
+				AND delete_flg = 0";
 		$data = [
 			':q_id'    => $id,
 			':user_id' => session()->get('user_id')

@@ -6,17 +6,31 @@ use PDOStatement;
 
 class User extends Model {
 	public function findById(int $id): array {
-		$sql = "SELECT * FROM users WHERE id = :id";
+		$sql = "SELECT * FROM users
+				WHERE id = :id
+				AND delete_flg = 0";
 		return $this->db->fetchAssoc($sql, [':id' => $id]);
 	}
 
 	public function findByEmail(string $email): array {
-		$sql = "SELECT * FROM users WHERE email = :email";
+		$sql = "SELECT * FROM users
+				WHERE email = :email";
 		return $this->db->fetchAssoc($sql, [':email' => $email]);
 	}
 
 	public function create(array $posts): PDOStatement | false {
-		$sql = "INSERT INTO users (name, email, password, create_at) VALUES (:name, :email, :password, :create_at)";
+		$sql = "INSERT INTO users (
+					name,
+					email,
+					password,
+					create_at
+				)
+				VALUES (
+					:name,
+					:email,
+					:password,
+					:create_at
+				)";
 		$data = [
 			':name'      => $posts['name'],
 			':email'     => $posts['email'],

@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="./work-experience-list">
+                <a class="" href="<?= route('work-experiences-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#works'); ?>"></use>
                     </svg>

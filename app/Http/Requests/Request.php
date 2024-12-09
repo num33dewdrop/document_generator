@@ -26,7 +26,11 @@ class Request {
 		return $this->data;
 	}
 	public function postAll(): array{
-		return $this->post;
+		$post = [];
+		foreach ($this->post as $key => $value) {
+			$post[$key] = $value === "" ? null : $value;
+		}
+		return $post;
 	}
 	public function getAll(): array{
 		return $this->get;

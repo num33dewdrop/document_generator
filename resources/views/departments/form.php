@@ -1,79 +1,116 @@
 <?php
-view_parts('head', ['title'=>'DEPARTMENT REGISTER','description'=>'DEPARTMENT REGISTERの説明']);
+$department = $data["department"] ?? [];
+$is_register = !isset($type) || $type === "register";
+
+$page_name = $is_register?
+	['en' =>'DEPARTMENT REGISTER', 'ja' => '所属登録']:
+	['en' =>'DEPARTMENT EDIT', 'ja' => '所属編集'];
+
+view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
 <main class="l-main">
     <div class="l-main__head">
-    <hgroup class="c-title">
-        <h1>所属登録</h1>
-        <p>DEPARTMENT REGISTER</p>
-    </hgroup>
-    
-</div>
+        <hgroup class="c-title">
+            <h1><?= $page_name['ja']; ?></h1>
+            <p><?= $page_name['en']; ?></p>
+        </hgroup>
+	    <?php if(!$is_register): ?>
+        <div class="c-btn c-btn--deleteFrame c-btn--auto">
+            <button class="js-showDeleteModal">
+                <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
+                    <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+                </svg>
+                削除
+            </button>
+        </div>
+	    <?php endif; ?>
+    </div>
     <div class="l-main__body l-main__body--info">
         <hgroup class="c-info c-info--box">
             <h2 class="c-info__title">株式会社〇〇〇〇</h2>
             <p class="c-info__note">2012/04/03 〜 2023/07/16</p>
         </hgroup>
         <div class="c-section">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="<?= route( $is_register? 'departments-register.store': 'departments-edit.store', $is_register? []: ['id' => sanitize($department['id'])]);?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="<?= $is_register? 'POST' :'PUT'?>">
+		        <?= csrf(); ?>
                 <div class="c-section__inner">
                     <div class="c-box">
                         <div class="c-box__inner">
+	                        <?= displayErrors(error('common')); ?>
                             <dl class="c-form">
                                 <dt class="c-form__title">配属部署</dt>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="title" class="c-form__label">部署名</label>
+                                        <label for="department_name" class="c-form__label">部署名</label>
                                         <div class="c-input">
-                                            <input type="text" name="title" id="title" value="" placeholder="例：">
+                                            <input type="text" name="department_name" id="department_name" value="<?= old('department_name', $is_register? []: ['department_name' => sanitize($department['name']) ?? '']); ?>" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors(error('department_name')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="date_range" class="c-form__label">配属期間</label>
-                                        <div class="c-input c-input--dateRange">
-                                            <input type="text" name="date_range" id="date_range" value="2020/04/01 - 2024/05/16" readonly>
-                                            <label for="date_range">
-                                                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="./img/symbol/common.svg#calendar"></use>
-                                                </svg>
-                                            </label>
+                                        <span class="c-form__label">配属期間</span>
+                                        <div class="p-horizon p-horizon--5">
+                                            <div class="c-input c-input--date js-flatpickr">
+                                                <input type="text" class="js-flatpickr__input" name="first_date" id="first_date" value="<?= old('first_date', $is_register? []: ['first_date' => sanitize($department['first_date']) ?? '']); ?>">
+                                                <label for="first_date">
+                                                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                                        <use href="<?= assets('img/symbol/common.svg#calendar'); ?>"></use>
+                                                    </svg>
+                                                </label>
+                                            </div>
+                                            〜
+                                            <div class="c-input c-input--date js-flatpickr">
+                                                <input type="text" class="js-flatpickr__input" name="last_date" id="last_date" value="<?= old('last_date', $is_register? []: ['last_date' => sanitize($department['last_date']) ?? '']); ?>">
+                                                <label for="last_date">
+                                                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                                        <use href="<?= assets('img/symbol/common.svg#calendar'); ?>"></use>
+                                                    </svg>
+                                                </label>
+                                            </div>
                                         </div>
+	                                    <?= displayErrors(error('first_date')) ?>
+	                                    <?= displayErrors(error('last_date')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="business" class="c-form__label">担当業務</label>
+                                        <label for="job_assigned" class="c-form__label">担当業務</label>
                                         <div class="c-textarea">
-                                            <textarea name="business" id="business" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="job_assigned" id="job_assigned" cols="30" rows="10" placeholder="例："><?= old('job_assigned', $is_register? []: ['job_assigned' => sanitize($department['job_assigned']) ?? '']); ?></textarea>
                                         </div>
+	                                    <?= displayErrors(error('job_assigned')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="product" class="c-form__label">取扱製品</label>
+                                        <label for="products" class="c-form__label">取扱製品</label>
                                         <div class="c-textarea">
-                                            <textarea name="product" id="product" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="products" id="products" cols="30" rows="10" placeholder="例："><?= old('products', $is_register? []: ['products' => sanitize($department['products']) ?? '']); ?></textarea>
                                         </div>
+	                                    <?= displayErrors(error('products')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="job_summary" class="c-form__label">業務内容</label>
+                                        <label for="tasks" class="c-form__label">業務内容</label>
                                         <div class="c-textarea">
-                                            <textarea name="job_summary" id="job_summary" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="tasks" id="tasks" cols="30" rows="10" placeholder="例："><?= old('tasks', $is_register? []: ['tasks' => sanitize($department['tasks']) ?? '']); ?></textarea>
                                         </div>
+	                                    <?= displayErrors(error('tasks')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="number_of_employees" class="c-form__label">規模</label>
+                                        <label for="scale" class="c-form__label">規模</label>
                                         <div class="c-input c-input--num c-input--text">
-                                            <input type="number" name="number_of_employees" id="number_of_employees" value="">人
+                                            <input type="number" name="scale" id="scale" value="<?= old('scale', $is_register? []: ['scale' => sanitize($department['scale']) ?? '']); ?>">人
                                         </div>
+	                                    <?= displayErrors(error('scale')) ?>
                                     </div>
                                 </dd>
                             </dl>
@@ -81,7 +118,7 @@ view_parts('globalNav');
                     </div>
                     <div class="c-btnBox">
                         <div class="c-btn c-btn--frame">
-                            <a href="../../../../php">戻る</a>
+                            <a href="<?= route('departments-list.show'); ?>">戻る</a>
                         </div>
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="保存">
@@ -91,5 +128,10 @@ view_parts('globalNav');
             </form>
         </div>
     </div>
+	<?php
+	if(!$is_register):
+		view_parts('deleteModal', ['route' => 'departments-delete.store' ,'id' => sanitize($department['id']), 'name' => sanitize($department['name'])]);
+	endif;
+	?>
 </main>
 <?php view_parts('footer'); ?>

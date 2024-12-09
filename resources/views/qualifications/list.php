@@ -25,35 +25,35 @@ view_parts('globalNav');
         </div>
         <ul class="c-list">
             <?php foreach ($list['records'] as $key => $value): ?>
-                <li class="c-card js-parentSlide">
-                    <div class="c-card__content js-handleSlide">
-                        <div class="c-card__body">
-                            <p class="c-card__time">
-                                <time datetime="<?= sanitize($value['update_at']); ?>"><?= sanitize($value['update_at']); ?></time>
-                                <span class="c-label">更新</span>
-                            </p>
-                            <h2 class="c-card__title"><?= sanitize($value['name']); ?></h2>
-                        </div>
-                        <div class="c-card__foot">
-                            <div class="c-card__btn">
-                                <a href="<?= route('qualifications-edit.show', ['id' => sanitize($value['id'])]); ?>">
-                                    <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                        <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
-                                    </svg>
-                                    編集
-                                </a>
-                            </div>
-                        </div>
-                        <div class="c-slide c-slide--delete js-targetSlide">
-                            <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
+            <li class="c-card js-parentSlide">
+                <div class="c-card__content js-handleSlide">
+                    <div class="c-card__body">
+                        <p class="c-card__time">
+                            <time datetime="<?= sanitize($value['update_at']); ?>"><?= sanitize($value['update_at']); ?></time>
+                            <span class="c-label">更新</span>
+                        </p>
+                        <h2 class="c-card__title"><?= sanitize($value['name']); ?></h2>
+                    </div>
+                    <div class="c-card__foot">
+                        <div class="c-card__btn">
+                            <a href="<?= route('qualifications-edit.show', ['id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+                                    <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                 </svg>
-                                削除
-                            </button>
+                                編集
+                            </a>
                         </div>
                     </div>
-                </li>
+                    <div class="c-slide c-slide--delete js-targetSlide">
+                        <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
+                            <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
+                                <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+                            </svg>
+                            削除
+                        </button>
+                    </div>
+                </div>
+            </li>
             <?php endforeach; ?>
         </ul>
         <div class="c-pager--end">

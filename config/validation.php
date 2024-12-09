@@ -18,6 +18,15 @@ return [
 		"academic_name" => "学校名",
 		"first_date" => "期間（始）",
 		"last_date" => "期間（終）",
-		"last_career" => "最終経歴"
+		"last_career" => "最終経歴",
+		"company_name" => "会社名",
+		"business" => "事業内容",
+		"capital_stock" => "資本金",
+		"sales" => "売上高",
+		"number_of_employees" => "従業員数",
+		"employment_status" => "雇用形態",
+		"job_summary" => "職務要約",
+		"experience" => "実務経験",
+		"track_record" => "実績"
 	],
 ];
