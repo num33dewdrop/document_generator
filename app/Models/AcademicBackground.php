@@ -3,6 +3,7 @@
 namespace Models;
 
 use PDOStatement;
+use Utilities\Debug;
 
 class AcademicBackground extends Model{
 	public function findById(string $id): array {
@@ -40,10 +41,12 @@ class AcademicBackground extends Model{
 		$data = [
 			':a_id'           => $id,
 			':user_id'        => session()->get('user_id'),
+			':name'           => $posts['academic_name'],
 			':first_date'     => $posts['first_date'],
 			':last_date'      => $posts['last_date'],
 			':last_career_id' => $posts['last_career']
 		];
+		Debug::echo($data);
 		$this->db->query($sql, $data);
 		return $this->db->stmt;
 	}
@@ -54,6 +57,8 @@ class AcademicBackground extends Model{
 			':a_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
+		Debug::echo("delete!!!");
+		Debug::echo($data);
 		$this->db->query($sql, $data);
 		return $this->db->stmt;
 	}

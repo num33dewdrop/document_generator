@@ -12,7 +12,7 @@ view_parts('globalNav');
             <p>QUALIFICATION LIST</p>
         </hgroup>
         <div class="c-btn c-btn--create">
-            <a href="<?= route('qualifications-register.show'); ?>">新規追加</a>
+            <a href="<?= route('qualifications-register.show'); ?>">新規作成</a>
         </div>
     </div>
     <div class="l-main__body">
@@ -62,9 +62,14 @@ view_parts('globalNav');
             </ul>
         </div>
         <?php else: ?>
-        結果なし
+        <div class="p-noResult">
+            <div class="p-noResult__inner">
+                <p class="c-text--m c-text--center">資格の登録がありません。</p>
+                <p class="c-text--m c-text--center">新規作成ボタンから資格を登録してください。</p>
+            </div>
+        </div>
         <?php endif; ?>
     </div>
-	<?php view_parts('apiDeleteModal'); ?>
+	<?php view_parts('apiDeleteModal', ["target" => 'qualification']); ?>
 </main>
 <?php view_parts('footer'); ?>

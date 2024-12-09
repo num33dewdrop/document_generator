@@ -565,7 +565,6 @@ var Slide = /*#__PURE__*/function () {
         return;
       }
       if (diff >= 5 && diff < 200) {
-        console.log(parent);
         parent.classList.add('is-show');
         target.classList.add('is-show');
         target.classList.remove('is-delete');
@@ -3634,8 +3633,8 @@ var $flash = document.querySelector('.js-flash');
 $apiHandleDelete.forEach(function (elem) {
   elem.addEventListener('click', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-      var _e$currentTarget$data, _e$currentTarget$data2;
-      var id, token, response, json;
+      var _e$currentTarget$data, _e$currentTarget$data2, _e$currentTarget$data3;
+      var id, target, token, response, json;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -3646,27 +3645,28 @@ $apiHandleDelete.forEach(function (elem) {
             return _context.abrupt("return", false);
           case 2:
             id = (_e$currentTarget$data = e.currentTarget.dataset.id) !== null && _e$currentTarget$data !== void 0 ? _e$currentTarget$data : '';
-            token = (_e$currentTarget$data2 = e.currentTarget.dataset.token) !== null && _e$currentTarget$data2 !== void 0 ? _e$currentTarget$data2 : '';
+            target = (_e$currentTarget$data2 = e.currentTarget.dataset.target) !== null && _e$currentTarget$data2 !== void 0 ? _e$currentTarget$data2 : '';
+            token = (_e$currentTarget$data3 = e.currentTarget.dataset.token) !== null && _e$currentTarget$data3 !== void 0 ? _e$currentTarget$data3 : '';
             if (!(id === '' || token === '')) {
-              _context.next = 6;
+              _context.next = 7;
               break;
             }
             return _context.abrupt("return", false);
-          case 6:
-            _context.next = 8;
-            return (0,_api_fetch__WEBPACK_IMPORTED_MODULE_6__.fetchApi)('./api/qualification/delete?id=' + id, 'DELETE', token);
-          case 8:
+          case 7:
+            _context.next = 9;
+            return (0,_api_fetch__WEBPACK_IMPORTED_MODULE_6__.fetchApi)('./api/' + target + '/delete?id=' + id, 'DELETE', token);
+          case 9:
             response = _context.sent;
-            _context.next = 11;
+            _context.next = 12;
             return response.json();
-          case 11:
+          case 12:
             json = _context.sent;
             if (!response.ok) {
               $flash.innerHTML = "<p class=\"c-flash__message c-flash__message--error c-text--m c-text--center\">".concat(json.error, "</p>");
             }
             DeleteModal.onHidePopup();
             (0,_modules_helpers__WEBPACK_IMPORTED_MODULE_7__.jump)();
-          case 15:
+          case 16:
           case "end":
             return _context.stop();
         }

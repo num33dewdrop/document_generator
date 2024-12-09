@@ -141,8 +141,8 @@ if (!function_exists('randomKey')) {
 
 
 if (!function_exists('view')) {
-	function view($view, $data = []): void {
-		View::render(str_replace('.', '/', $view), $data);
+	function view($view, $data = [], $type = ""): void {
+		View::render(str_replace('.', '/', $view), $data, $type);
 	}
 }
 

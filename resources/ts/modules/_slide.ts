@@ -83,7 +83,6 @@ export default class Slide {
             return;
         }
         if (diff >= 5 && diff < 200) {
-            console.log(parent);
             parent.classList.add('is-show');
             target.classList.add('is-show');
             target.classList.remove('is-delete');

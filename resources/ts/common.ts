@@ -72,11 +72,12 @@ $apiHandleDelete.forEach(elem => {
             return false;
         }
         const id = e.currentTarget.dataset.id?? '';
+        const target = e.currentTarget.dataset.target?? '';
         const token = e.currentTarget.dataset.token?? '';
         if(id === '' || token === '') {
             return false;
         }
-        const response = await fetchApi('./api/qualification/delete?id='+id, 'DELETE', token);
+        const response = await fetchApi('./api/' + target + '/delete?id=' + id, 'DELETE', token);
         const json = await response.json();
         if(!response.ok) {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;

@@ -1,0 +1,15 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.p-noResult {
+  width: 100%;
+  padding: 0 $side-margin;
+  margin: 10px 0;
+  &__inner {
+    padding: 80px 20px;
+    border: 1px solid $navyBlue-light2;
+    border-radius: 4px;
+    background-color: $white;
+  }
+}

@@ -10,7 +10,7 @@ view_parts('globalNav');
             <p>DOCUMENT LIST</p>
         </hgroup>
         <div class="c-btn c-btn--create">
-            <a href="<?= route('documents-register.show'); ?>">新規追加</a>
+            <a href="<?= route('documents-register.show'); ?>">新規作成</a>
         </div>
     </div>
     <div class="l-main__body">

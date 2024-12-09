@@ -11,7 +11,7 @@ view_parts('globalNav');
     </hgroup>
     
     <div class="c-btn c-btn--create">
-        <a href="work-experience-register">新規追加</a>
+        <a href="work-experience-register">新規作成</a>
     </div>
     
 </div>

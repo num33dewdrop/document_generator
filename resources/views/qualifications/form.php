@@ -1,6 +1,6 @@
 <?php
-$qualification = $data ?? [];
-$is_register = empty($qualification);
+$qualification = $data["qualification"] ?? [];
+$is_register = !isset($type) || $type === "register";
 
 $page_name = $is_register?
     ['en' =>'QUALIFICATION REGISTER', 'ja' => '資格登録']:
@@ -78,7 +78,7 @@ view_parts('globalNav');
     </div>
 	<?php
     if(!$is_register):
-        view_parts('deleteModal', ['id' => sanitize($qualification['id']), 'name' => sanitize($qualification['name'])]);
+        view_parts('deleteModal', ['route' => 'qualifications-delete.store' ,'id' => sanitize($qualification['id']), 'name' => sanitize($qualification['name'])]);
     endif;
     ?>
 </main>

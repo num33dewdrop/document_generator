@@ -2,7 +2,7 @@
 namespace Views;
 
 class View {
-	public static function render($view, $data = []): void {
+	public static function render($view, $data = [], $type = ""): void {
 		$viewPath = base_path('resources/views/' . $view . '.php');
 		// ビューが存在するか確認
 		if (file_exists($viewPath)) {

@@ -1723,4 +1723,16 @@ Component
   gap: 5px;
 }
 
+.p-noResult {
+  width: 100%;
+  padding: 0 15px;
+  margin: 10px 0;
+}
+.p-noResult__inner {
+  padding: 80px 20px;
+  border: 1px solid #36ACC5;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
 /*# sourceMappingURL=style.css.map*/

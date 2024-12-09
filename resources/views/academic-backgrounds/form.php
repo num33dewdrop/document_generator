@@ -1,7 +1,7 @@
 <?php
-$academicBackground = $data ?? [];
-$is_register = empty($academicBackground);
-
+$academicBackground = $data["academic_background"] ?? [];
+$lastCareer = $data["last_career"]["records"] ?? [];
+$is_register = !isset($type) || $type === "register";
 $page_name = $is_register?
 	['en' =>'ACADEMIC BACKGROUND REGISTER', 'ja' => '学歴登録']:
 	['en' =>'ACADEMIC BACKGROUND EDIT', 'ja' => '学歴編集'];
@@ -79,9 +79,9 @@ view_parts('globalNav');
                                         <div class="c-select">
                                             <select name="last_career" id="last_career">
                                                 <option value="">選択してください</option>
-                                                <option value="1">卒業</option>
-                                                <option value="2">在籍中</option>
-                                                <option value="3">中退</option>
+                                                <?php foreach ($lastCareer as  $key => $value): ?>
+                                                <option value="<?= sanitize($value["id"]); ?>" <?= old('last_career', $is_register? []: ['last_career' => sanitize($academicBackground['last_career_id']) ?? '']) === sanitize($value["id"])? "selected": ""; ?>><?= sanitize($value["name"]); ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
 	                                    <?= displayErrors(error('last_career')) ?>
@@ -104,7 +104,7 @@ view_parts('globalNav');
     </div>
 	<?php
 	if(!$is_register):
-		view_parts('deleteModal', ['id' => sanitize($academicBackground['id']), 'name' => sanitize($academicBackground['name'])]);
+		view_parts('deleteModal', ['route' => 'academic-backgrounds-delete.store' ,'id' => sanitize($academicBackground['id']), 'name' => sanitize($academicBackground['name'])]);
 	endif;
 	?>
 </main>

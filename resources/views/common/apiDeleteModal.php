@@ -20,10 +20,14 @@
 				<button class="js-hideModal">キャンセル</button>
 			</div>
 			<div class="c-btn c-btn--delete">
-				<button type="submit" class="js-handleDelete js-insertDeleteId" data-id="0" data-token="<?php echo session()->get('_token'); ?>">削除する</button>
+				<button type="submit"
+                        class="js-handleDelete js-insertDeleteId"
+                        data-id="0"
+                        data-token="<?= session()->get('_token'); ?>"
+                        data-target="<?= $parts_data['target'] ?? '' ?>"
+                >削除する</button>
 			</div>
 		</div>
-
 	</div>
 </div>
 

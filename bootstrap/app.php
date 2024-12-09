@@ -32,6 +32,7 @@ require_once __DIR__ . '/../app/Models/Model.php';
 require_once __DIR__ . '/../app/Models/User.php';
 require_once __DIR__ . '/../app/Models/Qualification.php';
 require_once __DIR__ . '/../app/Models/AcademicBackground.php';
+require_once __DIR__ . '/../app/Models/LastCareer.php';
 
 require_once __DIR__ . '/../app/Auth/Auth.php';
 require_once __DIR__ . '/../app/Utilities/Paginator.php';
