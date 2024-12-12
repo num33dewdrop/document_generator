@@ -33,6 +33,7 @@ require_once __DIR__ . '/../app/Models/User.php';
 require_once __DIR__ . '/../app/Models/Qualification.php';
 require_once __DIR__ . '/../app/Models/AcademicBackground.php';
 require_once __DIR__ . '/../app/Models/WorkExperience.php';
+require_once __DIR__ . '/../app/Models/Department.php';
 require_once __DIR__ . '/../app/Models/LastCareer.php';
 require_once __DIR__ . '/../app/Models/EmploymentStatus.php';
 
@@ -44,11 +45,14 @@ require_once __DIR__ . '/../app/Http/Controllers/Web/DocumentsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/QualificationsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/AcademicBackgroundsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/WorkExperiencesController.php';
+require_once __DIR__ . '/../app/Http/Controllers/Web/DepartmentsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/Auth/RegisterController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/Auth/LoginController.php';
+
 require_once __DIR__ . '/../app/Http/Controllers/Api/QualificationsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Api/AcademicBackgroundsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Api/WorkExperiencesController.php';
+require_once __DIR__ . '/../app/Http/Controllers/Api/DepartmentsController.php';
 
 require_once __DIR__ . '/../app/helpers.php';
 

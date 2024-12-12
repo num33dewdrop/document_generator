@@ -52,4 +52,12 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/work-experience', 'WorkExperiencesController@create')->name('work-experiences-register.store');
 	Route::put('/work-experience/{id}', 'WorkExperiencesController@update')->name('work-experiences-edit.store');
 	Route::delete('/work-experience/{id}', 'WorkExperiencesController@delete')->name('work-experiences-delete.store');
+
+	//DEPARTMENT
+	Route::get('/work-experience/{w_id}/department', 'DepartmentsController@list')->name('departments-list.show');
+	Route::get('/work-experience/{w_id}/department/register', 'DepartmentsController@register')->name('departments-register.show');
+	Route::get('/work-experience/{w_id}/department/{d_id}/edit', 'DepartmentsController@edit')->name('departments-edit.show');
+	Route::post('/work-experience/{w_id}/department', 'DepartmentsController@create')->name('departments-register.store');
+	Route::put('/work-experience/{w_id}/department/{d_id}', 'DepartmentsController@update')->name('departments-edit.store');
+	Route::delete('/work-experience/{w_id}/department/{d_id}', 'DepartmentsController@delete')->name('departments-delete.store');
 });

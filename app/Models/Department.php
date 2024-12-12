@@ -74,8 +74,8 @@ class Department extends Model {
 					scale,
 					create_at 
 				)
-				VALUES (
-					:work_experience_id,
+				SELECT 
+					w.id,
 					:name,
 					:first_date,
 					:last_date,
@@ -84,7 +84,9 @@ class Department extends Model {
 					:tasks,
 					:scale,
 					:create_at 
-				)";
+				FROM work_experiences AS w
+                WHERE w.id = :work_experience_id
+                AND w.user_id = :user_id";
 		$data = [
 			':work_experience_id' => $posts['work_experience_id'],
 			':name'               => $posts['department_name'],
@@ -94,6 +96,7 @@ class Department extends Model {
 			':products'           => $posts['products'],
 			':tasks'              => $posts['tasks'],
 			':scale'              => $posts['scale'],
+			':user_id'            => session()->get('user_id'),
 			':create_at'          => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
@@ -115,12 +118,31 @@ class Department extends Model {
 				AND w.user_id = :user_id
 				AND d.delete_flg = 0";
 		$data = [
-			':a_id'           => $id,
+			':d_id'           => $id,
 			':user_id'        => session()->get('user_id'),
-			':name'           => $posts['academic_name'],
-			':first_date'     => $posts['first_date'],
-			':last_date'      => $posts['last_date'],
-			':last_career_id' => $posts['last_career']
+			':name'               => $posts['department_name'],
+			':first_date'         => $posts['first_date'],
+			':last_date'          => $posts['last_date'],
+			':job_assigned'       => $posts['job_assigned'],
+			':products'           => $posts['products'],
+			':tasks'              => $posts['tasks'],
+			':scale'              => $posts['scale'],
+		];
+		$this->db->query($sql, $data);
+		return $this->db->stmt;
+	}
+
+	public function delete(string $id): PDOStatement | false {
+		$sql = "UPDATE departments AS d
+				INNER JOIN work_experiences AS w
+				ON d.work_experience_id = w.id
+				SET d.delete_flg = 1
+				WHERE w.user_id = :user_id
+				AND d.id = :d_id
+				AND delete_flg = 0";
+		$data = [
+			':d_id'    => $id,
+			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
 		return $this->db->stmt;
