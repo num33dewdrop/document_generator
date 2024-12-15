@@ -9,7 +9,7 @@
             </h2>
             <button class="c-close js-hideModal"></button>
         </div>
-        <form action="<?= route($parts_data['route'] ?? '', ['id' => $parts_data['id']?? '{id}' ]) ?>" method="post">
+        <form action="<?= route($parts_data['route'] ?? '', $parts_data['params']?? []) ?>" method="post">
             <input type="hidden" name="_method" value="DELETE">
 	        <?= csrf(); ?>
             <div class="c-modal__body">

@@ -1,6 +1,8 @@
 <?php
-$list = empty($data['list'])? []: $data['list'];
-$paginate = empty($data['paginator'])? '': $data['paginator']->links();
+$work_experience = empty($data['work_experience'])? []: $data['work_experience'];
+$list = empty($data['department']['list'])? []: $data['department']['list'];
+$paginate = empty($data['department']['paginator'])? '': $data['department']['paginator']->links();
+\Utilities\Debug::echo($work_experience);
 view_parts('head', ['title' => 'DEPARTMENT LIST', 'description' => 'DEPARTMENT LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
@@ -12,13 +14,13 @@ view_parts('globalNav');
         <p>DEPARTMENT LIST</p>
     </hgroup>
     <div class="c-btn c-btn--create">
-        <a href="<?= route('departments-register.show'); ?>">新規作成</a>
+        <a href="<?= route('departments-register.show', ['w_id' => sanitize($work_experience['id'])]); ?>">新規作成</a>
     </div>
 </div>
     <div class="l-main__body l-main__body--info">
         <hgroup class="c-info c-info--box">
-            <h2 class="c-info__title">株式会社〇〇〇〇</h2>
-            <p class="c-info__note">2012/04/03 〜 2023/07/16</p>
+            <h2 class="c-info__title"><?= sanitize($work_experience['name']); ?></h2>
+            <p class="c-info__note"><?= sanitize($work_experience['first_date']); ?> 〜 <?= sanitize($work_experience['last_date']); ?></p>
         </hgroup>
         <?php if(!empty($list['records'])): ?>
         <div class="c-pager c-pager--pc">
@@ -40,7 +42,7 @@ view_parts('globalNav');
                     </div>
                     <div class="c-card__foot">
                         <div class="c-card__btn">
-                            <a href="<?= route('departments-edit.show', ['id' => sanitize($value['id'])]); ?>">
+                            <a href="<?= route('departments-edit.show', ['w_id' => sanitize($work_experience['id']) ,'d_id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                 </svg>
@@ -82,6 +84,6 @@ view_parts('globalNav');
             </div>
         <?php endif; ?>
     </div>
-	<?php view_parts('apiDeleteModal', ["target" => 'work_experience/department']); ?>
+	<?php view_parts('apiDeleteModal', ["target" => 'department']); ?>
 </main>
 <?php view_parts('footer'); ?>

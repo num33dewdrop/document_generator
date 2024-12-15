@@ -3574,6 +3574,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 
 
+var ROOT = '/document_generator/public';
 var imgDropObj = {
   labelClass: 'js-dropArea',
   // HTMLLabelElementのクラス名
@@ -3654,7 +3655,7 @@ $apiHandleDelete.forEach(function (elem) {
             return _context.abrupt("return", false);
           case 7:
             _context.next = 9;
-            return (0,_api_fetch__WEBPACK_IMPORTED_MODULE_6__.fetchApi)('./api/' + target + '/delete?id=' + id, 'DELETE', token);
+            return (0,_api_fetch__WEBPACK_IMPORTED_MODULE_6__.fetchApi)(ROOT + '/api/' + target + '/delete?id=' + id, 'DELETE', token);
           case 9:
             response = _context.sent;
             _context.next = 12;

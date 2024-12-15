@@ -9,7 +9,7 @@ view_parts('globalNav');
     <div class="l-main__head">
         <hgroup class="c-title">
             <h1>職歴一覧</h1>
-            <p>WORK EXPERIENCES LIST</p>
+            <p>WORK EXPERIENCE LIST</p>
         </hgroup>
         <div class="c-btn c-btn--create">
             <a href="<?= route('work-experiences-register.show'); ?>">新規作成</a>
@@ -44,7 +44,7 @@ view_parts('globalNav');
                             </a>
                         </div>
                         <div class="c-card__btn">
-                            <a href="<?= route('departments-list.show', ['id' => sanitize($value['id'])]); ?>">
+                            <a href="<?= route('departments-list.show', ['w_id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#group'); ?>"></use>
                                 </svg>
@@ -52,7 +52,7 @@ view_parts('globalNav');
                             </a>
                         </div>
                         <div class="c-card__btn">
-                            <a href="<?= route('careers-list.show', ['id' => sanitize($value['id'])]); ?>">
+                            <a href="<?= route('careers-list.show', ['w_id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#manager'); ?>"></use>
                                 </svg>

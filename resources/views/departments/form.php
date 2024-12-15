@@ -1,4 +1,5 @@
 <?php
+$work_experience = empty($data['work_experience'])? []: $data['work_experience'];
 $department = $data["department"] ?? [];
 $is_register = !isset($type) || $type === "register";
 
@@ -29,11 +30,11 @@ view_parts('globalNav');
     </div>
     <div class="l-main__body l-main__body--info">
         <hgroup class="c-info c-info--box">
-            <h2 class="c-info__title">株式会社〇〇〇〇</h2>
-            <p class="c-info__note">2012/04/03 〜 2023/07/16</p>
+            <h2 class="c-info__title"><?= sanitize($work_experience['name']); ?></h2>
+            <p class="c-info__note"><?= sanitize($work_experience['first_date']); ?> 〜 <?= sanitize($work_experience['last_date']); ?></p>
         </hgroup>
         <div class="c-section">
-            <form action="<?= route( $is_register? 'departments-register.store': 'departments-edit.store', $is_register? []: ['id' => sanitize($department['id'])]);?>" method="post" enctype="multipart/form-data">
+            <form action="<?= route( $is_register? 'departments-register.store': 'departments-edit.store', $is_register? ['w_id' => sanitize($work_experience['id'])]: [ 'w_id' => sanitize($work_experience['id']), 'd_id' => sanitize($department['id'])]);?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="_method" value="<?= $is_register? 'POST' :'PUT'?>">
 		        <?= csrf(); ?>
                 <div class="c-section__inner">
@@ -118,7 +119,7 @@ view_parts('globalNav');
                     </div>
                     <div class="c-btnBox">
                         <div class="c-btn c-btn--frame">
-                            <a href="<?= route('departments-list.show'); ?>">戻る</a>
+                            <a href="<?= route('departments-list.show',['w_id' => sanitize($work_experience['id'])]); ?>">戻る</a>
                         </div>
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="保存">
@@ -130,7 +131,7 @@ view_parts('globalNav');
     </div>
 	<?php
 	if(!$is_register):
-		view_parts('deleteModal', ['route' => 'departments-delete.store' ,'id' => sanitize($department['id']), 'name' => sanitize($department['name'])]);
+		view_parts('deleteModal', ['route' => 'departments-delete.store' , 'params' => ['w_id' => sanitize($work_experience['id']), 'd_id' => sanitize($department['id'])], 'name' => sanitize($department['name'])]);
 	endif;
 	?>
 </main>

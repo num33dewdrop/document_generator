@@ -78,7 +78,7 @@ view_parts('globalNav');
     </div>
 	<?php
     if(!$is_register):
-        view_parts('deleteModal', ['route' => 'qualifications-delete.store' ,'id' => sanitize($qualification['id']), 'name' => sanitize($qualification['name'])]);
+        view_parts('deleteModal', ['route' => 'qualifications-delete.store' , 'params' => ['id' => sanitize($qualification['id'])], 'name' => sanitize($qualification['name'])]);
     endif;
     ?>
 </main>

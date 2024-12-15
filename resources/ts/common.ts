@@ -8,6 +8,7 @@ import {fetchApi} from "./api/_fetch";
 import {jump} from "./modules/_helpers";
 import '../scss/style.scss';
 
+const ROOT = '/document_generator/public';
 
 const imgDropObj = {
     labelClass: 'js-dropArea', // HTMLLabelElementのクラス名
@@ -77,7 +78,7 @@ $apiHandleDelete.forEach(elem => {
         if(id === '' || token === '') {
             return false;
         }
-        const response = await fetchApi('./api/' + target + '/delete?id=' + id, 'DELETE', token);
+        const response = await fetchApi(ROOT + '/api/' + target + '/delete?id=' + id, 'DELETE', token);
         const json = await response.json();
         if(!response.ok) {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;

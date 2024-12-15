@@ -185,7 +185,7 @@ view_parts('globalNav');
     </div>
 	<?php
 	if(!$is_register):
-		view_parts('deleteModal', ['route' => 'work-experiences-delete.store' ,'id' => sanitize($workExperiences['id']), 'name' => sanitize($workExperiences['name'])]);
+		view_parts('deleteModal', ['route' => 'work-experiences-delete.store' ,'params' => ['id' => sanitize($workExperiences['id'])], 'name' => sanitize($workExperiences['name'])]);
 	endif;
 	?>
 </main>

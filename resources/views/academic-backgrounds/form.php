@@ -104,7 +104,7 @@ view_parts('globalNav');
     </div>
 	<?php
 	if(!$is_register):
-		view_parts('deleteModal', ['route' => 'academic-backgrounds-delete.store' ,'id' => sanitize($academicBackground['id']), 'name' => sanitize($academicBackground['name'])]);
+		view_parts('deleteModal', ['route' => 'academic-backgrounds-delete.store' ,'params' => ['id' => sanitize($academicBackground['id'])], 'name' => sanitize($academicBackground['name'])]);
 	endif;
 	?>
 </main>

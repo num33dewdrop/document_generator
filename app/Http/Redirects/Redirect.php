@@ -23,13 +23,13 @@ class Redirect
 		return $this;
 	}
 
-	public function route(string $name, array $params = []): void
+	public function route(string $name, array $params = [], array $urlParams = []): void
 	{
-		$url = route($name);
+		$url = route($name, $params);
 
-		if (!empty($params)) {
+		if (!empty($urlParams)) {
 			//URL エンコードされたクエリ文字列を生成
-			$query = http_build_query($params);
+			$query = http_build_query($urlParams);
 			$url .= '?' . $query;
 		}
 
