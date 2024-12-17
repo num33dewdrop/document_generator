@@ -1,7 +1,7 @@
 <?php
 $list = empty($data['list'])? []: $data['list'];
 $paginate = empty($data['paginator'])? '': $data['paginator']->links();
-view_parts('head', ['title' => 'WORK EXPERIENCES LIST', 'description' => 'WORK EXPERIENCES LISTの説明']);
+view_parts('head', ['title' => 'WORK EXPERIENCE LIST', 'description' => 'WORK EXPERIENCE LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -52,7 +52,7 @@ view_parts('globalNav');
                             </a>
                         </div>
                         <div class="c-card__btn">
-                            <a href="<?= route('careers-list.show', ['w_id' => sanitize($value['id'])]); ?>">
+                            <a href="<?= route('official-positions-list.show', ['w_id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#manager'); ?>"></use>
                                 </svg>

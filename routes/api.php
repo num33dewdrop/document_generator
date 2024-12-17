@@ -9,3 +9,5 @@ Route::delete('/api/academic-background/delete', 'AcademicBackgroundsController@
 Route::delete('/api/work-experience/delete', 'WorkExperiencesController@delete')->name('api.work-experiences-delete.store');
 
 Route::delete('/api/department/delete', 'DepartmentsController@delete')->name('api.departments-delete.store');
+
+Route::delete('/api/official-position/delete', 'OfficialPositionsController@delete')->name('api.official-positions-delete.store');

@@ -1,8 +1,8 @@
 <?php
 $work_experience = empty($data['work_experience'])? []: $data['work_experience'];
-$list = empty($data['department']['list'])? []: $data['department']['list'];
-$paginate = empty($data['department']['paginator'])? '': $data['department']['paginator']->links();
-view_parts('head', ['title' => 'DEPARTMENT LIST', 'description' => 'DEPARTMENT LISTの説明']);
+$list = empty($data['official_position']['list'])? []: $data['official_position']['list'];
+$paginate = empty($data['official_position']['paginator'])? '': $data['official_position']['paginator']->links();
+view_parts('head', ['title' => 'OFFICIAL POSITION LIST', 'description' => 'OFFICIAL POSITION LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -10,10 +10,10 @@ view_parts('globalNav');
     <div class="l-main__head">
         <hgroup class="c-title">
             <h1>所属一覧</h1>
-            <p>DEPARTMENT LIST</p>
+            <p>OFFICIAL POSITION LIST</p>
         </hgroup>
         <div class="c-btn c-btn--create">
-            <a href="<?= route('departments-register.show', ['w_id' => sanitize($work_experience['id'])]); ?>">新規作成</a>
+            <a href="<?= route('official-positions-register.show', ['w_id' => sanitize($work_experience['id'])]); ?>">新規作成</a>
         </div>
     </div>
     <div class="l-main__body l-main__body--info">
@@ -21,7 +21,7 @@ view_parts('globalNav');
             <h2 class="c-info__title"><?= sanitize($work_experience['name']); ?></h2>
             <p class="c-info__note"><?= sanitize($work_experience['first_date']); ?> 〜 <?= sanitize($work_experience['last_date']); ?></p>
         </hgroup>
-        <?php if(!empty($list['records'])): ?>
+	    <?php if(!empty($list['records'])): ?>
         <div class="c-pager c-pager--pc">
             <p class="c-pager__count">全<?= $list['total']; ?>件中 <?= $list['min']; ?> - <?= $list['max']; ?>件表示</p>
             <ul class="c-pager__list">
@@ -41,7 +41,7 @@ view_parts('globalNav');
                     </div>
                     <div class="c-card__foot">
                         <div class="c-card__btn">
-                            <a href="<?= route('departments-edit.show', ['w_id' => sanitize($work_experience['id']) ,'d_id' => sanitize($value['id'])]); ?>">
+                            <a href="<?= route('official-positions-edit.show', ['w_id' => sanitize($work_experience['id']) ,'o_id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
                                     <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                 </svg>
@@ -75,14 +75,14 @@ view_parts('globalNav');
             </ul>
         </div>
         <?php else: ?>
-            <div class="p-noResult">
-                <div class="p-noResult__inner">
-                    <p class="c-text--m c-text--center">所属の登録がありません。</p>
-                    <p class="c-text--m c-text--center">新規作成ボタンから所属を登録してください。</p>
-                </div>
+        <div class="p-noResult">
+            <div class="p-noResult__inner">
+                <p class="c-text--m c-text--center">役職の登録がありません。</p>
+                <p class="c-text--m c-text--center">新規作成ボタンから役職を登録してください。</p>
             </div>
-        <?php endif; ?>
+        </div>
+	    <?php endif; ?>
     </div>
-	<?php view_parts('apiDeleteModal', ["target" => 'department']); ?>
+	<?php view_parts('apiDeleteModal', ["target" => 'official-position']); ?>
 </main>
 <?php view_parts('footer'); ?>

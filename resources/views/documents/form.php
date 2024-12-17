@@ -1,5 +1,12 @@
 <?php
-view_parts('head', ['title'=>'DOCUMENT REGISTER', 'description'=>'DOCUMENT REGISTERの説明']);
+$document = $data["document"] ?? [];
+
+$is_register = !isset($type) || $type === "register" || $type === "copy";
+$page_name = $is_register?
+	['en' =>'DOCUMENT REGISTER', 'ja' => '資料登録']:
+	['en' =>'DOCUMENT EDIT', 'ja' => '資料編集'];
+
+view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -7,7 +14,7 @@ view_parts('globalNav');
     <div class="l-main__head">
         <hgroup class="c-title">
             <h1>資料登録</h1>
-            <p>RESUME REGISTER</p>
+            <p>DOCUMENT REGISTER</p>
         </hgroup>
     </div>
     <div class="l-main__body">

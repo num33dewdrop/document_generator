@@ -1,5 +1,7 @@
 <?php
-view_parts('head', ['title'=>'DOCUMENT LIST', 'description'=>'DOCUMENT LISTの説明']);
+$list = empty($data['list'])? []: $data['list'];
+$paginate = empty($data['paginator'])? '': $data['paginator']->links();
+view_parts('head', ['title' => 'DOCUMENT LIST', 'description' => 'DOCUMENT LISTの説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
@@ -14,136 +16,83 @@ view_parts('globalNav');
         </div>
     </div>
     <div class="l-main__body">
+	    <?php if(!empty($list['records'])): ?>
         <div class="c-pager c-pager--pc">
-            <p class="c-pager__count">全999件中 1 - 100件表示</p>
+            <p class="c-pager__count">全<?= $list['total']; ?>件中 <?= $list['min']; ?> - <?= $list['max']; ?>件表示</p>
             <ul class="c-pager__list">
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#first"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#prev"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-                <li><a href="" class="c-pager__link">2</a></li>
-                <li><a href="" class="c-pager__link">3</a></li>
-                <li><a href="" class="c-pager__link">4</a></li>
-                <li><a href="" class="c-pager__link">5</a></li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#next"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#last"></use>
-                        </svg>
-                    </a>
-                </li>
+			    <?= $paginate; ?>
             </ul>
         </div>
         <ul class="c-list">
+            <?php foreach ($list['records'] as $key => $value): ?>
             <li class="c-card js-parentSlide">
                 <div class="c-card__content js-handleSlide">
                     <div class="c-card__body">
                         <p class="c-card__time">
-                            <time datetime="2024-06-13">2024-06-13</time>
+                            <time datetime="<?= sanitize($value['update_at']); ?>"><?= sanitize($value['update_at']); ?></time>
                             <span class="c-label">更新</span>
                         </p>
-                        <h2 class="c-card__title">WEBプログラマー応募用（フロント）</h2>
+                        <h2 class="c-card__title"><?= sanitize($value['name']); ?></h2>
                     </div>
                     <div class="c-card__foot">
                         <div class="c-card__btn">
-                            <a href="<?= route('documents-edit.show'); ?>">
+                            <a href="<?= route('documents-edit.show', ['id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="./assets/img/symbol/control.svg#edit"></use>
+                                    <use href="<?= assets('img/symbol/control.svg#edit'); ?>"></use>
                                 </svg>
                                 編集
                             </a>
                         </div>
                         <div class="c-card__btn">
-                            <a href="<?= route('documents-copy.show'); ?>">
+                            <a href="<?= route('documents-copy.show', ['id' => sanitize($value['id'])]); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="./assets/img/symbol/control.svg#copy"></use>
+                                    <use href="<?= assets('img/symbol/control.svg#copy'); ?>"></use>
                                 </svg>
                                 複製
                             </a>
                         </div>
                         <div class="c-card__btn c-card__btn--export">
-                            <button class="js-showExportModal">
+                            <button class="js-showExportModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="./assets/img/symbol/control.svg#export"></use>
+                                    <use href="<?= assets('img/symbol/control.svg#export'); ?>"></use>
                                 </svg>
                                 出力
                             </button>
                         </div>
                         <div class="c-card__btn c-card__btn--delete">
-                            <button class="js-showDeleteModal">
+                            <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
                                 <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="./assets/img/symbol/control.svg#delete"></use>
+                                    <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
                                 </svg>
                                 削除
                             </button>
                         </div>
                     </div>
                     <div class="c-slide c-slide--delete js-targetSlide">
-                        <button class="js-showDeleteModal">
+                        <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
                             <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
-                                <use href="./assets/img/symbol/control.svg#delete"></use>
+                                <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
                             </svg>
                             削除
                         </button>
                     </div>
                 </div>
             </li>
+            <?php endforeach; ?>
         </ul>
-        <div class="c-pager--end">
-            <ul class="c-pager__list">
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#first"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link" disabled="">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#prev"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li><a href="" class="c-pager__link c-pager__link--active">1</a></li>
-                <li><a href="" class="c-pager__link">2</a></li>
-                <li><a href="" class="c-pager__link">3</a></li>
-                <li><a href="" class="c-pager__link">4</a></li>
-                <li><a href="" class="c-pager__link">5</a></li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#next"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" class="c-pager__link">
-                        <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-                            <use href="./assets/img/symbol/arrow.svg#last"></use>
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-        </div>
+            <div class="c-pager--end">
+                <ul class="c-pager__list">
+				    <?= $paginate; ?>
+                </ul>
+            </div>
+	    <?php else: ?>
+            <div class="p-noResult">
+                <div class="p-noResult__inner">
+                    <p class="c-text--m c-text--center">資料の登録がありません。</p>
+                    <p class="c-text--m c-text--center">新規作成ボタンから資料を登録してください。</p>
+                </div>
+            </div>
+	    <?php endif; ?>
     </div>
     <div id="exportModal" class="c-modal">
         <div class="c-modal__content js-targetExportModal">
@@ -172,33 +121,7 @@ view_parts('globalNav');
             </div>
         </div>
     </div>
-    <div id="deleteModal" class="c-modal">
-        <div class="c-modal__content js-targetDeleteModal">
-            <div class="c-modal__head">
-                <h2 class="c-modal__title c-modal__title--delete">
-                    <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-                        <use href="./assets/img/symbol/control.svg#delete"></use>
-                    </svg>
-                    削除
-                </h2>
-                <button class="c-close js-hideModal"></button>
-            </div>
-            <div class="c-modal__body">
-                <div class="c-info">
-                    <h3 class="c-info__title">WEBプログラマー応募用（フロント）</h3>
-                    <p class="c-info__note">※この操作は元に戻せません。本当に削除してもよろしいですか？</p>
-                </div>
-            </div>
-            <div class="c-modal__foot">
-                <div class="c-btn c-btn--cansel">
-                    <button class="js-hideModal">キャンセル</button>
-                </div>
-                <div class="c-btn c-btn--delete">
-                    <button class="js-handleDelete">削除する</button>
-                </div>
-            </div>
-        </div>
-    </div>
+	<?php view_parts('apiDeleteModal', ["target" => 'document']); ?>
 </main>
 <?php view_parts('footer'); ?>
 

@@ -60,4 +60,12 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/work-experience/{w_id}/department', 'DepartmentsController@create')->name('departments-register.store');
 	Route::put('/work-experience/{w_id}/department/{d_id}', 'DepartmentsController@update')->name('departments-edit.store');
 	Route::delete('/work-experience/{w_id}/department/{d_id}', 'DepartmentsController@delete')->name('departments-delete.store');
+
+	//OFFICIAL POSITION
+	Route::get('/work-experience/{w_id}/official-position', 'OfficialPositionsController@list')->name('official-positions-list.show');
+	Route::get('/work-experience/{w_id}/official-position/register', 'OfficialPositionsController@register')->name('official-positions-register.show');
+	Route::get('/work-experience/{w_id}/official-position/{o_id}/edit', 'OfficialPositionsController@edit')->name('official-positions-edit.show');
+	Route::post('/work-experience/{w_id}/official-position', 'OfficialPositionsController@create')->name('official-positions-register.store');
+	Route::put('/work-experience/{w_id}/official-position/{o_id}', 'OfficialPositionsController@update')->name('official-positions-edit.store');
+	Route::delete('/work-experience/{w_id}/official-position/{o_id}', 'OfficialPositionsController@delete')->name('official-positions-delete.store');
 });
