@@ -24,7 +24,7 @@ class Qualification extends Model {
 		];
 	}
 
-	public function create(array $posts): PDOStatement | false {
+	public function create(array $posts): void {
 		$sql = "INSERT INTO qualifications (
 					user_id,
 					name,
@@ -44,10 +44,9 @@ class Qualification extends Model {
 			':create_at'        => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function update(string $id, array $posts): PDOStatement | false {
+	public function update(string $id, array $posts): void {
 		$sql = "UPDATE qualifications
 				SET name = :name,
 				    acquisition_date = :acquisition_date
@@ -61,10 +60,9 @@ class Qualification extends Model {
 			':acquisition_date' => $posts['acquisition_date']
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE qualifications
 				SET delete_flg = 1
 				WHERE user_id = :user_id
@@ -75,6 +73,5 @@ class Qualification extends Model {
 			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 }

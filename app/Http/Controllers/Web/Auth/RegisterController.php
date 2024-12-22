@@ -13,8 +13,6 @@ class RegisterController extends Controller {
 		Debug::start('USER REGISTER INDEX');
 		// ビューにエラーメッセージを渡して表示
 		view('users.auth.register', $this->data);
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('USER REGISTER INDEX');
 	}
 	public function store(Request $request, User $user): void {
@@ -29,22 +27,11 @@ class RegisterController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$user->create($request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$user->create($request->postAll());
 
 		$sesLimit = 60 * 60;
-
 		session()->put('login_date', time());
 		session()->put('login_limit', $sesLimit);
 		session()->put('user_id', $user->getDatabase()->getPdo()->lastInsertId());

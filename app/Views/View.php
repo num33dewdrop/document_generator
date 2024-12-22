@@ -10,10 +10,12 @@ class View {
 			extract($data);
 			// ビューを読み込み
 			require $viewPath;
+			session()->remove('errors');
+			session()->remove('old');
 		} else {
 			// ビューが見つからない場合はエラーメッセージを表示
 			http_response_code(404); // 404ステータスコードを返す
-			echo "View not found: $view";
+			view('errors.notFound');
 			error_log("View not found: $view");
 		}
 	}
@@ -29,7 +31,7 @@ class View {
 		} else {
 			// ビューが見つからない場合はエラーメッセージを表示
 			http_response_code(404); // 404ステータスコードを返す
-			echo "View not found: $view";
+			view('errors.notFound');
 			error_log("View not found: $view");
 		}
 	}

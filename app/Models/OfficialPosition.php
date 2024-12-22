@@ -58,7 +58,7 @@ class OfficialPosition extends Model {
 		];
 	}
 
-	public function create(string $w_id, array $posts): PDOStatement | false {
+	public function create(string $w_id, array $posts): void {
 		$sql = "INSERT INTO official_position (
 					work_experience_id,
 					name,
@@ -87,10 +87,9 @@ class OfficialPosition extends Model {
 			':create_at'          => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function update(string $o_id, array $posts): PDOStatement | false {
+	public function update(string $o_id, array $posts): void {
 		$sql = "UPDATE official_position AS o
 				INNER JOIN work_experiences AS w
 				ON o.work_experience_id = w.id
@@ -110,10 +109,9 @@ class OfficialPosition extends Model {
 			':scale'      => $posts['scale'],
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE official_position AS o
 				INNER JOIN work_experiences AS w
 				ON o.work_experience_id = w.id
@@ -126,6 +124,5 @@ class OfficialPosition extends Model {
 			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 }

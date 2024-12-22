@@ -34,21 +34,21 @@ export default class Popup {
 
     private setupBackground(): void {
         this.bg.classList.add('c-modal__bg');
-        this.bg.addEventListener('click', () => this.onHidePopup());
+        this.bg.addEventListener('click', () => this.handleHidePopup());
         this.parent!.appendChild(this.bg); // parent が null でないことを保証する
     }
 
     private addEventListeners(): void {
         this.handleShow.forEach(elem => {
-            elem.addEventListener('click', () => this.onShowPopup(elem.dataset));
+            elem.addEventListener('click', () => this.handleShowPopup(elem.dataset));
         });
 
         this.handleHide.forEach(elem => {
-            elem.addEventListener('click', () => this.onHidePopup());
+            elem.addEventListener('click', () => this.handleHidePopup());
         });
     }
 
-    private onShowPopup(data: DOMStringMap): void {
+    private handleShowPopup(data: DOMStringMap): void {
         if (!this.warnIfNull(this.target, "Target element not found.")) return;
         if (this.insertId && data.id) {
             this.insertId.dataset.id = data.id;
@@ -60,7 +60,7 @@ export default class Popup {
         fadeIn(this.bg);
     }
 
-    public onHidePopup(): void {
+    public handleHidePopup(): void {
         if (!this.warnIfNull(this.target, "Target element not found.")) return;
         fadeOut(this.target);
         fadeOut(this.bg);

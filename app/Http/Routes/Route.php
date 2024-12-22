@@ -3,8 +3,10 @@ namespace Http\Routes;
 
 use Closure;
 use Containers\Container;
+use Exception;
 use Http\Kernel;
 use Http\Middlewares\MiddlewareInterface;
+use PDOException;
 use ReflectionException;
 use Utilities\Debug;
 
@@ -16,6 +18,7 @@ class Route {
 	private static string $lastMethod;
 	private static Container $container;
 	private static string $groupNamespace;
+	private static bool $isApi;
 
 	public static function load(string $path): void {
 		// ルートファイルの読み込み
@@ -113,6 +116,7 @@ class Route {
 	public static function handleRequest(): void {
 		session()->start();
 		self::$container = app();
+		self::$isApi = isset($_SERVER['CONTENT_TYPE']) && str_contains( $_SERVER['CONTENT_TYPE'], 'application/json' );
 		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 		$path = str_replace($baseUri, '', $requestUri);
@@ -127,6 +131,7 @@ class Route {
 			}
 		} catch (ReflectionException $e) {
 			error_log("ReflectionException: $e");
+			self::handleServerError();
 		}
 		self::handleNotFound($path);
 	}
@@ -164,7 +169,7 @@ class Route {
 				}
 			} catch (ReflectionException $e) {
 				error_log("ReflectionException: $e");
-				self::handleNotFound($path);
+				self::handleServerError();
 			}
 		}
 		$next();
@@ -185,18 +190,35 @@ class Route {
 						self::$container->call([$controllerInstance, $method], $params);
 						return true;
 					}
-				} catch (ReflectionException $e) {
-					error_log("ReflectionException: $e");
+				} catch (Exception $e) {
+					error_log("Exception: $e");
+					self::handleServerError();
 				}
 			}
 		}
 		return false;
 	}
 
-	// 404エラー処理を共通化
+	// 404エラー処理
 	private static function handleNotFound(string $path): void {
-		http_response_code(404); // 404ステータスコードを返す
-		echo "404 Not Found";
 		error_log("404 Not Found: $path"); // ログに残す
+		if(self::$isApi) {
+			$response = ['error' => '404 Not Found'];
+			response()->json($response, 404);
+		}else {
+			http_response_code(404); // 404ステータスコードを返す
+			view('errors.notFound');
+		}
+	}
+	// 500エラー処理
+	private static function handleServerError(): void {
+		error_log("500 Internet Server Error");
+		if(self::$isApi) {
+			$response = ['error' => '500 Internet Server Error'];
+			response()->json($response, 500);
+		}else {
+			http_response_code(500);
+			view('errors.system');
+		}
 	}
 }

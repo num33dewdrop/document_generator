@@ -9,10 +9,10 @@ export default class FlashMessage {
         if (!this.warnIfNull(this.target, "Handle element not found.")) return;
         const message = (this.target.innerText).trim();
         if(message.length) {
-            this.onShowMessage();
+            this.handleShowMessage();
         }
     }
-    public onShowMessage () {
+    public handleShowMessage () {
         if (!this.warnIfNull(this.target, "Handle element not found.")) return;
         slideIn(this.target);
         setTimeout(() => {

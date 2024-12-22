@@ -25,14 +25,17 @@ class WorkExperiencesController extends Controller  {
 
 	public function list(): void {
 		Debug::start('WORK EXPERIENCES LIST');
+
 		$data = $this->work_experience->list(10);
 		// ビューにデータを渡して表示
 		view('work-experiences.list', $data);
+
 		Debug::end('WORK EXPERIENCES LIST');
 	}
 
 	public function register():void {
 		Debug::start('WORK EXPERIENCES REGISTER');
+
 		if( ! $data["last_career"] = $this->last_career->all(1)) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('work-experiences-list.show');
 		}
@@ -41,13 +44,13 @@ class WorkExperiencesController extends Controller  {
 		}
 		// ビューにデータを渡して表示
 		view('work-experiences.form', $data, "register");
-		session()->remove('errors');
-		session()->remove('old');
+
 		Debug::end('WORK EXPERIENCES REGISTER');
 	}
 
 	public function edit(string $id):void {
 		Debug::start('WORK EXPERIENCES EDIT');
+
 		if (! $data["work_experiences"] = $this->work_experience->findById($id)) {
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('work-experiences-list.show');
 		}
@@ -59,13 +62,13 @@ class WorkExperiencesController extends Controller  {
 		}
 		// ビューにデータを渡して表示
 		view('work-experiences.form', $data, "edit");
-		session()->remove('errors');
-		session()->remove('old');
+
 		Debug::end('WORK EXPERIENCES EDIT');
 	}
 
 	public function create(Request $request):void {
 		Debug::start('WORK EXPERIENCES REGISTER STORE');
+
 		$rules = [
 			'company_name' => 'required|string',
 			'business' => 'string',
@@ -83,26 +86,18 @@ class WorkExperiencesController extends Controller  {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->work_experience->create($request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->work_experience->create($request->postAll());
 
 		redirect()->route('work-experiences-list.show');
+
 		Debug::end('WORK EXPERIENCES REGISTER STORE');
 	}
 
 	public function update(string $id, Request $request):void {
 		Debug::start('WORK EXPERIENCES EDIT STORE');
+
 		$rules = [
 			'company_name' => 'required|string',
 			'business' => 'string',
@@ -120,19 +115,9 @@ class WorkExperiencesController extends Controller  {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->work_experience->update($id ,$request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->work_experience->update($id ,$request->postAll());
 
 		redirect()->route('work-experiences-list.show');
 
@@ -141,10 +126,10 @@ class WorkExperiencesController extends Controller  {
 
 	public function delete(string $id):void {
 		Debug::start('WORK EXPERIENCES DELETE');
-		if (!$this->work_experience->delete($id)) {
-			redirect()->back();
-		}
+
+		$this->work_experience->delete($id);
 		redirect()->route('work-experiences-list.show');
+
 		Debug::end('WORK EXPERIENCES DELETE');
 	}
 }

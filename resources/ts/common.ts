@@ -5,7 +5,6 @@ import Popup from './modules/_popup';
 import Flatpickr from './modules/_flatpickr';
 import FlashMessage from './modules/_flashMessage';
 import {fetchApi} from "./api/_fetch";
-import {jump} from "./modules/_helpers";
 import '../scss/style.scss';
 
 const ROOT = '/document_generator/public';
@@ -61,7 +60,7 @@ new Flatpickr(flatpickrRangeObj);
 
 new Popup(exportModalObj);
 const DeleteModal = new Popup(deleteModalObj);
-new FlashMessage(flashMessageObj);
+const Flash =  new FlashMessage(flashMessageObj);
 
 // console.log(ExportModal);
 
@@ -82,8 +81,8 @@ $apiHandleDelete.forEach(elem => {
         const json = await response.json();
         if(!response.ok) {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;
+            Flash.handleShowMessage();
         }
-        DeleteModal.onHidePopup();
-        jump();
+        DeleteModal.handleHidePopup();
     });
 });

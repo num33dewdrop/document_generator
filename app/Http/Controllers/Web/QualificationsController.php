@@ -30,8 +30,6 @@ class QualificationsController extends Controller {
 		Debug::start('QUALIFICATION REGISTER');
 		// ビューにデータを渡して表示
 		view('qualifications.form', [], "register");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('QUALIFICATION REGISTER');
 	}
 
@@ -43,8 +41,6 @@ class QualificationsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('qualifications.form', $data, "edit");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('QUALIFICATION EDIT');
 	}
 
@@ -57,19 +53,9 @@ class QualificationsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->qualification->create($request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->qualification->create($request->postAll());
 
 		redirect()->route('qualifications-list.show');
 		Debug::end('QUALIFICATION REGISTER STORE');
@@ -84,19 +70,9 @@ class QualificationsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->qualification->update($id ,$request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->qualification->update($id ,$request->postAll());
 
 		redirect()->route('qualifications-list.show');
 
@@ -105,9 +81,7 @@ class QualificationsController extends Controller {
 
 	public function delete(string $id):void {
 		Debug::start('QUALIFICATION DELETE');
-		if (!$this->qualification->delete($id)) {
-			redirect()->back();
-		}
+		$this->qualification->delete($id);
 		redirect()->route('qualifications-list.show');
 		Debug::end('QUALIFICATION DELETE');
 	}

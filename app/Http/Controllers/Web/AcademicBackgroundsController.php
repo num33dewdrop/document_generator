@@ -35,8 +35,6 @@ class AcademicBackgroundsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('academic-backgrounds.form', $data, "register");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('ACADEMIC BACKGROUND REGISTER');
 	}
 
@@ -50,8 +48,6 @@ class AcademicBackgroundsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('academic-backgrounds.form', $data, "edit");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('ACADEMIC BACKGROUND EDIT');
 	}
 
@@ -66,19 +62,9 @@ class AcademicBackgroundsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->academic_background->create($request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->academic_background->create($request->postAll());
 
 		redirect()->route('academic-backgrounds-list.show');
 		Debug::end('ACADEMIC BACKGROUND REGISTER STORE');
@@ -95,19 +81,9 @@ class AcademicBackgroundsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->academic_background->update($id ,$request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->academic_background->update($id ,$request->postAll());
 
 		redirect()->route('academic-backgrounds-list.show');
 
@@ -116,9 +92,7 @@ class AcademicBackgroundsController extends Controller {
 
 	public function delete(string $id):void {
 		Debug::start('ACADEMIC BACKGROUND DELETE');
-		if (!$this->academic_background->delete($id)) {
-			redirect()->back();
-		}
+		$this->academic_background->delete($id);
 		redirect()->route('academic-backgrounds-list.show');
 		Debug::end('ACADEMIC BACKGROUND DELETE');
 	}

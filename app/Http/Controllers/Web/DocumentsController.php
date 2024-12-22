@@ -1,20 +1,30 @@
 <?php
 namespace Http\Controllers\Web;
+use Auth\Auth;
 use Http\Controllers\Controller;
+use Models\Document;
 use Utilities\Debug;
 
 class DocumentsController extends Controller {
+
+	private Document $document;
+
+	public function __construct( Auth $auth, Document $document) {
+		parent::__construct( $auth );
+		$this->document = $document;
+	}
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');
+		$data = $this->document->list(10);
 		// ビューにデータを渡して表示
-		view('documents.list', $this->data);
+		view('documents.list', $data);
 		Debug::end('DOCUMENT LIST');
 	}
 
 	public function register():void {
 		Debug::start('DOCUMENT REGISTER');
 		// ビューにデータを渡して表示
-		view('documents.form', $this->data);
+		view('documents.form', [], 'register');
 		Debug::end('DOCUMENT REGISTER');
 	}
 
@@ -22,14 +32,14 @@ class DocumentsController extends Controller {
 
 		Debug::start('DOCUMENT EDIT');
 		// ビューにデータを渡して表示
-		view('documents.form', $this->data);
+		view('documents.form', [], 'edit');
 		Debug::end('DOCUMENT EDIT');
 	}
 
-	public function copy():void {
+	public function copy(string $id):void {
 		Debug::start('DOCUMENT COPY');
 		// ビューにデータを渡して表示
-		view('documents.register', $this->data);
+		view('documents.form', [], 'copy');
 		Debug::end('DOCUMENT COPY');
 	}
 
@@ -43,12 +53,6 @@ class DocumentsController extends Controller {
 		Debug::start('DOCUMENT EDIT STORE');
 
 		Debug::end('DOCUMENT EDIT STORE');
-	}
-
-	public function duplication():void {
-		Debug::start('DOCUMENT COPY STORE');
-
-		Debug::end('DOCUMENT COPY STORE');
 	}
 
 	public function delete():void {

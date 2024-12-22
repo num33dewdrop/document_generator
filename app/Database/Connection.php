@@ -19,7 +19,7 @@ class Connection {
 		$password = $this->config['password'];
 		$options  = [
 			// SQL実行失敗時にはエラーコードのみ設定
-			PDO::ATTR_ERRMODE                  => PDO::ERRMODE_SILENT,
+			PDO::ATTR_ERRMODE                  => PDO::ERRMODE_EXCEPTION,
 			// デフォルトフェッチモードを連想配列形式に設定
 			PDO::ATTR_DEFAULT_FETCH_MODE       => PDO::FETCH_ASSOC,
 			// バッファードクエリを使う(一度に結果セットをすべて取得し、サーバー負荷を軽減)
@@ -38,6 +38,21 @@ class Connection {
 	// 接続を取得
 	public function getPdo(): PDO {
 		return $this->pdo;
+	}
+
+	// トランザクション開始
+	public function beginTransaction(): void {
+		$this->pdo->beginTransaction();
+	}
+
+	// トランザクションコミット
+	public function commit(): void {
+		$this->pdo->commit();
+	}
+
+	// トランザクションロールバック
+	public function rollback(): void {
+		$this->pdo->rollBack();
 	}
 
 	public function bind($parameter, $value, $var_type = null): void {
@@ -59,13 +74,19 @@ class Connection {
 			foreach ($params as $parameter => $value) {
 				$this->bind($parameter, $value);
 			}
-			if ( ! $this->stmt->execute() ) {
-				Debug::echo('クエリ失敗');
-				error_log("Query execution failed: " . implode(", ", $this->stmt->errorInfo()));
-			}
+			$this->stmt->execute();
+//			if($this->stmt->execute()) {
+//				session()->remove('errors');
+//				session()->remove('old');
+//			}else {
+//				Debug::echo('クエリ失敗');
+////			    error_log("Query execution failed: " . implode(", ", $this->stmt->errorInfo()));
+////				throw new PDOException("Query execution failed: " . implode(", ", $this->stmt->errorInfo()));
+//			}
 		} catch (PDOException $e) {
 			// エラーハンドリング
-			error_log("Query preparation failed: " . $e->getMessage());
+//			error_log("Query preparation failed: " . $e->getMessage());
+			throw new PDOException("Query preparation failed: " . $e->getMessage());
 		}
 	}
 

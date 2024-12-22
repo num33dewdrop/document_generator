@@ -18,8 +18,8 @@ class User extends Model {
 		return $this->db->fetchAssoc($sql, [':email' => $email]);
 	}
 
-	public function create(array $posts): PDOStatement | false {
-		$sql = "INSERT INTO users (
+	public function create(array $posts): void {
+		$sql  = "INSERT INTO users (
 					name,
 					email,
 					password,
@@ -37,7 +37,6 @@ class User extends Model {
 			':password'  => password_hash( $posts['password'], PASSWORD_DEFAULT ),
 			':create_at' => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
-		return $this->db->stmt;
+		$this->db->query( $sql, $data );
 	}
 }

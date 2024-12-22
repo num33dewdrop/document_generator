@@ -27,7 +27,7 @@ class AcademicBackground extends Model{
 		];
 	}
 
-	public function create(array $posts): PDOStatement | false {
+	public function create(array $posts): void {
 		$sql = "INSERT INTO academic_backgrounds (
 					user_id,
 					name,
@@ -53,10 +53,9 @@ class AcademicBackground extends Model{
 			':create_at'      => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function update(string $id, array $posts): PDOStatement | false {
+	public function update(string $id, array $posts): void {
 		$sql = "UPDATE academic_backgrounds
 				SET name = :name,
 				    first_date = :first_date,
@@ -74,10 +73,9 @@ class AcademicBackground extends Model{
 			':last_career_id' => $posts['last_career']
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE academic_backgrounds
 				SET delete_flg = 1
 				WHERE user_id = :user_id
@@ -88,6 +86,5 @@ class AcademicBackground extends Model{
 			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 }

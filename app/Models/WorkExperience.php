@@ -5,7 +5,7 @@ namespace Models;
 use PDOStatement;
 use Utilities\Debug;
 
-class WorkExperience  extends Model {
+class WorkExperience extends Model {
 	public function findById(string $id): array {
 		$sql = "SELECT * FROM work_experiences
 				WHERE user_id = :user_id
@@ -27,7 +27,7 @@ class WorkExperience  extends Model {
 		];
 	}
 
-	public function create(array $posts): PDOStatement | false {
+	public function create(array $posts): void {
 		$sql = "INSERT INTO work_experiences (
 					user_id,
 					name,
@@ -77,10 +77,9 @@ class WorkExperience  extends Model {
 			':create_at'           => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function update(string $id, array $posts): PDOStatement | false {
+	public function update(string $id, array $posts): void {
 		$sql = "UPDATE work_experiences
 				SET name = :name,
 					first_date = :first_date,
@@ -114,10 +113,9 @@ class WorkExperience  extends Model {
 			':track_record'        => $posts['track_record']
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE work_experiences
 				SET delete_flg = 1
 				WHERE user_id = :user_id
@@ -128,6 +126,5 @@ class WorkExperience  extends Model {
 			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 }

@@ -30,6 +30,7 @@ require_once __DIR__ . '/../app/Views/View.php';
 
 require_once __DIR__ . '/../app/Models/Model.php';
 require_once __DIR__ . '/../app/Models/User.php';
+require_once __DIR__ . '/../app/Models/Document.php';
 require_once __DIR__ . '/../app/Models/Qualification.php';
 require_once __DIR__ . '/../app/Models/AcademicBackground.php';
 require_once __DIR__ . '/../app/Models/WorkExperience.php';

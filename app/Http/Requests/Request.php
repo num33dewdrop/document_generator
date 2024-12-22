@@ -19,8 +19,15 @@ class Request {
 	public function setRules( array $rules ): void {
 		$this->rules = $rules;
 	}
-	public function validate(): bool {
-		return Validator::make($this->post, $this->rules);
+	public function validate(): void {
+		if( Validator::make($this->post, $this->rules) ) {
+			session()->remove('errors');
+			session()->remove('old');
+		}else {
+			session()->put('errors', Validator::getErrors());
+			session()->put('old', $this->postAll());
+			redirect()->back();
+		}
 	}
 	public function all(): array {
 		return $this->data;

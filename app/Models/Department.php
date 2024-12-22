@@ -64,7 +64,7 @@ class Department extends Model {
 		];
 	}
 
-	public function create(string $w_id, array $posts): PDOStatement | false {
+	public function create(string $w_id, array $posts): void {
 		$sql = "INSERT INTO departments (
 					work_experience_id,
 					name,
@@ -102,10 +102,9 @@ class Department extends Model {
 			':create_at'          => date( 'Y-m-d H:i:s' )
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function update(string $d_id, array $posts): PDOStatement | false {
+	public function update(string $d_id, array $posts): void {
 		$sql = "UPDATE departments AS d
 				INNER JOIN work_experiences AS w
 				ON d.work_experience_id = w.id
@@ -131,10 +130,9 @@ class Department extends Model {
 			':scale'              => $posts['scale'],
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE departments AS d
 				INNER JOIN work_experiences AS w
 				ON d.work_experience_id = w.id
@@ -147,6 +145,5 @@ class Department extends Model {
 			':user_id' => session()->get('user_id')
 		];
 		$this->db->query($sql, $data);
-		return $this->db->stmt;
 	}
 }

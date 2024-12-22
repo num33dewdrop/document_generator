@@ -13,13 +13,13 @@ class Response {
 	 */
 	public function json(array $data, int $status = 200, array $headers = []): void {
 		// ヘッダーを設定
-		header('Content-Type: application/json', true, $status);
+		header('Content-Type: application/json; charset=utf-8', true, $status);
 		foreach ($headers as $key => $value) {
 			header("{$key}: {$value}");
 		}
 		// JSONデータを出力
 		echo json_encode($data);
-		exit; // スクリプトを終了
+		exit(); // スクリプトを終了
 	}
 
 	/**
@@ -37,6 +37,6 @@ class Response {
 		}
 		// テキストデータを出力
 		echo $content;
-		exit; // スクリプトを終了
+		exit(); // スクリプトを終了
 	}
 }

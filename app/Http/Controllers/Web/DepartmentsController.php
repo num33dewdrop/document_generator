@@ -39,8 +39,6 @@ class DepartmentsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('departments.form', $data, "register");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('DEPARTMENT REGISTER');
 	}
 
@@ -54,8 +52,6 @@ class DepartmentsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('departments.form', $data, "edit");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('DEPARTMENT EDIT');
 	}
 
@@ -69,19 +65,9 @@ class DepartmentsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->department->create($w_id, $request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->department->create($w_id, $request->postAll());
 
 		redirect()->route('departments-list.show', ['w_id' => $w_id]);
 		Debug::end('DEPARTMENT REGISTER STORE');
@@ -97,19 +83,9 @@ class DepartmentsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->department->update($d_id ,$request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->department->update($d_id ,$request->postAll());
 
 		redirect()->route('departments-list.show', ['w_id' => $w_id]);
 
@@ -118,9 +94,7 @@ class DepartmentsController extends Controller {
 
 	public function delete(string $w_id, string $d_id):void {
 		Debug::start('DEPARTMENT DELETE');
-		if (!$this->department->delete($d_id)) {
-			redirect()->back();
-		}
+		$this->department->delete($d_id);
 		redirect()->route('departments-list.show', ['w_id' => $w_id]);
 		Debug::end('DEPARTMENT DELETE');
 	}

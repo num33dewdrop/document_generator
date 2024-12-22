@@ -39,8 +39,6 @@ class OfficialPositionsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('official-positions.form', $data, "register");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('OFFICIAL POSITION REGISTER');
 	}
 
@@ -54,8 +52,6 @@ class OfficialPositionsController extends Controller {
 		}
 		// ビューにデータを渡して表示
 		view('official-positions.form', $data, "edit");
-		session()->remove('errors');
-		session()->remove('old');
 		Debug::end('OFFICIAL POSITION EDIT');
 	}
 
@@ -69,19 +65,9 @@ class OfficialPositionsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->official_position->create($w_id, $request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->official_position->create($w_id, $request->postAll());
 
 		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
 		Debug::end('OFFICIAL POSITION REGISTER STORE');
@@ -97,19 +83,9 @@ class OfficialPositionsController extends Controller {
 
 		$request->setRules($rules);
 
-		if(!$request->validate()) {
-			session()->put('errors', Validator::getErrors());
-			session()->put('old', $request->postAll());
-			redirect()->back();
-			return;
-		}
+		$request->validate();
 
-		if (!$this->official_position->update($o_id ,$request->postAll())) {
-			redirect()->back();
-		}
-
-		session()->remove('errors');
-		session()->remove('old');
+		$this->official_position->update($o_id ,$request->postAll());
 
 		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
 
@@ -118,9 +94,7 @@ class OfficialPositionsController extends Controller {
 
 	public function delete(string $w_id, string $o_id):void {
 		Debug::start('OFFICIAL POSITION DELETE');
-		if (!$this->official_position->delete($o_id)) {
-			redirect()->back();
-		}
+		$this->official_position->delete($o_id);
 		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
 		Debug::end('OFFICIAL POSITION DELETE');
 	}
