@@ -8,6 +8,9 @@ use Session\Session;
 use Views\View;
 
 if (!function_exists('app')) {
+	/**
+	 * @throws ReflectionException
+	 */
 	function app($class = '') {
 		if($class === '') {
 			return new Container();
@@ -15,8 +18,7 @@ if (!function_exists('app')) {
 		try {
 			return ( new Container() )->make( $class );
 		} catch ( ReflectionException $e ) {
-			error_log('create class failed : '. $e->getMessage());
-			return null;
+			throw new ReflectionException("クラスのインスタンス化に失敗しました: " . $e->getMessage(), 500);
 		}
 	}
 }
@@ -75,7 +77,7 @@ if (!function_exists('token')) {
 			// ログを記録（必要に応じてエラー詳細を保存）
 			error_log('トークンの生成に失敗しました: ' . $e->getMessage());
 			// カスタム例外をスロー
-			throw new RuntimeException('トークンの生成に失敗しました。再試行してください。', 0, $e);
+			throw new RuntimeException('トークンの生成に失敗しました。再試行してください。', 500);
 		}
 	}
 }
@@ -110,6 +112,12 @@ if (!function_exists('error')) {
 if (!function_exists('old')) {
 	function old(string $key, array $default = []): string {
 		return session()->get('old', $default)[$key]?? '';
+	}
+}
+
+if (!function_exists('oldArray')) {
+	function oldArray(string $key, array $default = []): array {
+		return session()->get('old', $default)[$key]?? [];
 	}
 }
 

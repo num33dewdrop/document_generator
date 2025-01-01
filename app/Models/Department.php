@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Database\Connection;
 use PDOStatement;
 
 class Department extends Model {
@@ -28,7 +29,7 @@ class Department extends Model {
 				AND d.id = :id
 				AND d.delete_flg = 0
 				AND w.delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list(string $w_id, int $limit = 20): array {
@@ -57,7 +58,7 @@ class Department extends Model {
 			'user_id' => session()->get('user_id'),
 			'w_id' => $w_id
 		];
-		$result = $this->db->fetchList($sql, $data, $offset, $limit);
+		$result = Connection::fetchList($sql, $data, $offset, $limit);
 		return [
 			'list' => $result,
 			'paginator' => $this->paginator->setPage($currentPage, $result['total_page'])
@@ -101,7 +102,7 @@ class Department extends Model {
 			':user_id'            => session()->get('user_id'),
 			':create_at'          => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function update(string $d_id, array $posts): void {
@@ -129,7 +130,7 @@ class Department extends Model {
 			':tasks'              => $posts['tasks'],
 			':scale'              => $posts['scale'],
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function delete(string $id): void {
@@ -144,6 +145,6 @@ class Department extends Model {
 			':d_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 }

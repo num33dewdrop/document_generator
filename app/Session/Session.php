@@ -27,7 +27,8 @@ class Session {
 					$this->put('_token', token());
 				} catch (RuntimeException $e) {
 					// トークン生成に失敗した場合の処理
-					die('予期しないエラーが発生しました。時間をおいて再試行してください。');
+					error_log("トークン生成に失敗: ".$e->getMessage());
+					throw new RuntimeException("予期しないエラーが発生しました。時間をおいて再試行してください。", 500);
 				}
 			}
 		}

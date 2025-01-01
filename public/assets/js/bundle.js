@@ -470,6 +470,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var Slide = /*#__PURE__*/function () {
@@ -479,6 +480,7 @@ var Slide = /*#__PURE__*/function () {
       targetClass = _ref.targetClass,
       parentClass = _ref.parentClass;
     _classCallCheck(this, Slide);
+    _defineProperty(this, "current", null);
     this.parentSlide = document.querySelectorAll(".".concat(parentClass));
     this.targetClass = targetClass;
     this.initX = 0;
@@ -562,6 +564,7 @@ var Slide = /*#__PURE__*/function () {
         target.classList.remove('is-show', 'is-delete');
         this.resetTargetStyles(target);
         this.hideOverlay(overlay);
+        this.current = null;
         return;
       }
       if (diff >= 5 && diff < 200) {
@@ -569,6 +572,7 @@ var Slide = /*#__PURE__*/function () {
         target.classList.add('is-show');
         target.classList.remove('is-delete');
         this.resetTargetStyles(target);
+        this.current = parent;
         return;
       }
       if (diff >= 200) {
@@ -576,6 +580,7 @@ var Slide = /*#__PURE__*/function () {
         target.classList.remove('is-show');
         target.classList.add('is-delete');
         this.resetTargetStyles(target);
+        this.current = parent;
         return;
       }
     }
@@ -3618,10 +3623,10 @@ var flashMessageObj = {
 };
 new _modules_imgDrop__WEBPACK_IMPORTED_MODULE_0__["default"](imgDropObj);
 new _modules_toggleIsOpen__WEBPACK_IMPORTED_MODULE_1__["default"](menuObj);
-new _modules_slide__WEBPACK_IMPORTED_MODULE_2__["default"](slideObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrRangeObj);
 new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](exportModalObj);
+var Sliders = new _modules_slide__WEBPACK_IMPORTED_MODULE_2__["default"](slideObj);
 var DeleteModal = new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](deleteModalObj);
 var Flash = new _modules_flashMessage__WEBPACK_IMPORTED_MODULE_5__["default"](flashMessageObj);
 
@@ -3633,7 +3638,7 @@ $apiHandleDelete.forEach(function (elem) {
   elem.addEventListener('click', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
       var _e$currentTarget$data, _e$currentTarget$data2, _e$currentTarget$data3;
-      var id, target, token, response, json;
+      var id, target, token, response, json, _Sliders$current;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -3660,12 +3665,15 @@ $apiHandleDelete.forEach(function (elem) {
             return response.json();
           case 12:
             json = _context.sent;
-            if (!response.ok) {
+            if (response.ok) {
+              $flash.innerHTML = "<p class=\"c-flash__message c-flash__message--success c-text--m c-text--center\">".concat(json.success, "</p>");
+              (_Sliders$current = Sliders.current) === null || _Sliders$current === void 0 || _Sliders$current.remove();
+            } else {
               $flash.innerHTML = "<p class=\"c-flash__message c-flash__message--error c-text--m c-text--center\">".concat(json.error, "</p>");
-              Flash.handleShowMessage();
             }
             DeleteModal.handleHidePopup();
-          case 15:
+            Flash.handleShowMessage();
+          case 16:
           case "end":
             return _context.stop();
         }

@@ -1,17 +1,48 @@
 <?php
 namespace Http\Controllers\Web;
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
+use Http\Requests\Request;
+use Models\AcademicBackground;
+use Models\AcademicBackgroundsDisplay;
 use Models\Document;
+use Models\Qualification;
+use Models\QualificationsDisplay;
+use Models\WorkExperience;
+use Models\WorkExperiencesDisplay;
+use PDOException;
 use Utilities\Debug;
 
 class DocumentsController extends Controller {
 
 	private Document $document;
+	private AcademicBackground $academic_background;
+	private WorkExperience $work_experience;
+	private Qualification $qualification;
+	private AcademicBackgroundsDisplay $academic_background_display;
+	private WorkExperiencesDisplay $work_experience_display;
+	private QualificationsDisplay $qualification_display;
 
-	public function __construct( Auth $auth, Document $document) {
+	public function __construct(
+		Auth $auth,
+		Document $document,
+		AcademicBackground $academic_background,
+		WorkExperience $work_experience,
+		Qualification $qualification,
+		AcademicBackgroundsDisplay $academic_backgrounds_display,
+		WorkExperiencesDisplay $work_experience_display,
+		QualificationsDisplay $qualifications_display,
+	)
+	{
 		parent::__construct( $auth );
 		$this->document = $document;
+		$this->academic_background = $academic_background;
+		$this->work_experience = $work_experience;
+		$this->qualification = $qualification;
+		$this->academic_background_display = $academic_backgrounds_display;
+		$this->work_experience_display = $work_experience_display;
+		$this->qualification_display = $qualifications_display;
 	}
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');
@@ -23,47 +54,189 @@ class DocumentsController extends Controller {
 
 	public function register():void {
 		Debug::start('DOCUMENT REGISTER');
+		if( ! $data["academic_background"] = $this->academic_background->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["work_experience"] = $this->work_experience->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["qualification"] = $this->qualification->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
 		// ビューにデータを渡して表示
-		view('documents.form', [], 'register');
+		view('documents.form', $data, 'register');
 		Debug::end('DOCUMENT REGISTER');
 	}
 
 	public function edit(string $id):void {
-
 		Debug::start('DOCUMENT EDIT');
+		if (! $data["document"] = $this->document->findById($id)) {
+			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('documents-list.show');
+		}
+		if( ! $data["academic_background"] = $this->academic_background->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["work_experience"] = $this->work_experience->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["qualification"] = $this->qualification->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
 		// ビューにデータを渡して表示
-		view('documents.form', [], 'edit');
+		view('documents.form', $data, 'edit');
 		Debug::end('DOCUMENT EDIT');
 	}
 
 	public function copy(string $id):void {
 		Debug::start('DOCUMENT COPY');
+		if (! $data["document"] = $this->document->findById($id)) {
+			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('documents-list.show');
+		}
+		if( ! $data["academic_background"] = $this->academic_background->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["work_experience"] = $this->work_experience->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
+		if( ! $data["qualification"] = $this->qualification->all()) {
+			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
+		}
 		// ビューにデータを渡して表示
-		view('documents.form', [], 'copy');
+		view('documents.form', $data, 'copy');
 		Debug::end('DOCUMENT COPY');
 	}
 
-	public function create():void {
+	public function create(Request $request):void {
 		Debug::start('DOCUMENT REGISTER STORE');
+		$rules = [
+			'document_name' => 'required|string',
+			'pr' => 'string',
+			'supplement' => 'string',
+			'wish' => 'string',
+		];
+		$request->setRules($rules);
 
-		Debug::end('DOCUMENT REGISTER STORE');
+		$request->validate();
+		try {
+			Connection::beginTransaction();
+			$this->document->create($request->postAll());
+			$id = Connection::getPdo()->lastInsertId();
+			foreach ($request->input('academic_background') as $key => $value) {
+				$this->academic_background_display->create($id, $value);
+			}
+			foreach ($request->input('work_experience') as $key => $value) {
+				$this->work_experience_display->create($id, $value);
+			}
+			foreach ($request->input('qualification') as $key => $value) {
+				$this->qualification_display->create($id, $value);
+			}
+			Connection::commit();
+
+			redirect()->route('documents-list.show');
+		} catch(PDOException $e) {
+			Connection::rollback();
+			error_log('エラー : '.$e);
+			redirect()->carry(['error' => "不正なデータが送信されました。"])->back();
+		}
 	}
 
-	public function update():void {
+	public function update(string $id, Request $request):void {
 		Debug::start('DOCUMENT EDIT STORE');
+		$rules = [
+			'document_name' => 'required|string',
+			'pr' => 'string',
+			'supplement' => 'string',
+			'wish' => 'string',
+		];
+		$request->setRules($rules);
 
-		Debug::end('DOCUMENT EDIT STORE');
+		$request->validate();
+		try {
+			Connection::beginTransaction();
+			$this->document->update($id, $request->postAll());
+
+			$this->syncData(
+				$id,
+				$request->input('academic_background'),
+				"academic_background",
+				[$this->academic_background_display, "all"],
+				[$this->academic_background_display, "create"],
+				[$this->academic_background_display, "remove"]
+			);
+
+			$this->syncData(
+				$id,
+				$request->input('work_experience'),
+				"work_experience",
+				[$this->work_experience_display, "all"],
+				[$this->work_experience_display, "create"],
+				[$this->work_experience_display, "remove"]
+			);
+
+			$this->syncData(
+				$id,
+				$request->input('qualification'),
+				"qualification",
+				[$this->qualification_display, "all"],
+				[$this->qualification_display, "create"],
+				[$this->qualification_display, "remove"]
+			);
+
+			Connection::commit();
+
+			redirect()->route('documents-list.show');
+		} catch(PDOException $e) {
+			Connection::rollback();
+			error_log('エラー : '.$e);
+			redirect()->carry(['error' => "不正なデータが送信されました。"])->back();
+		}
 	}
 
-	public function delete():void {
+	public function delete(string $id):void {
 		Debug::start('DOCUMENT DELETE');
+		$this->document->delete($id);
 
-		Debug::end('DOCUMENT DELETE');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '削除に失敗しました。'])->back();
+		}
+
+		redirect()->route('documents-list.show');
 	}
 
 	public function export():void {
 		Debug::start('DOCUMENT EXPORT');
 
 		Debug::end('DOCUMENT EXPORT');
+	}
+
+	/**
+	 * 表示データの同期メソッド
+	 *
+	 * @param string $d_id ドキュメントID
+	 * @param array $requests 対象のリクエストの配列
+	 * @param string $type データタイプ
+	 * @param callable $fetchAll 関連データを取得するメソッド
+	 * @param callable $create 関連データを作成するメソッド
+	 * @param callable $remove 関連データを削除するメソッド
+	 */
+	private function syncData(
+		string $d_id,
+		array $requests,
+		string $type,
+		callable $fetchAll,
+		callable $create,
+		callable $remove
+	):void {
+		$data = call_user_func($fetchAll, $d_id);
+		foreach ($data["records"] as $key => $value) {
+			if (! in_array($value["{$type}_id"], $requests, true)) {
+				call_user_func($remove, $d_id, $value["{$type}_id"]);
+			}
+		}
+		foreach ($requests as $key => $value) {
+			if (! in_array($value, array_column($data["records"] , "{$type}_id"), true)) {
+				call_user_func($create, $d_id, $value);
+			}
+		}
 	}
 }

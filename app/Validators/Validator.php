@@ -2,24 +2,26 @@
 
 namespace Validators;
 
+use Models\User;
+
 class Validator {
 	private static array $errors;
 	protected static array $messages;
 	protected static array $posts;
 
-	public static function make(array $posts, array $rules): bool {
+	public static function make(array $posts, array $rules, User | null $user = null): bool {
 		self::$messages = require base_path('config/validation.php');
 		self::$posts = $posts;
 		foreach ($rules as $field => $ruleSet) {
 			$value = $posts[$field] ?? null;
 			foreach (explode('|', $ruleSet) as $rule) {
-				self::validateRule($field, $value, $rule);
+				self::validateRule($field, $value, $rule, $user);
 			}
 		}
 		return empty(self::$errors);
 	}
 
-	private static function validateRule(string $field, $value, string $rule): void {
+	private static function validateRule(string $field, $value, string $rule, User | null $user = null): void {
 		switch (trim($rule)) {
 			case 'required':
 				if (empty($value)) {
@@ -32,8 +34,7 @@ class Validator {
 				}
 				break;
 			case 'email-duplicate':
-				$user = app('Models\User');
-				if ($user->findByEmail($value)) {
+				if ($user instanceof User && $user->findByEmail($value)) {
 					self::addError($field, 'duplicate');
 				}
 				break;

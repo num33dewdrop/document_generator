@@ -3,6 +3,7 @@
 namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\EmploymentStatus;
@@ -90,9 +91,11 @@ class WorkExperiencesController extends Controller  {
 
 		$this->work_experience->create($request->postAll());
 
-		redirect()->route('work-experiences-list.show');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
 
-		Debug::end('WORK EXPERIENCES REGISTER STORE');
+		redirect()->route('work-experiences-list.show');
 	}
 
 	public function update(string $id, Request $request):void {
@@ -119,17 +122,22 @@ class WorkExperiencesController extends Controller  {
 
 		$this->work_experience->update($id ,$request->postAll());
 
-		redirect()->route('work-experiences-list.show');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
 
-		Debug::end('WORK EXPERIENCES EDIT STORE');
+		redirect()->route('work-experiences-list.show');
 	}
 
 	public function delete(string $id):void {
 		Debug::start('WORK EXPERIENCES DELETE');
 
 		$this->work_experience->delete($id);
-		redirect()->route('work-experiences-list.show');
 
-		Debug::end('WORK EXPERIENCES DELETE');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '削除に失敗しました。'])->back();
+		}
+
+		redirect()->route('work-experiences-list.show');
 	}
 }

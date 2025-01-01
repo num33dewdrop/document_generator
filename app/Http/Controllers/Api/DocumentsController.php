@@ -6,23 +6,23 @@ use Auth\Auth;
 use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
-use Models\WorkExperience;
+use Models\Document;
 use Utilities\Debug;
 
-class WorkExperiencesController extends Controller {
-	private WorkExperience $work_experience;
+class DocumentsController extends Controller {
+	private Document $document;
 	private Request $request;
 
-	public function __construct( Auth $auth, WorkExperience $work_experience, Request $request) {
+	public function __construct( Auth $auth, Document $document, Request $request) {
 		parent::__construct( $auth );
-		$this->work_experience = $work_experience;
+		$this->document = $document;
 		$this->request = $request;
 	}
 	public function delete():void {
-		Debug::start('API WORK EXPERIENCES DELETE');
+		Debug::start('API DOCUMENTS DELETE');
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
-		$this->work_experience->delete($id);
+		$this->document->delete($id);
 		if (!Connection::impactCheck()) {
 			$response['error'] = '指定のIDが存在しません。';
 			response()->json($response, 400);

@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Database\Connection;
 use PDOStatement;
 use Utilities\Debug;
 
@@ -11,7 +12,7 @@ class AcademicBackground extends Model{
 				WHERE user_id = :user_id
 				AND id = :id
 				AND delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list(int $limit = 20): array {
@@ -20,11 +21,18 @@ class AcademicBackground extends Model{
 		$sql = "SELECT * FROM academic_backgrounds
 				WHERE user_id = :user_id
 				AND delete_flg = 0";
-		$result = $this->db->fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
+		$result = Connection::fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
 		return [
 			'list' => $result,
 			'paginator' => $this->paginator->setPage($currentPage, $result['total_page'])
 		];
+	}
+
+	public function all(): array {
+		$sql = "SELECT * FROM academic_backgrounds
+				WHERE user_id = :user_id
+				AND delete_flg = 0";
+		return Connection::fetchAll($sql, [':user_id' => session()->get('user_id')]);
 	}
 
 	public function create(array $posts): void {
@@ -52,7 +60,7 @@ class AcademicBackground extends Model{
 			':last_career_id' => $posts['last_career'],
 			':create_at'      => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function update(string $id, array $posts): void {
@@ -72,7 +80,7 @@ class AcademicBackground extends Model{
 			':last_date'      => $posts['last_date'],
 			':last_career_id' => $posts['last_career']
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function delete(string $id): void {
@@ -85,6 +93,6 @@ class AcademicBackground extends Model{
 			':a_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 }

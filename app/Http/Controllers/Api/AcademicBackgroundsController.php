@@ -3,6 +3,7 @@
 namespace Http\Controllers\Api;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\AcademicBackground;
@@ -22,13 +23,12 @@ class AcademicBackgroundsController extends Controller {
 		Debug::start('API ACADEMIC BACKGROUND DELETE');
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
-		if (!$this->academic_background->delete($id)) {
+		$this->academic_background->delete($id);
+		if (!Connection::impactCheck()) {
 			$response['error'] = '指定のIDが存在しません。';
-			response()->json($response, 404);
+			response()->json($response, 400);
 		}
 		$response['success'] ='削除に成功しました。';
-		session()->flash('success', '削除に成功しました。');
 		response()->json($response);
-		Debug::end('API ACADEMIC BACKGROUND DELETE');
 	}
 }

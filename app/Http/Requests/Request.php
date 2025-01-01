@@ -2,6 +2,7 @@
 
 namespace Http\Requests;
 
+use Models\User;
 use Utilities\Debug;
 use Validators\Validator;
 
@@ -19,8 +20,8 @@ class Request {
 	public function setRules( array $rules ): void {
 		$this->rules = $rules;
 	}
-	public function validate(): void {
-		if( Validator::make($this->post, $this->rules) ) {
+	public function validate(User | null $user = null): void {
+		if( Validator::make($this->post, $this->rules, $user) ) {
 			session()->remove('errors');
 			session()->remove('old');
 		}else {

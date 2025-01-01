@@ -3,18 +3,14 @@
 namespace Models;
 
 use Database\Connection;
+use PDO;
 use Utilities\Paginator;
 
 class Model {
-	protected Connection $db;
 	protected Paginator $paginator;
 
-	public function __construct(Connection $db, Paginator $paginator) {
-		$this->db = $db;
+	public function __construct(Paginator $paginator) {
+		Connection::setup();
 		$this->paginator = $paginator;
-	}
-
-	public function getDatabase(): Connection {
-		return $this->db;
 	}
 }

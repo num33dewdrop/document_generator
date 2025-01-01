@@ -3,6 +3,7 @@
 namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\OfficialPosition;
@@ -69,8 +70,11 @@ class OfficialPositionsController extends Controller {
 
 		$this->official_position->create($w_id, $request->postAll());
 
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
+
 		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
-		Debug::end('OFFICIAL POSITION REGISTER STORE');
 	}
 
 	public function update(string $w_id, string $o_id, Request $request):void {
@@ -87,15 +91,21 @@ class OfficialPositionsController extends Controller {
 
 		$this->official_position->update($o_id ,$request->postAll());
 
-		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
 
-		Debug::end('OFFICIAL POSITION EDIT STORE');
+		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
 	}
 
 	public function delete(string $w_id, string $o_id):void {
 		Debug::start('OFFICIAL POSITION DELETE');
 		$this->official_position->delete($o_id);
+
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
+
 		redirect()->route('official-positions-list.show', ['w_id' => $w_id]);
-		Debug::end('OFFICIAL POSITION DELETE');
 	}
 }

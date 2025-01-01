@@ -3,6 +3,7 @@
 namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\AcademicBackground;
@@ -66,8 +67,11 @@ class AcademicBackgroundsController extends Controller {
 
 		$this->academic_background->create($request->postAll());
 
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
+
 		redirect()->route('academic-backgrounds-list.show');
-		Debug::end('ACADEMIC BACKGROUND REGISTER STORE');
 	}
 
 	public function update(string $id, Request $request):void {
@@ -85,15 +89,22 @@ class AcademicBackgroundsController extends Controller {
 
 		$this->academic_background->update($id ,$request->postAll());
 
-		redirect()->route('academic-backgrounds-list.show');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
 
-		Debug::end('ACADEMIC BACKGROUND EDIT STORE');
+		redirect()->route('academic-backgrounds-list.show');
 	}
 
 	public function delete(string $id):void {
 		Debug::start('ACADEMIC BACKGROUND DELETE');
+
 		$this->academic_background->delete($id);
+
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '削除に失敗しました。'])->back();
+		}
+
 		redirect()->route('academic-backgrounds-list.show');
-		Debug::end('ACADEMIC BACKGROUND DELETE');
 	}
 }

@@ -28,6 +28,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/document/register', 'DocumentsController@register')->name('documents-register.show');
 	Route::get('/document/{id}/edit', 'DocumentsController@edit')->name('documents-edit.show');
 	Route::get('/document/{id}/copy', 'DocumentsController@copy')->name('documents-copy.show');
+	Route::post('/document', 'DocumentsController@create')->name('documents-register.store');
+	Route::put('/document/{id}', 'DocumentsController@update')->name('documents-edit.store');
+	Route::delete('/document/{id}', 'DocumentsController@delete')->name('documents-delete.store');
 
 	//QUALIFICATION
 	Route::get('/qualification', 'QualificationsController@list')->name('qualifications-list.show');

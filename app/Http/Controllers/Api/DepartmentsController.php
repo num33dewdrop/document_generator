@@ -3,6 +3,7 @@
 namespace Http\Controllers\Api;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\Department;
@@ -22,13 +23,12 @@ class DepartmentsController extends Controller {
 		Debug::start('API DEPARTMENT DELETE');
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
-		if (!$this->department->delete($id)) {
+		$this->department->delete($id);
+		if (!Connection::impactCheck()) {
 			$response['error'] = '指定のIDが存在しません。';
-			response()->json($response, 404);
+			response()->json($response, 400);
 		}
 		$response['success'] ='削除に成功しました。';
-		session()->flash('success', '削除に成功しました。');
 		response()->json($response);
-		Debug::end('API DEPARTMENT DELETE');
 	}
 }

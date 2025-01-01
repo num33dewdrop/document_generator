@@ -2,7 +2,7 @@
     <nav>
         <ul>
             <li class="">
-                <a class="current" href="./">
+                <a class="current" href="<?= route('documents-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#home'); ?>"></use>
                     </svg>

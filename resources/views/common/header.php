@@ -14,13 +14,13 @@
 				<p class="c-user__name">結城 羽津子</p>
 			</div>
 			<ul class="c-menu__list">
-				<li class="c-menu__item"><a href="">会員情報編集</a></li>
-				<li class="c-menu__item"><a href="">資料一覧</a></li>
-				<li class="c-menu__item"><a href="">職歴一覧</a></li>
-				<li class="c-menu__item"><a href="">学歴一覧</a></li>
+				<li class="c-menu__item"><a href="<?= route('user-edit.show') ?>">会員情報編集</a></li>
+				<li class="c-menu__item"><a href="<?= route('documents-list.show'); ?>">資料一覧</a></li>
+				<li class="c-menu__item"><a href="<?= route('work-experiences-list.show'); ?>">職歴一覧</a></li>
+				<li class="c-menu__item"><a href="<?= route('academic-backgrounds-list.show'); ?>">学歴一覧</a></li>
 				<li class="c-menu__item"><a href="<?= route('qualifications-list.show'); ?>">資格一覧</a></li>
 				<li class="c-menu__item"><a href="<?= route('user-logout.store') ?>">ログアウト</a></li>
-				<li class="c-menu__item"><a href="">退会</a></li>
+				<li class="c-menu__item"><a href="<?= route('user-withdrawal.show') ?>">退会</a></li>
 			</ul>
 		</div>
 	</div>

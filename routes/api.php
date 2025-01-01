@@ -2,6 +2,8 @@
 
 use Http\Routes\Route;
 
+Route::delete('/api/document/delete', 'DocumentsController@delete')->name('api.documents-delete.store');
+
 Route::delete('/api/qualification/delete', 'QualificationsController@delete')->name('api.qualifications-delete.store');
 
 Route::delete('/api/academic-background/delete', 'AcademicBackgroundsController@delete')->name('api.academic-backgrounds-delete.store');

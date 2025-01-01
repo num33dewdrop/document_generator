@@ -31,7 +31,7 @@ class Container {
 			//クラスの新しいインスタンスを返す
 			return $reflectionClass->newInstanceArgs($dependencies);
 		} catch (ReflectionException $e) {
-			throw new ReflectionException("Failed to instantiate class: " . $e->getMessage());
+			throw new ReflectionException("クラスのインスタンス化に失敗しました: " . $e->getMessage(), 500);
 		}
 	}
 
@@ -50,7 +50,7 @@ class Container {
 			//実行 $instanceメソッドを実行するオブジェクト $dependenciesメソッドに渡すパラメータを配列で指定
 			return $reflectionMethod->invokeArgs($instance, $dependencies);
 		} catch (ReflectionException $e) {
-			throw new ReflectionException("Failed to call method: " . $e->getMessage());
+			throw new ReflectionException("メソッドの呼び出しに失敗しました: " . $e->getMessage(), 500);
 		}
 	}
 
@@ -69,7 +69,8 @@ class Container {
 					$expectedType = $type->getName();
 					if ($type->isBuiltin() && gettype($params[$name]) !== $expectedType) {
 						throw new ReflectionException(
-							"Invalid type for parameter '{$name}'. Expected '{$expectedType}', got '" . gettype($params[$name]) . "'."
+							"パラメータ'{$name}'の型が無効です 期待された型は'{$expectedType}'で、得られた型は'" . gettype($params[$name]) . "'です",
+							500
 						);
 					}
 				}
@@ -86,14 +87,14 @@ class Container {
 						$dependencies[] = $parameter->getDefaultValue();
 
 					} else {
-						throw new ReflectionException("Missing value for parameter: {$name}");
+						throw new ReflectionException("パラメータに値がありません: {$name}", 500);
 					}
 				}else {
 					// 非組み込み型は依存解決を試みる
 					$dependencies[] = $this->make($type->getName());
 				}
 			} else {
-				throw new ReflectionException("Cannot resolve parameter: {$parameter->getName()}");
+				throw new ReflectionException("パラメータを解決できませんでした: {$parameter->getName()}", 500);
 			}
 		}
 		return $dependencies;

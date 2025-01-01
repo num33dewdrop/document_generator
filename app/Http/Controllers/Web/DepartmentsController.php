@@ -3,6 +3,7 @@
 namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\Department;
@@ -69,8 +70,11 @@ class DepartmentsController extends Controller {
 
 		$this->department->create($w_id, $request->postAll());
 
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
+
 		redirect()->route('departments-list.show', ['w_id' => $w_id]);
-		Debug::end('DEPARTMENT REGISTER STORE');
 	}
 
 	public function update(string $w_id, string $d_id, Request $request):void {
@@ -87,15 +91,21 @@ class DepartmentsController extends Controller {
 
 		$this->department->update($d_id ,$request->postAll());
 
-		redirect()->route('departments-list.show', ['w_id' => $w_id]);
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
 
-		Debug::end('DEPARTMENT EDIT STORE');
+		redirect()->route('departments-list.show', ['w_id' => $w_id]);
 	}
 
 	public function delete(string $w_id, string $d_id):void {
 		Debug::start('DEPARTMENT DELETE');
 		$this->department->delete($d_id);
+
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '削除に失敗しました。'])->back();
+		}
+
 		redirect()->route('departments-list.show', ['w_id' => $w_id]);
-		Debug::end('DEPARTMENT DELETE');
 	}
 }

@@ -3,6 +3,7 @@
 namespace Http\Controllers\Web;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Http\Routes\Route;
@@ -57,8 +58,11 @@ class QualificationsController extends Controller {
 
 		$this->qualification->create($request->postAll());
 
-		redirect()->route('qualifications-list.show');
-		Debug::end('QUALIFICATION REGISTER STORE');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
+
+		redirect()->carry(['success' => '資格を登録しました。'])->route('qualifications-list.show');
 	}
 
 	public function update(string $id, Request $request):void {
@@ -74,15 +78,21 @@ class QualificationsController extends Controller {
 
 		$this->qualification->update($id ,$request->postAll());
 
-		redirect()->route('qualifications-list.show');
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '編集に失敗しました。'])->back();
+		}
 
-		Debug::end('QUALIFICATION EDIT STORE');
+		redirect()->route('qualifications-list.show');
 	}
 
 	public function delete(string $id):void {
 		Debug::start('QUALIFICATION DELETE');
 		$this->qualification->delete($id);
+
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '削除に失敗しました。'])->back();
+		}
+
 		redirect()->route('qualifications-list.show');
-		Debug::end('QUALIFICATION DELETE');
 	}
 }

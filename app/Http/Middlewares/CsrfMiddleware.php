@@ -4,6 +4,7 @@ namespace Http\Middlewares;
 
 use Closure;
 use Http\Requests\Request;
+use RuntimeException;
 use Utilities\Debug;
 
 class CsrfMiddleware implements MiddlewareInterface {
@@ -16,9 +17,11 @@ class CsrfMiddleware implements MiddlewareInterface {
 	}
 	public function handle( Closure $next ) {
 		// 1. リクエスト検証
+//		if ($this->request->method() === 'GET') {
+//			throw new RuntimeException('Method Not Allowed', 405);
+//		}
 		if ($this->request->method() !== 'GET' && !$this->tokensMatch()) {
-			http_response_code(403);
-			die('CSRF token validation failed.');
+			throw new RuntimeException('認証に失敗しました。', 403);
 		}
 		// 2. トークンを再生成
 		session()->put('_token', token());
@@ -26,17 +29,12 @@ class CsrfMiddleware implements MiddlewareInterface {
 	}
 	protected function tokensMatch(): bool {
 		// リクエストからトークンを取得
-		$token = $this->getTokenFromRequest();
+		$token = $this->request->input('_token') ?? null;
 
 		// セッションからトークンを取得
 		$sessionToken = session()->get('_token') ?? null;
 
 		// トークンを比較
 		return is_string($sessionToken) && is_string($token) && hash_equals($sessionToken, $token);
-	}
-	protected function getTokenFromRequest(): string | null
-	{
-		// フォームデータかヘッダーからトークンを取得
-		return $this->request->input('_token') ?? null;
 	}
 }

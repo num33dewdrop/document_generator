@@ -8,7 +8,7 @@ export default class Slide {
     private parentSlide: NodeListOf<HTMLElement>;
     private initX: number;
     private readonly targetClass: string;
-
+    public current: HTMLElement | null = null;
 
     constructor({ handleClass, targetClass, parentClass }: SlideElements) {
         this.parentSlide = document.querySelectorAll(`.${parentClass}`);
@@ -80,6 +80,7 @@ export default class Slide {
             target.classList.remove('is-show', 'is-delete');
             this.resetTargetStyles(target);
             this.hideOverlay(overlay);
+            this.current = null;
             return;
         }
         if (diff >= 5 && diff < 200) {
@@ -87,6 +88,7 @@ export default class Slide {
             target.classList.add('is-show');
             target.classList.remove('is-delete');
             this.resetTargetStyles(target);
+            this.current = parent;
             return;
         }
         if (diff >= 200) {
@@ -94,6 +96,7 @@ export default class Slide {
             target.classList.remove('is-show');
             target.classList.add('is-delete');
             this.resetTargetStyles(target);
+            this.current = parent;
             return;
         }
     }

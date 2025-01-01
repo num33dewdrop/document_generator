@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Database\Connection;
 use PDOStatement;
 
 class OfficialPosition extends Model {
@@ -25,7 +26,7 @@ class OfficialPosition extends Model {
 				AND o.id = :id
 				AND o.delete_flg = 0
 				AND w.delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list(string $w_id, int $limit = 20): array {
@@ -51,7 +52,7 @@ class OfficialPosition extends Model {
 			'user_id' => session()->get('user_id'),
 			'w_id' => $w_id
 		];
-		$result = $this->db->fetchList($sql, $data, $offset, $limit);
+		$result = Connection::fetchList($sql, $data, $offset, $limit);
 		return [
 			'list' => $result,
 			'paginator' => $this->paginator->setPage($currentPage, $result['total_page'])
@@ -86,7 +87,7 @@ class OfficialPosition extends Model {
 			':user_id'            => session()->get('user_id'),
 			':create_at'          => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function update(string $o_id, array $posts): void {
@@ -108,7 +109,7 @@ class OfficialPosition extends Model {
 			':last_date'  => $posts['last_date'],
 			':scale'      => $posts['scale'],
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function delete(string $id): void {
@@ -123,6 +124,6 @@ class OfficialPosition extends Model {
 			':o_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 }

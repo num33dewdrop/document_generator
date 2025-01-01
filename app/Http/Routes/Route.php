@@ -8,6 +8,7 @@ use Http\Kernel;
 use Http\Middlewares\MiddlewareInterface;
 use PDOException;
 use ReflectionException;
+use RuntimeException;
 use Utilities\Debug;
 
 class Route {
@@ -114,26 +115,49 @@ class Route {
 	}
 
 	public static function handleRequest(): void {
-		session()->start();
-		self::$container = app();
-		self::$isApi = isset($_SERVER['CONTENT_TYPE']) && str_contains( $_SERVER['CONTENT_TYPE'], 'application/json' );
-		$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
-		$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-		$path = str_replace($baseUri, '', $requestUri);
 		try {
+			session()->start();
+			self::$container = app();
+			self::$isApi = isset($_SERVER['CONTENT_TYPE']) && str_contains( $_SERVER['CONTENT_TYPE'], 'application/json' );
+			$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
+			$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+			$path = str_replace($baseUri, '', $requestUri);
 			self::$container->make('Providers\RouteServiceProvider');
 			$method = self::$container->make('Http\Requests\Request')->method();
 			foreach (self::$routes[$method] as $routePath => $route) {
 				if (self::matchRoute($routePath, $path, $params)) {
-					self::applyMiddlewares($route, $params, $path);
+					$namespace = $route['namespace'];
+					$action = $route['callback'];
+					$middlewares = $route['middleware'] ?? [];
+					$next = function() use ($action, $namespace, $params, $path) {
+						if (!self::isCallAction($action, $namespace, $params)) {
+							error_log("メソッドの呼び出しに失敗しました");
+							throw new RuntimeException("404 Not Found: $path", 404);
+						}
+					};
+					foreach ($middlewares as $middleware) {
+						$middlewareInstance = self::$container->make($middleware);
+						if ($middlewareInstance instanceof MiddlewareInterface) {
+							$next = function() use ($middlewareInstance, $next) {
+								$middlewareInstance->handle($next);
+							};
+						}
+					}
+					$next();
 					return;
 				}
 			}
+			throw new RuntimeException("404 Not Found: $path", 404);
 		} catch (ReflectionException $e) {
 			error_log("ReflectionException: $e");
-			self::handleServerError();
+			self::handleError($e);
+		} catch (PDOException $e) {
+			error_log("PDOException: $e");
+			self::handleError($e);
+		} catch (RuntimeException $e) {
+			error_log("RuntimeException: $e");
+			self::handleError($e);
 		}
-		self::handleNotFound($path);
 	}
 
 	// ルートパラメータの解決
@@ -150,75 +174,44 @@ class Route {
 		return false;
 	}
 
-	private static function applyMiddlewares(array $route, array $params, string $path): void {
-		$namespace = $route['namespace'];
-		$action = $route['callback'];
-		$middlewares = $route['middleware'] ?? [];
-		$next = function() use ($action, $namespace, $params, $path) {
-			if (!self::isCallAction($action, $namespace, $params)) {
-				self::handleNotFound($path);
-			}
-		};
-		foreach ($middlewares as $middleware) {
-			try {
-				$middlewareInstance = self::$container->make($middleware);
-				if ($middlewareInstance instanceof MiddlewareInterface) {
-					$next = function() use ($middlewareInstance, $next) {
-						$middlewareInstance->handle($next);
-					};
-				}
-			} catch (ReflectionException $e) {
-				error_log("ReflectionException: $e");
-				self::handleServerError();
-			}
-		}
-		$next();
-	}
-
 	protected static function isCallAction(string | Closure $action, string $namespace, array $params): bool {
-		if (is_callable($action)) {
-			call_user_func_array($action, $params);
-			return true;
-		}
-		if (is_string($action)) {
-			[$controller, $method] = explode('@', $action);
-			$controller = $namespace . $controller;
-			if (class_exists($controller)) {
-				try {
+		try {
+			if (is_callable($action)) {
+				call_user_func_array($action, $params);
+				return true;
+			}
+			if (is_string($action)) {
+				[$controller, $method] = explode('@', $action);
+				$controller = $namespace . $controller;
+				if (class_exists($controller)) {
 					$controllerInstance = self::$container->make($controller);
 					if (method_exists($controllerInstance, $method)) {
 						self::$container->call([$controllerInstance, $method], $params);
 						return true;
 					}
-				} catch (Exception $e) {
-					error_log("Exception: $e");
-					self::handleServerError();
 				}
 			}
+
+		} catch (ReflectionException $e) {
+			error_log("ReflectionException: $e");
+			self::handleError($e);
+		} catch (PDOException $e) {
+			error_log("PDOException: $e");
+			self::handleError($e);
+		} catch (RuntimeException $e) {
+			error_log("RuntimeException: $e");
+			self::handleError($e);
 		}
 		return false;
 	}
 
-	// 404エラー処理
-	private static function handleNotFound(string $path): void {
-		error_log("404 Not Found: $path"); // ログに残す
+	private static function handleError(Exception $e): void {
 		if(self::$isApi) {
-			$response = ['error' => '404 Not Found'];
-			response()->json($response, 404);
+			$response = ['error' => $e->getMessage()];
+			response()->json($response, $e->getCode());
 		}else {
-			http_response_code(404); // 404ステータスコードを返す
+			http_response_code($e->getCode()); // 401ステータスコードを返す
 			view('errors.notFound');
-		}
-	}
-	// 500エラー処理
-	private static function handleServerError(): void {
-		error_log("500 Internet Server Error");
-		if(self::$isApi) {
-			$response = ['error' => '500 Internet Server Error'];
-			response()->json($response, 500);
-		}else {
-			http_response_code(500);
-			view('errors.system');
 		}
 	}
 }

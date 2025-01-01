@@ -54,11 +54,12 @@ const flashMessageObj = {
 
 new ImgDrop(imgDropObj);
 new ToggleIsOpen(menuObj);
-new Slide(slideObj);
+
 new Flatpickr(flatpickrObj);
 new Flatpickr(flatpickrRangeObj);
-
 new Popup(exportModalObj);
+
+const Sliders = new Slide(slideObj);
 const DeleteModal = new Popup(deleteModalObj);
 const Flash =  new FlashMessage(flashMessageObj);
 
@@ -79,10 +80,14 @@ $apiHandleDelete.forEach(elem => {
         }
         const response = await fetchApi(ROOT + '/api/' + target + '/delete?id=' + id, 'DELETE', token);
         const json = await response.json();
-        if(!response.ok) {
+
+        if(response.ok) {
+            $flash.innerHTML = `<p class="c-flash__message c-flash__message--success c-text--m c-text--center">${json.success}</p>`;
+            Sliders.current?.remove();
+        }else {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;
-            Flash.handleShowMessage();
         }
         DeleteModal.handleHidePopup();
+        Flash.handleShowMessage();
     });
 });

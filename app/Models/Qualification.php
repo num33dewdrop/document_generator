@@ -2,13 +2,14 @@
 
 namespace Models;
 
+use Database\Connection;
 use PDOStatement;
 use Utilities\Debug;
 
 class Qualification extends Model {
 	public function findById(string $id): array {
 		$sql = "SELECT * FROM qualifications WHERE user_id = :user_id AND  id = :id AND delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list(int $limit = 20): array {
@@ -17,11 +18,18 @@ class Qualification extends Model {
 		$sql = "SELECT * FROM qualifications
 				WHERE user_id = :user_id
 				AND delete_flg = 0";
-		$result = $this->db->fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
+		$result = Connection::fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
 		return [
 			'list' => $result,
 			'paginator' => $this->paginator->setPage($currentPage, $result['total_page'])
 		];
+	}
+
+	public function all(): array {
+		$sql = "SELECT * FROM qualifications
+				WHERE user_id = :user_id
+				AND delete_flg = 0";
+		return Connection::fetchAll($sql, [':user_id' => session()->get('user_id')]);
 	}
 
 	public function create(array $posts): void {
@@ -43,7 +51,7 @@ class Qualification extends Model {
 			':acquisition_date' => $posts['acquisition_date'],
 			':create_at'        => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function update(string $id, array $posts): void {
@@ -59,7 +67,7 @@ class Qualification extends Model {
 			':name'             => $posts['qualification_name'],
 			':acquisition_date' => $posts['acquisition_date']
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 
 	public function delete(string $id): void {
@@ -72,6 +80,6 @@ class Qualification extends Model {
 			':q_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
-		$this->db->query($sql, $data);
+		Connection::query($sql, $data);
 	}
 }

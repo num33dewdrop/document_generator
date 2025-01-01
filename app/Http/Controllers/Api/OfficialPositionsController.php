@@ -3,6 +3,7 @@
 namespace Http\Controllers\Api;
 
 use Auth\Auth;
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\OfficialPosition;
@@ -22,13 +23,12 @@ class OfficialPositionsController extends Controller {
 		Debug::start('API OFFICIAL POSITION DELETE');
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
-		if (!$this->official_position->delete($id)) {
+		$this->official_position->delete($id);
+		if (!Connection::impactCheck()) {
 			$response['error'] = '指定のIDが存在しません。';
-			response()->json($response, 404);
+			response()->json($response, 400);
 		}
 		$response['success'] ='削除に成功しました。';
-		session()->flash('success', '削除に成功しました。');
 		response()->json($response);
-		Debug::end('API OFFICIAL POSITION DELETE');
 	}
 }

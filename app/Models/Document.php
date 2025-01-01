@@ -2,6 +2,7 @@
 
 namespace Models;
 
+use Database\Connection;
 use PDOStatement;
 
 class Document extends Model {
@@ -13,28 +14,20 @@ class Document extends Model {
 					d.pr,
 					d.supplement,
 					d.wish,
-					(
-						SELECT a.academic_background_id
-						FROM academic_backgrounds_display AS a
-						WHERE a.document_id = d.id
-					) AS academic_backgrounds,
-					(
-						SELECT w.work_experience_id
-						FROM work_experiences_display AS w
-						WHERE w.document_id = d.id
-					) AS work_experiences,
-					(
-						SELECT q.qualifications_id
-						FROM qualifications_display AS q
-						WHERE q.document_id = d.id
-					) AS qualifications,
+					GROUP_CONCAT(DISTINCT a.academic_background_id) AS academic_backgrounds,
+					GROUP_CONCAT(DISTINCT w.work_experience_id) AS work_experiences,
+					GROUP_CONCAT(DISTINCT q.qualification_id) AS qualifications,
 					d.create_at,
 					d.update_at
 				FROM documents AS d
+				LEFT JOIN academic_backgrounds_display AS a ON a.document_id = d.id
+				LEFT JOIN work_experiences_display AS w ON w.document_id = d.id
+				LEFT JOIN qualifications_display AS q ON q.document_id = d.id
 				WHERE d.user_id = :user_id
 				AND d.id = :id
-				AND d.delete_flg = 0";
-		return $this->db->fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+				AND d.delete_flg = 0
+				GROUP BY d.id";
+		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
 	public function list(int $limit = 20): array {
@@ -47,34 +40,26 @@ class Document extends Model {
 					d.pr,
 					d.supplement,
 					d.wish,
-					(
-						SELECT a.academic_background_id
-						FROM academic_backgrounds_display AS a
-						WHERE a.document_id = d.id
-					) AS academic_backgrounds,
-					(
-						SELECT w.work_experience_id
-						FROM work_experiences_display AS w
-						WHERE w.document_id = d.id
-					) AS work_experiences,
-					(
-						SELECT q.qualifications_id
-						FROM qualifications_display AS q
-						WHERE q.document_id = d.id
-					) AS qualifications,
+					GROUP_CONCAT(DISTINCT a.academic_background_id) AS academic_backgrounds,
+					GROUP_CONCAT(DISTINCT w.work_experience_id) AS work_experiences,
+					GROUP_CONCAT(DISTINCT q.qualification_id) AS qualifications,
 					d.create_at,
 					d.update_at
 				FROM documents AS d
+				LEFT JOIN academic_backgrounds_display AS a ON a.document_id = d.id
+				LEFT JOIN work_experiences_display AS w ON w.document_id = d.id
+				LEFT JOIN qualifications_display AS q ON q.document_id = d.id
 				WHERE d.user_id = :user_id
-				AND d.delete_flg = 0";
-		$result = $this->db->fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
+				AND d.delete_flg = 0
+				GROUP BY d.id";
+		$result = Connection::fetchList($sql, [':user_id' => session()->get('user_id')], $offset, $limit);
 		return [
 			'list' => $result,
 			'paginator' => $this->paginator->setPage($currentPage, $result['total_page'])
 		];
 	}
 
-	public function create(array $posts): PDOStatement | false {
+	public function create(array $posts): void {
 		$sql = "INSERT INTO documents (
 					user_id,
 					name,
@@ -99,11 +84,10 @@ class Document extends Model {
 			':wish'       => $posts['wish'],
 			':create_at'  => date( 'Y-m-d H:i:s' )
 		];
-		$this->db->query($sql, $data);
-		return $this->db->stmt;
+		Connection::query($sql, $data);
 	}
 
-	public function update(string $id, array $posts): PDOStatement | false {
+	public function update(string $id, array $posts): void {
 		$sql = "UPDATE documents
 				SET name = :name,
 					pr = :pr,
@@ -120,11 +104,10 @@ class Document extends Model {
 			':supplement' => $posts['supplement'],
 			':wish'       => $posts['wish']
 		];
-		$this->db->query($sql, $data);
-		return $this->db->stmt;
+		Connection::query($sql, $data);
 	}
 
-	public function delete(string $id): PDOStatement | false {
+	public function delete(string $id): void {
 		$sql = "UPDATE documents
 				SET delete_flg = 1
 				WHERE user_id = :user_id
@@ -134,7 +117,6 @@ class Document extends Model {
 			':d_id'    => $id,
 			':user_id' => session()->get('user_id')
 		];
-		$this->db->query($sql, $data);
-		return $this->db->stmt;
+		Connection::query($sql, $data);
 	}
 }

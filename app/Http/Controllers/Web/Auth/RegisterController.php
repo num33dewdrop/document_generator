@@ -2,6 +2,7 @@
 
 namespace Http\Controllers\Web\Auth;
 
+use Database\Connection;
 use Http\Controllers\Controller;
 use Http\Requests\Request;
 use Models\User;
@@ -27,16 +28,19 @@ class RegisterController extends Controller {
 
 		$request->setRules($rules);
 
-		$request->validate();
+		$request->validate($user);
 
 		$user->create($request->postAll());
+
+		if (!Connection::impactCheck()) {
+			redirect()->carry(['error' => '登録に失敗しました。'])->back();
+		}
 
 		$sesLimit = 60 * 60;
 		session()->put('login_date', time());
 		session()->put('login_limit', $sesLimit);
-		session()->put('user_id', $user->getDatabase()->getPdo()->lastInsertId());
+		session()->put('user_id', Connection::getPdo()->lastInsertId());
 
 		redirect()->route('documents-list.show');
-		Debug::end('USER REGISTER STORE');
 	}
 }
