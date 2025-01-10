@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="./user-edit">
+                <a class="" href="<?= route('user-edit.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#user'); ?>"></use>
                     </svg>

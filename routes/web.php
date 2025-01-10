@@ -21,6 +21,8 @@ Route::group(['middleware' => 'guest'], function() {
 //認証済みユーザーのアクセスを許可する。
 Route::group(['middleware' => 'auth'], function() {
 	//USER
+	Route::get('/user/edit', 'UserController@edit')->name('user-edit.show');
+	Route::put('/user/edit', 'UserController@update')->name('user-edit.store');
 	Route::get('/user/logout', 'Auth\LoginController@logout')->name('user-logout.store');
 
 	//DOCUMENT

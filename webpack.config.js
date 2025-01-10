@@ -68,6 +68,10 @@ module.exports = {
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         type: 'asset/resource',
+        generator: {
+          // public/assets/img/ 配下に出力
+          filename: 'img/built/[name][ext]'
+        },
         use: [
           {
             loader: 'image-webpack-loader',

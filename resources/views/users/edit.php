@@ -1,122 +1,138 @@
 <?php
-view_parts('head', ['title'=>'EDIT MEMBER INFORMATION', 'description'=> 'EDIT MEMBER INFORMATIONの説明']);
+$user = $data["user"] ?? [];
+$prefectures = $data["prefectures"]?? [];
+$page_name = ['en' =>'EDIT MEMBER INFORMATION', 'ja' => '会員情報編集'];
+view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header');
 view_parts('globalNav');
 ?>
 <main class="l-main">
     <div class="l-main__head">
-    <hgroup class="c-title">
-        <h1>会員情報編集</h1>
-        <p>EDIT MEMBER INFORMATION</p>
-    </hgroup>
-    
-</div>
+        <hgroup class="c-title">
+            <h1><?= $page_name['ja']; ?></h1>
+            <p><?= $page_name['en']; ?></p>
+        </hgroup>
+    </div>
     <div class="l-main__body">
         <div class="c-section">
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="<?= route( 'user-edit.store');?>" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="PUT">
+		        <?= csrf(); ?>
                 <div class="c-section__inner">
                     <div class="c-box">
                         <div class="c-box__inner">
+	                        <?= displayErrors(error('common')); ?>
                             <dl class="c-form">
                                 <dt class="c-form__title">基本情報</dt>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="name" class="c-form__label">氏名</label>
+                                        <label for="user_name" class="c-form__label">氏名</label>
                                         <div class="c-input">
-                                            <input type="text" name="name" id="name" value="" placeholder="例：">
+                                            <input type="text" name="user_name" id="user_name" value="<?= old('user_name', ['user_name' => sanitize($user['name']) ?? '']); ?>" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors(error('user_name')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="name_ruby" class="c-form__label">氏名（フリガナ）</label>
+                                        <label for="user_name_ruby" class="c-form__label">氏名（フリガナ）</label>
                                         <div class="c-input">
-                                            <input type="text" name="name_ruby" id="name_ruby" value="" placeholder="例：">
+                                            <input type="text" name="user_name_ruby" id="user_name_ruby" value="<?= old('user_name_ruby', ['user_name_ruby' => sanitize($user['name_ruby']) ?? '']); ?>" placeholder="例：">
                                         </div>
+	                                    <?= displayErrors(error('user_name_ruby')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="birthday" class="c-form__label">生年月日</label>
-                                        <div class="c-input c-input--date">
-                                            <input type="text" name="birthday" id="birthday" value="2020/04/01" readonly>
+                                        <div class="c-input c-input--date js-flatpickr">
+                                            <input type="text" class="js-flatpickr__input" name="birthday" id="birthday" value="<?= old('birthday', ['birthday' => sanitize($user['birthday']) ?? '']); ?>" readonly>
                                             <label for="birthday">
                                                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-                                                    <use href="./img/symbol/common.svg#calendar"></use>
+                                                    <use href="<?= assets('img/symbol/common.svg#calendar'); ?>"></use>
                                                 </svg>
                                             </label>
                                         </div>
+		                                <?= displayErrors(error('birthday')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <span class="c-form__label">性別</span>
                                         <div class="c-radio">
-                                            <label><input type="radio" name="sex" value="">男</label>
-                                            <label><input type="radio" name="sex" value="">女</label>
+                                            <label><input type="radio" name="sex" value="0" <?= old('sex', ['sex' => sanitize($user['sex']) ?? '']) === "0" ? "checked": ""; ?>>男</label>
+                                            <label><input type="radio" name="sex" value="1" <?= old('sex', ['sex' => sanitize($user['sex']) ?? '']) === "1" ? "checked": ""; ?>>女</label>
                                         </div>
+	                                    <?= displayErrors(error('sex')) ?>
                                     </div>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="dependents" class="c-form__label">扶養親族</label>
                                         <div class="c-input c-input--num c-input--text">
-                                            <input type="number" name="dependents" id="dependents" value="">人
+                                            <input type="number" name="dependents" id="dependents" value="<?= old('dependents', ['dependents' => sanitize($user['dependents']) ?? '']); ?>">人
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('dependents')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <span class="c-form__label">配偶者</span>
                                         <div class="c-radio">
-                                            <label><input type="radio" name="partner" value="">有</label>
-                                            <label><input type="radio" name="partner" value="">無</label>
+                                            <label><input type="radio" name="partner" value="0" <?= old('partner', ['partner' => sanitize($user['partner']) ?? '']) === "0" ? "checked": ""; ?>>無</label>
+                                            <label><input type="radio" name="partner" value="1" <?= old('partner', ['partner' => sanitize($user['partner']) ?? '']) === "1" ? "checked": ""; ?>>有</label>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('partner')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <span class="c-form__label">配偶者の扶養義務</span>
                                         <div class="c-radio">
-                                            <label><input type="radio" name="duty_to_support" value="">有</label>
-                                            <label><input type="radio" name="duty_to_support" value="">無</label>
+                                            <label><input type="radio" name="partner_support" value="0" <?= old('partner_support', ['partner_support' => sanitize($user['partner_support']) ?? '']) === "0" ? "checked": ""; ?>>無</label>
+                                            <label><input type="radio" name="partner_support" value="1" <?= old('partner_support', ['partner_support' => sanitize($user['partner_support']) ?? '']) === "1" ? "checked": ""; ?>>有</label>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('partner_support')) ?>
                                 </dd>
                             </dl>
                             <dl class="c-form">
                                 <dt class="c-form__title">連絡先</dt>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="fixed_phone_number" class="c-form__label">固定電話番号</label>
+                                        <label for="fixed_phone" class="c-form__label">固定電話番号</label>
                                         <div class="c-input">
-                                            <input type="tel" name="fixed_phone_number" id="fixed_phone_number" value="" placeholder="例：">
+                                            <input type="tel" name="fixed_phone" id="fixed_phone" value="<?= old('fixed_phone', ['fixed_phone' => sanitize($user['fixed_phone']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('fixed_phone')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="mobile_phone_number" class="c-form__label">携帯電話番号</label>
+                                        <label for="mobile_phone" class="c-form__label">携帯電話番号</label>
                                         <div class="c-input">
-                                            <input type="tel" name="mobile_phone_number" id="mobile_phone_number" value="" placeholder="例：">
+                                            <input type="tel" name="mobile_phone" id="mobile_phone" value="<?= old('mobile_phone', ['mobile_phone' => sanitize($user['mobile_phone']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('mobile_phone')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="contact_phone_number" class="c-form__label">連絡先電話番号</label>
+                                        <label for="contact_phone" class="c-form__label">連絡先電話番号</label>
                                         <div class="c-input">
-                                            <input type="tel" name="contact_phone_number" id="contact_phone_number" value="" placeholder="例：">
+                                            <input type="tel" name="contact_phone" id="contact_phone" value="<?= old('contact_phone', ['contact_phone' => sanitize($user['contact_phone']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('contact_phone')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="email" class="c-form__label">メールアドレス</label>
                                         <div class="c-input">
-                                            <input type="email" name="email" id="email" value="" placeholder="例：">
+                                            <input type="email" name="email" id="email" value="<?= old('email', ['email' => sanitize($user['email']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('email')) ?>
                                 </dd>
                             </dl>
                             <dl class="c-form">
@@ -125,30 +141,33 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="zip" class="c-form__label">郵便番号</label>
                                         <div class="c-input c-input--mid">
-                                            <input type="text" name="zip" id="zip" value="" placeholder="例：">
+                                            <input type="text" name="zip" id="zip" value="<?= old('zip', ['zip' => sanitize($user['zip']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('zip')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="prefectures" class="c-form__label">都道府県</label>
+                                        <label for="prefectures_id" class="c-form__label">都道府県</label>
                                         <div class="c-select">
-                                            <select name="prefectures" id="prefectures">
-                                                <option value="">選択してください</option>
-                                                <option value="1">北海道</option>
-                                                <option value="2">青森</option>
-                                                <option value="3">秋田</option>
+                                            <select name="prefectures_id" id="prefectures_id">
+                                                <option value="" <?= old('prefectures_id', ['prefectures_id' => sanitize($user['prefectures_id']) ?? '']) === ""? "selected":"" ?>>選択してください</option>
+                                                <?php foreach ($prefectures["records"] as $key => $value): ?>
+                                                <option value="<?= $value["id"] ?>" <?= $value["id"] === old('prefectures_id', ['prefectures_id' => sanitize( $user['prefectures_id']) ?? ''])? "selected":"" ?>><?= $value["name"] ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('prefectures_id')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="municipalities" class="c-form__label">市区町村以降</label>
+                                        <label for="city_town_village" class="c-form__label">市区町村以降</label>
                                         <div class="c-input">
-                                            <input type="text" name="municipalities" id="municipalities" value="" placeholder="例：">
+                                            <input type="text" name="city_town_village" id="city_town_village" value="<?= old('city_town_village', ['city_town_village' => sanitize($user['city_town_village']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('city_town_village')) ?>
                                 </dd>
                             </dl>
                             <dl class="c-form">
@@ -157,30 +176,33 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="contact_zip" class="c-form__label">郵便番号</label>
                                         <div class="c-input c-input--mid">
-                                            <input type="text" name="contact_zip" id="contact_zip" value="" placeholder="例：">
+                                            <input type="text" name="contact_zip" id="contact_zip" value="<?= old('contact_zip', ['contact_zip' => sanitize($user['contact_zip']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('contact_zip')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="contact_prefectures" class="c-form__label">都道府県</label>
+                                        <label for="contact_prefectures_id" class="c-form__label">都道府県</label>
                                         <div class="c-select">
-                                            <select name="contact_prefectures" id="contact_prefectures">
-                                                <option value="">選択してください</option>
-                                                <option value="1">北海道</option>
-                                                <option value="2">青森</option>
-                                                <option value="3">秋田</option>
+                                            <select name="contact_prefectures_id" id="contact_prefectures_id">
+                                                <option value="" <?= old('contact_prefectures_id', ['contact_prefectures_id' => sanitize($user['contact_prefectures_id']) ?? '']) === ""? "selected":"" ?>>選択してください</option>
+	                                            <?php foreach ($prefectures["records"] as $key => $value): ?>
+                                                <option value="<?= $value["id"] ?>" <?= $value["id"] === old('contact_prefectures_id', ['contact_prefectures_id' => sanitize($user['contact_prefectures_id']) ?? ''])? "selected":"" ?>><?= $value["name"] ?></option>
+	                                            <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('contact_prefectures_id')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
-                                        <label for="contact_municipalities" class="c-form__label">市区町村以降</label>
+                                        <label for="contact_city_town_village" class="c-form__label">市区町村以降</label>
                                         <div class="c-input">
-                                            <input type="text" name="contact_municipalities" id="contact_municipalities" value="" placeholder="例：">
+                                            <input type="text" name="contact_city_town_village" id="contact_city_town_village" value="<?= old('contact_city_town_village', ['contact_city_town_village' => sanitize($user['contact_city_town_village']) ?? '']); ?>" placeholder="例：">
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('contact_city_town_village')) ?>
                                 </dd>
                             </dl>
                             <dl class="c-form">
@@ -189,25 +211,28 @@ view_parts('globalNav');
                                     <div class="c-form__input">
                                         <label for="word" class="c-form__label">Word</label>
                                         <div class="c-textarea">
-                                            <textarea name="word" id="word" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="word" id="word" cols="30" rows="10" placeholder="例："><?= old('word', ['word' => sanitize($user['word']) ?? '']); ?></textarea>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('word')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="excel" class="c-form__label">Excel</label>
                                         <div class="c-textarea">
-                                            <textarea name="excel" id="excel" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="excel" id="excel" cols="30" rows="10" placeholder="例："><?= old('excel', ['excel' => sanitize($user['excel']) ?? '']); ?></textarea>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('excel')) ?>
                                 </dd>
                                 <dd class="c-form__group">
                                     <div class="c-form__input">
                                         <label for="power_point" class="c-form__label">PowerPoint</label>
                                         <div class="c-textarea">
-                                            <textarea name="power_point" id="power_point" cols="30" rows="10" placeholder="例："></textarea>
+                                            <textarea name="power_point" id="power_point" cols="30" rows="10" placeholder="例："><?= old('power_point', ['power_point' => sanitize($user['power_point']) ?? '']); ?></textarea>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('power_point')) ?>
                                 </dd>
                             </dl>
                             <dl class="c-form">
@@ -217,18 +242,20 @@ view_parts('globalNav');
                                         <div class="c-imgDrop">
                                             <label class="c-imgDrop__label js-dropArea">
                                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
+                                                <input type="hidden" name="db_pic" value="<?= empty($user['pic'])? "" : sanitize($user['pic']); ?>">
                                                 <input type="file" name="pic" class="c-imgDrop__file js-inputFile">
-                                                <img src="../img/whole/no-passport-img_e1dd4d68649101e60589.svg" alt="" class="c-imgDrop__img">
+                                                <img src="<?= empty($user['pic'])? assets("img/whole/no-passport-img.svg"): sanitize($user['pic']); ?>" alt="証明写真" class="c-imgDrop__img">
                                             </label>
                                         </div>
                                     </div>
+	                                <?= displayErrors(error('pic')) ?>
                                 </dd>
                             </dl>
                         </div>
                     </div>
                     <div class="c-btnBox">
                         <div class="c-btn c-btn--frame">
-                            <a href="../../../../php">戻る</a>
+                            <a href="<?= route('documents-list.show'); ?>">戻る</a>
                         </div>
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="保存">

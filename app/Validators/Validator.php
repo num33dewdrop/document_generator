@@ -56,6 +56,31 @@ class Validator {
 					self::addError($field, 'same', [':other' => $otherField]);
 				}
 				break;
+			case 'phone':
+				if (!preg_match('/^\d{10,11}$/', $value)) { // 日本の電話番号フォーマット
+					self::addError($field, 'phone');
+				}
+				break;
+			case 'zipcode':
+				if (!preg_match('/^\d{3}-\d{4}$/', $value)) { // 日本の郵便番号フォーマット
+					self::addError($field, 'zipcode');
+				}
+				break;
+			case 'string':
+				if (!is_string($value)) {
+					self::addError($field, 'string');
+				}
+				break;
+			case 'numeric':
+				if (!is_numeric($value)) {
+					self::addError($field, 'numeric');
+				}
+				break;
+			case 'half':
+				if (!preg_match('/^[\x20-\x7E]*$/', $value)) { // 半角英数字と記号のチェック
+					self::addError($field, 'half-width');
+				}
+				break;
 		}
 	}
 

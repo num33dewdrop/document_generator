@@ -4,6 +4,7 @@ namespace Http\Routes;
 use Closure;
 use Containers\Container;
 use Exception;
+use Exceptions\FileException;
 use Http\Kernel;
 use Http\Middlewares\MiddlewareInterface;
 use PDOException;
@@ -155,8 +156,8 @@ class Route {
 			error_log("PDOException: $e");
 			self::handleError($e);
 		} catch (RuntimeException $e) {
-			error_log("RuntimeException: $e");
-			self::handleError($e);
+			error_log($e);
+			redirect()->carry(["error" => $e->getMessage()])->back();
 		}
 	}
 
@@ -198,10 +199,11 @@ class Route {
 		} catch (PDOException $e) {
 			error_log("PDOException: $e");
 			self::handleError($e);
-		} catch (RuntimeException $e) {
-			error_log("RuntimeException: $e");
-			self::handleError($e);
+		}  catch (RuntimeException $e) {
+			error_log($e);
+			redirect()->carry(["error" => $e->getMessage()])->back();
 		}
+
 		return false;
 	}
 

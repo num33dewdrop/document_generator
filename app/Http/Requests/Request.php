@@ -11,10 +11,12 @@ class Request {
 	private array $get;
 	private array $rules;
 	private array $data;
+	private array $file;
 
 	public function __construct() {
 		$this->post = $_POST;
 		$this->get = $_GET;
+		$this->file = $_FILES;
 		$this->data = $_REQUEST;
 	}
 	public function setRules( array $rules ): void {
@@ -43,11 +45,21 @@ class Request {
 	public function getAll(): array{
 		return $this->get;
 	}
+	public function fileAll(): array{
+		$file = [];
+		foreach ($this->file as $key => $value) {
+			$file[$key] = $value === "" ? null : $value;
+		}
+		return $file;
+	}
 	public function getParam($key): string | int {
 		return $this->get[$key]?? 0;
 	}
 	public function input($key , $default = null): mixed {
 		return $this->post[$key] ?? $default;
+	}
+	public function file($key): array {
+		return $this->file[$key];
 	}
 
 	public function method(): string {

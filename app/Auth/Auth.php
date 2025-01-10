@@ -6,20 +6,20 @@ namespace Auth;
 use Models\User;
 
 class Auth {
-	private User $userModel;
+	public User $user;
 	protected array $messages;
 	protected array $errors = [];
 //	private ApiToken $apiTokenModel;
 
-	public function __construct(User $userModel) {
+	public function __construct(User $user) {
 		$this->messages = require base_path('config/auth.php');
-		$this->userModel = $userModel;
+		$this->user = $user;
 //		$this->apiTokenModel = $apiTokenModel;
 	}
 
 	public function attempt(array $credentials): void {
 		// ユーザーをデータベースから取得
-		$user = $this->userModel->findByEmail($credentials['email']);
+		$user = $this->user->findByEmail($credentials['email']);
 		if (!$user || !password_verify($credentials['password'], $user['password'])) {
 			error_log('認証に失敗しました。');
 			session()->put('errors', ['common' => [$this->messages['failed'] ?? 'auth error.']]);

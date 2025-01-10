@@ -5,13 +5,14 @@ use Http\Routes\Route;
 //log設定
 //=================================================
 ini_set('log_errors', 'on');
-ini_set('error_log', __DIR__ . '/../log/php.log');
+ini_set('error_log', __DIR__ . '/../storage/log/php.log');
 
 //=================================================
 //ヘルパー関数・クラスの読み込み
 //=================================================
 require_once __DIR__ . '/../app/Session/Session.php';
 require_once __DIR__ . '/../app/Utilities/Debug.php';
+require_once __DIR__ . '/../app/Exceptions/FileException.php';
 require_once __DIR__ . '/../app/Database/Connection.php';
 require_once __DIR__ . '/../app/Validators/Validator.php';
 require_once __DIR__ . '/../app/Http/Kernel.php';
@@ -25,6 +26,7 @@ require_once __DIR__ . '/../app/Http/Middlewares/ApiCsrfMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middlewares/GuestMiddleware.php';
 require_once __DIR__ . '/../app/Http/Middlewares/CsrfMiddleware.php';
 require_once __DIR__ . '/../app/Providers/RouteServiceProvider.php';
+require_once __DIR__ . '/../app/Providers/FileServiceProvider.php';
 require_once __DIR__ . '/../app/Containers/Container.php';
 require_once __DIR__ . '/../app/Views/View.php';
 
@@ -41,11 +43,13 @@ require_once __DIR__ . '/../app/Models/WorkExperiencesDisplay.php';
 require_once __DIR__ . '/../app/Models/QualificationsDisplay.php';
 require_once __DIR__ . '/../app/Models/LastCareer.php';
 require_once __DIR__ . '/../app/Models/EmploymentStatus.php';
+require_once __DIR__ . '/../app/Models/Prefecture.php';
 
 require_once __DIR__ . '/../app/Auth/Auth.php';
 require_once __DIR__ . '/../app/Utilities/Paginator.php';
 
 require_once __DIR__ . '/../app/Http/Controllers/Controller.php';
+require_once __DIR__ . '/../app/Http/Controllers/Web/UserController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/DocumentsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/QualificationsController.php';
 require_once __DIR__ . '/../app/Http/Controllers/Web/AcademicBackgroundsController.php';
