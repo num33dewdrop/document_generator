@@ -1,6 +1,6 @@
 <?php
 
-namespace Providers;
+namespace App\Providers;
 
 
 class TokenServiceProvider {

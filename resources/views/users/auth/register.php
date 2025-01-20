@@ -57,7 +57,7 @@ view_parts('header-general');
                             </div>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--primary">
                             <input type="submit" value="登録する">
                         </div>

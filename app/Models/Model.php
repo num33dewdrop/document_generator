@@ -1,10 +1,10 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 use PDO;
-use Utilities\Paginator;
+use App\Utilities\Paginator;
 
 class Model {
 	protected Paginator $paginator;

@@ -1,8 +1,10 @@
 <?php
-$list = empty($data['list'])? []: $data['list'];
-$paginate = empty($data['paginator'])? '': $data['paginator']->links();
+$user = $data['user'] ?? [];
+$work_experiences = $data['work_experiences']?? [];
+$list = empty($work_experiences['list'])? []: $work_experiences['list'];
+$paginate = empty($work_experiences['paginator'])? '': $work_experiences['paginator']->links();
 view_parts('head', ['title' => 'WORK EXPERIENCE LIST', 'description' => 'WORK EXPERIENCE LISTの説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -58,6 +60,14 @@ view_parts('globalNav');
                                 </svg>
                                 役職
                             </a>
+                        </div>
+                        <div class="c-card__btn c-card__btn--delete">
+                            <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
+                                <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
+                                    <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+                                </svg>
+                                削除
+                            </button>
                         </div>
                     </div>
                     <div class="c-slide c-slide--delete js-targetSlide">

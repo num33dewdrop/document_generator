@@ -783,6 +783,7 @@ Component
 }
 .c-card__btn--delete {
   display: block;
+  max-width: 90px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 247, 247, 0.92) 50%, rgba(255, 239, 241, 0.92));
 }
 .c-card__btn--delete a, .c-card__btn--delete button {
@@ -1024,6 +1025,9 @@ Component
   flex-wrap: nowrap;
   gap: 0px;
 }
+.c-user__img img {
+  width: 100%;
+}
 .c-user__name {
   font-size: 1.6rem;
   line-height: 1;
@@ -1077,7 +1081,7 @@ Component
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   gap: 15px;
 }
@@ -1086,7 +1090,7 @@ Component
   border-bottom: 1px solid #eee;
 }
 .c-form__title {
-  width: 150px;
+  width: 200px;
   color: #027EBF;
   font-size: 1.6rem;
   line-height: 1;
@@ -1119,6 +1123,14 @@ Component
   font-weight: 600;
 }
 @media screen and (max-width: 768px) {
+  .c-form {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
   .c-form__title {
     width: 100%;
   }
@@ -1419,6 +1431,7 @@ Component
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
   overflow: hidden;
   width: 95%;
+  max-width: 600px;
   margin: 0 auto;
   position: fixed;
   top: 50%;
@@ -1513,8 +1526,8 @@ Component
   background: linear-gradient(80deg, #88DED0, #36ACC5 50%, #027EBF);
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12), 3px 3px 20px rgba(0, 0, 0, 0.05);
   position: fixed;
-  bottom: 70px;
-  border-radius: 20px 0 0 0;
+  left: 0;
+  bottom: 0;
   z-index: 1;
 }
 .c-info--box .c-info__title {
@@ -1522,6 +1535,11 @@ Component
 }
 .c-info--box .c-info__note {
   color: #f8f8f8;
+}
+@media screen and (max-width: 768px) {
+  .c-info--box {
+    bottom: 70px;
+  }
 }
 
 .c-close {
@@ -1582,13 +1600,15 @@ Component
 }
 
 .c-btnBox {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 15px;
+  gap: 12px;
+}
+.c-btnBox--full {
+  width: 100%;
 }
 
 .c-select select {
@@ -1709,6 +1729,15 @@ Component
 }
 .c-text--center {
   text-align: center;
+}
+
+.c-error--box {
+  padding: 10px;
+  border: 1px solid #F04D62;
+  border-radius: 4px;
+}
+.c-error__item {
+  color: #F04D62;
 }
 
 .p-horizon {

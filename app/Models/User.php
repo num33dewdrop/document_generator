@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 use PDOStatement;
 
 class User extends Model {
@@ -15,7 +15,8 @@ class User extends Model {
 
 	public function findByEmail(string $email): array {
 		$sql = "SELECT * FROM users
-				WHERE email = :email";
+				WHERE email = :email
+				AND delete_flg = 0";
 		return Connection::fetchAssoc($sql, [':email' => $email]);
 	}
 
@@ -68,8 +69,8 @@ class User extends Model {
 				AND delete_flg = 0";
 		$data = [
 			':user_id'                   => session()->get('user_id'),
-			':name'                      => $posts['user_name'],
-			':name_ruby'                 => $posts['user_name_ruby'],
+			':name'                      => $posts['name'],
+			':name_ruby'                 => $posts['name_ruby'],
 			':birthday'                  => $posts['birthday'],
 			':sex'                       => $posts['sex'],
 			':dependents'                => $posts['dependents'],
@@ -89,6 +90,17 @@ class User extends Model {
 			':excel'                     => $posts['excel'],
 			':power_point'               => $posts['power_point'],
 			':pic'                       => $posts['pic'],
+		];
+		Connection::query($sql, $data);
+	}
+
+	public function delete() {
+		$sql = "UPDATE users
+				SET delete_flg = 1
+				WHERE id = :user_id
+				AND delete_flg = 0";
+		$data = [
+			':user_id' => session()->get('user_id')
 		];
 		Connection::query($sql, $data);
 	}

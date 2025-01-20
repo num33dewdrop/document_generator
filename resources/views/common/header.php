@@ -2,16 +2,16 @@
 	<div class="l-header__inner c-menu js-parentMenu">
 		<div class="l-header__logo">
 			<a href="<?= route('documents-list.show'); ?>" class="test">
-                <img src="<?= assets('img/whole/logo.svg'); ?>" alt="ロゴ">
-            </a>
+				<img src="<?= assets('img/whole/logo.svg'); ?>" alt="ロゴ">
+			</a>
 		</div>
 		<button class="c-menu__btn js-handleMenu"><span></span></button>
 		<div class="c-menu__target">
 			<div class="c-user c-menu__name">
 				<div class="c-user__img">
-					<img src="<?= assets('img/whole/no-user.svg'); ?>" alt="">
+					<img src="<?= empty( $parts_data["pic"] ) ? assets( 'img/whole/no-user.svg' ) : $parts_data["pic"]; ?>" alt="">
 				</div>
-				<p class="c-user__name">結城 羽津子</p>
+				<p class="c-user__name"><?= empty($parts_data["name"])? "": $parts_data["name"]; ?></p>
 			</div>
 			<ul class="c-menu__list">
 				<li class="c-menu__item"><a href="<?= route('user-edit.show') ?>">会員情報編集</a></li>
@@ -24,12 +24,12 @@
 			</ul>
 		</div>
 	</div>
-    <div class="c-flash js-flash">
+	<div class="c-flash js-flash">
 		<?php if ($error = session()->getFlash('error')): ?>
-            <p class="c-flash__message c-flash__message--error c-text--m c-text--center"><?= $error; ?></p>
-        <?php elseif ($success = session()->getFlash('success')): ?>
-            <p class="c-flash__message c-flash__message--success c-text--m c-text--center"><?= $success; ?></p>
-	    <?php endif; ?>
-    </div>
+			<p class="c-flash__message c-flash__message--error c-text--m c-text--center"><?= $error; ?></p>
+		<?php elseif ($success = session()->getFlash('success')): ?>
+			<p class="c-flash__message c-flash__message--success c-text--m c-text--center"><?= $success; ?></p>
+		<?php endif; ?>
+	</div>
 </header>
 <div class="l-container">

@@ -1,8 +1,8 @@
 <?php
 
-namespace Validators;
+namespace App\Validators;
 
-use Models\User;
+use App\Models\User;
 
 class Validator {
 	private static array $errors;
@@ -57,28 +57,28 @@ class Validator {
 				}
 				break;
 			case 'phone':
-				if (!preg_match('/^\d{10,11}$/', $value)) { // 日本の電話番号フォーマット
+				if ($value !== "" && !preg_match('/^\d{10,11}$/', $value)) { // 日本の電話番号フォーマット
 					self::addError($field, 'phone');
 				}
 				break;
 			case 'zipcode':
-				if (!preg_match('/^\d{3}-\d{4}$/', $value)) { // 日本の郵便番号フォーマット
+				if ($value !== "" && !preg_match('/^\d{3}-\d{4}$/', $value)) { // 日本の郵便番号フォーマット
 					self::addError($field, 'zipcode');
 				}
 				break;
 			case 'string':
-				if (!is_string($value)) {
+				if (!preg_match('/^\D*$/', $value)) { // 数字を含まない文字列をチェック
 					self::addError($field, 'string');
 				}
 				break;
-			case 'numeric':
-				if (!is_numeric($value)) {
+			case 'int':
+				if (!preg_match('/^-?\d+(\.\d+)?$/', $value)) { // 数値形式をチェック（整数・小数対応）
 					self::addError($field, 'numeric');
 				}
 				break;
 			case 'half':
 				if (!preg_match('/^[\x20-\x7E]*$/', $value)) { // 半角英数字と記号のチェック
-					self::addError($field, 'half-width');
+					self::addError($field, 'half');
 				}
 				break;
 		}

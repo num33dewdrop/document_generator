@@ -3,7 +3,7 @@
 		<div class="c-modal__head">
 			<h2 class="c-modal__title">
 				<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-					<use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+					<use href="<?= assets('img/symbol/control.svg#export'); ?>"></use>
 				</svg>
 				資料出力
 			</h2>

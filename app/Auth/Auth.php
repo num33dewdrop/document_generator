@@ -1,9 +1,8 @@
 <?php
 
-namespace Auth;
+namespace App\Auth;
 
-//use Models\ApiToken;
-use Models\User;
+use App\Models\User;
 
 class Auth {
 	public User $user;

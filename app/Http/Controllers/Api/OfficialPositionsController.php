@@ -1,13 +1,13 @@
 <?php
 
-namespace Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\OfficialPosition;
-use Utilities\Debug;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\OfficialPosition;
+use App\Utilities\Debug;
 
 class OfficialPositionsController extends Controller {
 	private OfficialPosition $official_position;

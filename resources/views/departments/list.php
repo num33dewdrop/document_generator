@@ -1,9 +1,10 @@
 <?php
+$user = $data['user'] ?? [];
 $work_experience = empty($data['work_experience'])? []: $data['work_experience'];
-$list = empty($data['department']['list'])? []: $data['department']['list'];
-$paginate = empty($data['department']['paginator'])? '': $data['department']['paginator']->links();
+$list = empty($data['departments']['list'])? []: $data['departments']['list'];
+$paginate = empty($data['departments']['paginator'])? '': $data['departments']['paginator']->links();
 view_parts('head', ['title' => 'DEPARTMENT LIST', 'description' => 'DEPARTMENT LISTの説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">

@@ -1,8 +1,8 @@
 <?php
 
-namespace Http\Middlewares;
+namespace App\Http\Middlewares;
 
-use Http\Requests\Request;
+use App\Http\Requests\Request;
 use Closure;
 use RuntimeException;
 

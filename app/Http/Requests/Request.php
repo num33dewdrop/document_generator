@@ -1,10 +1,9 @@
 <?php
 
-namespace Http\Requests;
+namespace App\Http\Requests;
 
-use Models\User;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Models\User;
+use App\Validators\Validator;
 
 class Request {
 	private array $post;

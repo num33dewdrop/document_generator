@@ -1,6 +1,6 @@
 <?php
 
-use Http\Routes\Route;
+use App\Http\Routes\Route;
 
 Route::get('/', function() {
 	view('welcome');
@@ -22,7 +22,9 @@ Route::group(['middleware' => 'guest'], function() {
 Route::group(['middleware' => 'auth'], function() {
 	//USER
 	Route::get('/user/edit', 'UserController@edit')->name('user-edit.show');
+	Route::get('/user/withdrawal', 'UserController@withdrawal')->name('user-withdrawal.show');
 	Route::put('/user/edit', 'UserController@update')->name('user-edit.store');
+	Route::delete('/user/withdrawal', 'UserController@delete')->name('user-withdrawal.store');
 	Route::get('/user/logout', 'Auth\LoginController@logout')->name('user-logout.store');
 
 	//DOCUMENT
@@ -33,6 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/document', 'DocumentsController@create')->name('documents-register.store');
 	Route::put('/document/{id}', 'DocumentsController@update')->name('documents-edit.store');
 	Route::delete('/document/{id}', 'DocumentsController@delete')->name('documents-delete.store');
+	Route::post('/document/{id}/export', 'DocumentsController@export')->name('documents-export.store');
 
 	//QUALIFICATION
 	Route::get('/qualification', 'QualificationsController@list')->name('qualifications-list.show');

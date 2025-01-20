@@ -1,8 +1,8 @@
 <?php
 
-namespace Utilities;
+namespace App\Utilities;
 
-use Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class Paginator {
 	private int $totalPage;

@@ -1,6 +1,7 @@
 <?php
+$user = $data['user'] ?? [];
 $work_experience = empty($data['work_experience'])? []: $data['work_experience'];
-$department = $data["department"] ?? [];
+$department = $data['department'] ?? [];
 $is_register = !isset($type) || $type === "register";
 
 $page_name = $is_register?
@@ -8,7 +9,7 @@ $page_name = $is_register?
 	['en' =>'DEPARTMENT EDIT', 'ja' => '所属編集'];
 
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -51,8 +52,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('department_name')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <span class="c-form__label">配属期間</span>
                                         <div class="p-horizon p-horizon--5">
@@ -77,8 +77,7 @@ view_parts('globalNav');
 	                                    <?= displayErrors(error('first_date')) ?>
 	                                    <?= displayErrors(error('last_date')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="job_assigned" class="c-form__label">担当業務</label>
                                         <div class="c-textarea">
@@ -86,8 +85,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('job_assigned')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="products" class="c-form__label">取扱製品</label>
                                         <div class="c-textarea">
@@ -95,8 +93,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('products')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="tasks" class="c-form__label">業務内容</label>
                                         <div class="c-textarea">
@@ -104,8 +101,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('tasks')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="scale" class="c-form__label">規模</label>
                                         <div class="c-input c-input--num c-input--text">
@@ -117,7 +113,7 @@ view_parts('globalNav');
                             </dl>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--frame">
                             <a href="<?= route('departments-list.show',['w_id' => sanitize($work_experience['id'])]); ?>">戻る</a>
                         </div>

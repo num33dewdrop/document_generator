@@ -1,10 +1,9 @@
 <?php
 
-namespace Providers;
+namespace App\Providers;
 
-use Exceptions\FileException;
 use RuntimeException;
-use Utilities\Debug;
+use App\Utilities\Debug;
 
 class FileServiceProvider {
 	public function upload($file): string {

@@ -1,8 +1,6 @@
 <?php
 
-namespace Http\Redirects;
-
-use Utilities\Debug;
+namespace App\Http\Redirects;
 
 class Redirect
 {

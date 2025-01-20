@@ -1,8 +1,8 @@
 <?php
 
-namespace Http\Middlewares;
+namespace App\Http\Middlewares;
 
-use Auth\Auth;
+use App\Auth\Auth;
 use Closure;
 
 class GuestMiddleware implements MiddlewareInterface {

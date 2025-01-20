@@ -1,5 +1,5 @@
 <?php
-namespace Views;
+namespace App\Views;
 
 class View {
 	public static function render($view, $data = [], $type = ""): void {

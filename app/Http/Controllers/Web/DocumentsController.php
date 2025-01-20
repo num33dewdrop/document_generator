@@ -1,18 +1,18 @@
 <?php
-namespace Http\Controllers\Web;
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\AcademicBackground;
-use Models\AcademicBackgroundsDisplay;
-use Models\Document;
-use Models\Qualification;
-use Models\QualificationsDisplay;
-use Models\WorkExperience;
-use Models\WorkExperiencesDisplay;
+namespace App\Http\Controllers\Web;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\AcademicBackground;
+use App\Models\AcademicBackgroundsDisplay;
+use App\Models\Document;
+use App\Models\Qualification;
+use App\Models\QualificationsDisplay;
+use App\Models\WorkExperience;
+use App\Models\WorkExperiencesDisplay;
 use PDOException;
-use Utilities\Debug;
+use App\Utilities\Debug;
 
 class DocumentsController extends Controller {
 
@@ -46,63 +46,63 @@ class DocumentsController extends Controller {
 	}
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');
-		$data = $this->document->list(10);
+		$this->data["documents"] = $this->document->list(10);
 		// ビューにデータを渡して表示
-		view('documents.list', $data);
+		view('documents.list', $this->data);
 		Debug::end('DOCUMENT LIST');
 	}
 
 	public function register():void {
 		Debug::start('DOCUMENT REGISTER');
-		if( ! $data["academic_background"] = $this->academic_background->all()) {
+		if( ! $this->data["academic_background"] = $this->academic_background->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["work_experience"] = $this->work_experience->all()) {
+		if( ! $this->data["work_experience"] = $this->work_experience->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["qualification"] = $this->qualification->all()) {
+		if( ! $this->data["qualification"] = $this->qualification->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('documents.form', $data, 'register');
+		view('documents.form', $this->data, 'register');
 		Debug::end('DOCUMENT REGISTER');
 	}
 
 	public function edit(string $id):void {
 		Debug::start('DOCUMENT EDIT');
-		if (! $data["document"] = $this->document->findById($id)) {
+		if (! $this->data["document"] = $this->document->findById($id)) {
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('documents-list.show');
 		}
-		if( ! $data["academic_background"] = $this->academic_background->all()) {
+		if( ! $this->data["academic_background"] = $this->academic_background->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["work_experience"] = $this->work_experience->all()) {
+		if( ! $this->data["work_experience"] = $this->work_experience->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["qualification"] = $this->qualification->all()) {
+		if( ! $this->data["qualification"] = $this->qualification->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('documents.form', $data, 'edit');
+		view('documents.form', $this->data, 'edit');
 		Debug::end('DOCUMENT EDIT');
 	}
 
 	public function copy(string $id):void {
 		Debug::start('DOCUMENT COPY');
-		if (! $data["document"] = $this->document->findById($id)) {
+		if (! $this->data["document"] = $this->document->findById($id)) {
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('documents-list.show');
 		}
-		if( ! $data["academic_background"] = $this->academic_background->all()) {
+		if( ! $this->data["academic_background"] = $this->academic_background->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["work_experience"] = $this->work_experience->all()) {
+		if( ! $this->data["work_experience"] = $this->work_experience->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
-		if( ! $data["qualification"] = $this->qualification->all()) {
+		if( ! $this->data["qualification"] = $this->qualification->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('documents-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('documents.form', $data, 'copy');
+		view('documents.form', $this->data, 'copy');
 		Debug::end('DOCUMENT COPY');
 	}
 
@@ -110,9 +110,6 @@ class DocumentsController extends Controller {
 		Debug::start('DOCUMENT REGISTER STORE');
 		$rules = [
 			'document_name' => 'required|string',
-			'pr' => 'string',
-			'supplement' => 'string',
-			'wish' => 'string',
 		];
 		$request->setRules($rules);
 
@@ -144,9 +141,6 @@ class DocumentsController extends Controller {
 		Debug::start('DOCUMENT EDIT STORE');
 		$rules = [
 			'document_name' => 'required|string',
-			'pr' => 'string',
-			'supplement' => 'string',
-			'wish' => 'string',
 		];
 		$request->setRules($rules);
 

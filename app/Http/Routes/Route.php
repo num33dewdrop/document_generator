@@ -1,16 +1,15 @@
 <?php
-namespace Http\Routes;
+namespace App\Http\Routes;
 
+use App\Utilities\Debug;
 use Closure;
-use Containers\Container;
+use App\Containers\Container;
 use Exception;
-use Exceptions\FileException;
-use Http\Kernel;
-use Http\Middlewares\MiddlewareInterface;
+use App\Http\Kernel;
+use App\Http\Middlewares\MiddlewareInterface;
 use PDOException;
 use ReflectionException;
 use RuntimeException;
-use Utilities\Debug;
 
 class Route {
 	private static array $routes = [];
@@ -123,8 +122,8 @@ class Route {
 			$requestUri = strtok($_SERVER['REQUEST_URI'], '?');
 			$baseUri = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 			$path = str_replace($baseUri, '', $requestUri);
-			self::$container->make('Providers\RouteServiceProvider');
-			$method = self::$container->make('Http\Requests\Request')->method();
+			self::$container->make('App\Providers\RouteServiceProvider');
+			$method = self::$container->make('App\Http\Requests\Request')->method();
 			foreach (self::$routes[$method] as $routePath => $route) {
 				if (self::matchRoute($routePath, $path, $params)) {
 					$namespace = $route['namespace'];
@@ -184,6 +183,7 @@ class Route {
 			if (is_string($action)) {
 				[$controller, $method] = explode('@', $action);
 				$controller = $namespace . $controller;
+				Debug::echo("controller : ".$controller);
 				if (class_exists($controller)) {
 					$controllerInstance = self::$container->make($controller);
 					if (method_exists($controllerInstance, $method)) {

@@ -1,11 +1,11 @@
 <?php
 
-use Containers\Container;
-use Http\Redirects\Redirect;
-use Http\Responses\Response;
-use Http\Routes\Route;
-use Session\Session;
-use Views\View;
+use App\Containers\Container;
+use App\Http\Redirects\Redirect;
+use App\Http\Responses\Response;
+use App\Http\Routes\Route;
+use App\Session\Session;
+use App\Views\View;
 
 if (!function_exists('app')) {
 	/**

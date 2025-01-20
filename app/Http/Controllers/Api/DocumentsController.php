@@ -1,13 +1,13 @@
 <?php
 
-namespace Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\Document;
-use Utilities\Debug;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\Document;
+use App\Utilities\Debug;
 
 class DocumentsController extends Controller {
 	private Document $document;
@@ -29,5 +29,11 @@ class DocumentsController extends Controller {
 		}
 		$response['success'] ='削除に成功しました。';
 		response()->json($response);
+	}
+
+	public function export():void {
+		Debug::start('API DOCUMENT EXPORT');
+
+		Debug::end('API DOCUMENT EXPORT');
 	}
 }

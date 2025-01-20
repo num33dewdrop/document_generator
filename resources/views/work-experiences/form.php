@@ -1,4 +1,5 @@
 <?php
+$user = $data['user'] ?? [];
 $workExperience = $data["work_experiences"] ?? [];
 $employmentStatus = $data["employment_status"]["records"] ?? [];
 $lastCareer = $data["last_career"]["records"] ?? [];
@@ -8,7 +9,7 @@ $page_name = $is_register?
 	['en' =>'ACADEMIC BACKGROUND EDIT', 'ja' => '職歴編集'];
 
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -47,8 +48,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('company_name')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <span class="c-form__label">雇用期間</span>
                                         <div class="p-horizon p-horizon--5">
@@ -73,8 +73,7 @@ view_parts('globalNav');
 	                                    <?= displayErrors(error('first_date')) ?>
 	                                    <?= displayErrors(error('last_date')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="business" class="c-form__label">事業内容</label>
                                         <div class="c-textarea">
@@ -82,8 +81,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('business')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="capital_stock" class="c-form__label">資本金</label>
                                         <div class="c-input c-input--num c-input--text">
@@ -91,8 +89,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('capital_stock')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="sales" class="c-form__label">売上高</label>
                                         <div class="c-input c-input--num c-input--text">
@@ -100,8 +97,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('sales')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="number_of_employees" class="c-form__label">従業員数</label>
                                         <div class="c-input c-input--num c-input--text">
@@ -109,8 +105,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('number_of_employees')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="employment_status" class="c-form__label">雇用形態</label>
                                         <div class="c-select">
@@ -123,8 +118,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('employment_status')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="job_summary" class="c-form__label">職務要約</label>
                                         <div class="c-textarea">
@@ -132,8 +126,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('job_summary')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="last_career" class="c-form__label">最終経歴</label>
                                         <div class="c-select">
@@ -158,20 +151,20 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('experience')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="track_record" class="c-form__label">実績</label>
                                         <div class="c-textarea">
                                             <textarea name="track_record" id="track_record" cols="30" rows="10" placeholder="例："><?= old('track_record', $is_register? []: ['track_record' => sanitize($workExperience['track_record']) ?? '']); ?></textarea>
-	                                        <?= displayErrors(error('track_record')) ?>
+
                                         </div>
+	                                    <?= displayErrors(error('track_record')) ?>
                                     </div>
                                 </dd>
                             </dl>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--frame">
                             <a href="<?= route('work-experiences-list.show'); ?>">戻る</a>
                         </div>

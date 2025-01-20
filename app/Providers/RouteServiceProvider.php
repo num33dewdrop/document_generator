@@ -1,11 +1,11 @@
 <?php
 
-namespace Providers;
+namespace App\Providers;
 
-use Http\Routes\Route;
+use App\Http\Routes\Route;
 
 class RouteServiceProvider {
-	protected string $namespace = 'Http\\Controllers\\';
+	protected string $namespace = 'App\\Http\\Controllers\\';
 	public function __construct() {
 		$this->mapApiRoutes();
 		$this->mapWebRoutes();

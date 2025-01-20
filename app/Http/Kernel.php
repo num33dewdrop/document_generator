@@ -1,11 +1,11 @@
 <?php
 
-namespace Http;
+namespace App\Http;
 
-use Http\Middlewares\ApiCsrfMiddleware;
-use Http\Middlewares\AuthMiddleware;
-use Http\Middlewares\CsrfMiddleware;
-use Http\Middlewares\GuestMiddleware;
+use App\Http\Middlewares\ApiCsrfMiddleware;
+use App\Http\Middlewares\AuthMiddleware;
+use App\Http\Middlewares\CsrfMiddleware;
+use App\Http\Middlewares\GuestMiddleware;
 
 class Kernel
 {

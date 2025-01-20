@@ -1,15 +1,14 @@
 <?php
 
-namespace Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\OfficialPosition;
-use Models\WorkExperience;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\OfficialPosition;
+use App\Models\WorkExperience;
+use App\Utilities\Debug;
 
 class OfficialPositionsController extends Controller {
 	private WorkExperience $work_experience;
@@ -23,36 +22,36 @@ class OfficialPositionsController extends Controller {
 
 	public function list($w_id): void {
 		Debug::start('OFFICIAL POSITION LIST');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
-		$data['official_position'] = $this->official_position->list($w_id, 10);
+		$this->data['official_positions'] = $this->official_position->list($w_id, 10);
 
 		// ビューにデータを渡して表示
-		view('official-positions.list', $data);
+		view('official-positions.list', $this->data);
 		Debug::end('OFFICIAL POSITION LIST');
 	}
 
 	public function register(string $w_id):void {
 		Debug::start('OFFICIAL POSITION REGISTER');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('official-positions.form', $data, "register");
+		view('official-positions.form', $this->data, "register");
 		Debug::end('OFFICIAL POSITION REGISTER');
 	}
 
 	public function edit(string $w_id, string $o_id):void {
 		Debug::start('OFFICIAL POSITION EDIT');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
-		if (! $data["official_position"] = $this->official_position->findById($o_id)) {
+		if (! $this->data["official_position"] = $this->official_position->findById($o_id)) {
 			redirect()->carry(['error' => '指定された所属IDは存在しません'])->route('official-positions-list.show', ['w_id' => $w_id]);
 		}
 		// ビューにデータを渡して表示
-		view('official-positions.form', $data, "edit");
+		view('official-positions.form', $this->data, "edit");
 		Debug::end('OFFICIAL POSITION EDIT');
 	}
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 
 class EmploymentStatus extends Model {
 	public function findById(string $id): array {

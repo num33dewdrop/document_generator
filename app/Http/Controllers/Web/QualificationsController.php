@@ -1,15 +1,13 @@
 <?php
 
-namespace Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Http\Routes\Route;
-use Models\Qualification;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\Qualification;
+use App\Utilities\Debug;
 
 class QualificationsController extends Controller {
 	private Qualification $qualification;
@@ -21,27 +19,27 @@ class QualificationsController extends Controller {
 
 	public function list(): void {
 		Debug::start('QUALIFICATION LIST');
-		$data = $this->qualification->list(10);
+		$this->data["qualifications"] = $this->qualification->list(10);
 		// ビューにデータを渡して表示
-		view('qualifications.list', $data);
+		view('qualifications.list', $this->data);
 		Debug::end('QUALIFICATION LIST');
 	}
 
 	public function register():void {
 		Debug::start('QUALIFICATION REGISTER');
 		// ビューにデータを渡して表示
-		view('qualifications.form', [], "register");
+		view('qualifications.form', $this->data, "register");
 		Debug::end('QUALIFICATION REGISTER');
 	}
 
 	public function edit(string $id):void {
 		Debug::start('QUALIFICATION EDIT');
-		if (! $data["qualification"] = $this->qualification->findById($id)) {
+		if (! $this->data["qualification"] = $this->qualification->findById($id)) {
 			// ビューにデータを渡して表示
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('qualifications-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('qualifications.form', $data, "edit");
+		view('qualifications.form', $this->data, "edit");
 		Debug::end('QUALIFICATION EDIT');
 	}
 

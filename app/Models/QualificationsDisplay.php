@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 
 class QualificationsDisplay extends Model {
 	public function all(string $d_id): array {

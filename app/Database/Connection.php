@@ -1,10 +1,9 @@
 <?php
 
-namespace Database;
+namespace App\Database;
 use PDO;
 use PDOException;
 use PDOStatement;
-use Utilities\Debug;
 
 class Connection {
 	private static array $config;

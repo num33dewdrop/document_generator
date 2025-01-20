@@ -74,6 +74,7 @@
     }
     &--delete {
       display: block;
+      max-width: 90px;
       background: $grad_rose_alfa;
       a, button {
         color: $rose;

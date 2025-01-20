@@ -1,15 +1,14 @@
 <?php
 
-namespace Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\Department;
-use Models\WorkExperience;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\Department;
+use App\Models\WorkExperience;
+use App\Utilities\Debug;
 
 class DepartmentsController extends Controller {
 	private Department $department;
@@ -23,36 +22,36 @@ class DepartmentsController extends Controller {
 
 	public function list($w_id): void {
 		Debug::start('DEPARTMENT LIST');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
-		$data['department'] = $this->department->list($w_id, 10);
+		$this->data['departments'] = $this->department->list($w_id, 10);
 
 		// ビューにデータを渡して表示
-		view('departments.list', $data);
+		view('departments.list', $this->data);
 		Debug::end('DEPARTMENT LIST');
 	}
 
 	public function register(string $w_id):void {
 		Debug::start('DEPARTMENT REGISTER');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('departments.form', $data, "register");
+		view('departments.form', $this->data, "register");
 		Debug::end('DEPARTMENT REGISTER');
 	}
 
 	public function edit(string $w_id, string $d_id):void {
 		Debug::start('DEPARTMENT EDIT');
-		if (! $data["work_experience"] = $this->work_experience->findById($w_id)) {
+		if (! $this->data["work_experience"] = $this->work_experience->findById($w_id)) {
 			redirect()->carry(['error' => '指定された職歴IDは存在しません'])->route('work-experiences-list.show');
 		}
-		if (! $data["department"] = $this->department->findById($d_id)) {
+		if (! $this->data["department"] = $this->department->findById($d_id)) {
 			redirect()->carry(['error' => '指定された所属IDは存在しません'])->route('departments-list.show', ['w_id' => $w_id]);
 		}
 		// ビューにデータを渡して表示
-		view('departments.form', $data, "edit");
+		view('departments.form', $this->data, "edit");
 		Debug::end('DEPARTMENT EDIT');
 	}
 
@@ -62,6 +61,7 @@ class DepartmentsController extends Controller {
 			'department_name' => 'required|string',
 			'first_date' => 'required',
 			'last_date' => 'required',
+			'scale' => 'required|int',
 		];
 
 		$request->setRules($rules);
@@ -83,6 +83,7 @@ class DepartmentsController extends Controller {
 			'department_name' => 'required|string',
 			'first_date' => 'required',
 			'last_date' => 'required',
+			'scale' => 'required|int',
 		];
 
 		$request->setRules($rules);

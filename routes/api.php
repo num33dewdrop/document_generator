@@ -1,6 +1,6 @@
 <?php
 
-use Http\Routes\Route;
+use App\Http\Routes\Route;
 
 Route::delete('/api/document/delete', 'DocumentsController@delete')->name('api.documents-delete.store');
 

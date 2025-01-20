@@ -1,11 +1,11 @@
 <?php
 
-namespace Http\Middlewares;
+namespace App\Http\Middlewares;
 
 use Closure;
-use Http\Requests\Request;
+use App\Http\Requests\Request;
 use RuntimeException;
-use Utilities\Debug;
+use App\Utilities\Debug;
 
 class CsrfMiddleware implements MiddlewareInterface {
 

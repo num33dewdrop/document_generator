@@ -1,0 +1,14 @@
+@use '../../foundation/_variable' as *;
+@use '../../foundation/_mixin' as *;
+@use '../../foundation/_keyframes' as *;
+
+.c-error {
+  &--box {
+    padding: 10px;
+    border: 1px solid $rose;
+    border-radius: 4px;
+  }
+  &__item {
+    color: $rose;
+  }
+}

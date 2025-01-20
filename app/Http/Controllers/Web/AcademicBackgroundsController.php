@@ -1,15 +1,14 @@
 <?php
 
-namespace Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\AcademicBackground;
-use Models\LastCareer;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\AcademicBackground;
+use App\Models\LastCareer;
+use App\Utilities\Debug;
 
 class AcademicBackgroundsController extends Controller {
 	private AcademicBackground $academic_background;
@@ -23,32 +22,32 @@ class AcademicBackgroundsController extends Controller {
 
 	public function list(): void {
 		Debug::start('ACADEMIC BACKGROUND LIST');
-		$data = $this->academic_background->list(10);
+		$this->data["academic_backgrounds"] = $this->academic_background->list(10);
 		// ビューにデータを渡して表示
-		view('academic-backgrounds.list', $data);
+		view('academic-backgrounds.list', $this->data);
 		Debug::end('ACADEMIC BACKGROUND LIST');
 	}
 
 	public function register():void {
 		Debug::start('ACADEMIC BACKGROUND REGISTER');
-		if( ! $data["last_career"] = $this->last_career->all(0)) {
+		if( ! $this->data["last_career"] = $this->last_career->all(0)) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('academic-backgrounds-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('academic-backgrounds.form', $data, "register");
+		view('academic-backgrounds.form', $this->data, "register");
 		Debug::end('ACADEMIC BACKGROUND REGISTER');
 	}
 
 	public function edit(string $id):void {
 		Debug::start('ACADEMIC BACKGROUND EDIT');
-		if (! $data["academic_background"] = $this->academic_background->findById($id)) {
+		if (! $this->data["academic_background"] = $this->academic_background->findById($id)) {
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('academic-backgrounds-list.show');
 		}
-		if( ! $data["last_career"] = $this->last_career->all(0)) {
+		if( ! $this->data["last_career"] = $this->last_career->all(0)) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('academic-backgrounds-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('academic-backgrounds.form', $data, "edit");
+		view('academic-backgrounds.form', $this->data, "edit");
 		Debug::end('ACADEMIC BACKGROUND EDIT');
 	}
 

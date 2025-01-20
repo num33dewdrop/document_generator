@@ -1,8 +1,9 @@
 <?php
-$document = $data["document"] ?? [];
-$academic_background = $data["academic_background"] ?? [];
-$work_experience = $data["work_experience"] ?? [];
-$qualification = $data["qualification"] ?? [];
+$user = $data['user']?? [];
+$document = $data['document'] ?? [];
+$academic_background = $data['academic_background'] ?? [];
+$work_experience = $data['work_experience'] ?? [];
+$qualification = $data['qualification'] ?? [];
 
 $is_register = !isset($type) || $type === "register" || $type === "copy";
 $is_inherit = !isset($type) || $type === "edit" || $type === "copy";
@@ -11,7 +12,7 @@ $page_name = $is_register?
 	['en' =>'DOCUMENT EDIT', 'ja' => '資料編集'];
 
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -21,6 +22,7 @@ view_parts('globalNav');
             <p><?= $page_name['en']; ?></p>
         </hgroup>
 	    <?php if(!$is_register): ?>
+        <div class="c-btnBox">
             <div class="c-btn c-btn--deleteFrame c-btn--auto">
                 <button class="js-showDeleteModal">
                     <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
@@ -29,6 +31,15 @@ view_parts('globalNav');
                     削除
                 </button>
             </div>
+            <div class="c-btn c-btn--frame c-btn--auto">
+                <button class="js-showExportModal">
+                    <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
+                        <use href="<?= assets('img/symbol/control.svg#export'); ?>"></use>
+                    </svg>
+                    出力
+                </button>
+            </div>
+        </div>
 	    <?php endif; ?>
     </div>
     <div class="l-main__body">
@@ -68,8 +79,7 @@ view_parts('globalNav');
                                             学歴を登録してください。
                                         <?php endif; ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <span class="c-form__label">職歴</span>
 	                                    <?php if(! empty($work_experience["records"])): ?>
@@ -83,8 +93,7 @@ view_parts('globalNav');
                                             職歴を登録してください。
 	                                    <?php endif; ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <span class="c-form__label">資格</span>
 	                                    <?php if(! empty($qualification["records"])): ?>
@@ -110,8 +119,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('pr')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="supplement" class="c-form__label">自己PR（補足）</label>
                                         <div class="c-textarea">
@@ -135,7 +143,7 @@ view_parts('globalNav');
                             </dl>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--frame">
                             <a href="<?= route('documents-list.show'); ?>">戻る</a>
                         </div>
@@ -150,6 +158,7 @@ view_parts('globalNav');
 	<?php
 	if(!$is_register):
 		view_parts('deleteModal', ['route' => 'documents-delete.store' ,'params' => ['id' => sanitize($document['id'])], 'name' => sanitize($document['name'])]);
+		view_parts('exportModal', ['route' => 'documents-export.store' ,'params' => ['id' => sanitize($document['id'])], 'name' => sanitize($document['name'])]);
 	endif;
 	?>
 </main>

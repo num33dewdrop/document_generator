@@ -1,6 +1,6 @@
 <?php
 
-namespace Session;
+namespace App\Session;
 
 use RuntimeException;
 

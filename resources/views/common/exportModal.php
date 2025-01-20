@@ -3,14 +3,14 @@
 		<div class="c-modal__head">
 			<h2 class="c-modal__title">
 				<svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-					<use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+					<use href="<?= assets('img/symbol/control.svg#export'); ?>"></use>
 				</svg>
 				資料出力
 			</h2>
 			<button class="c-close js-hideModal"></button>
 		</div>
 		<form action="<?= route($parts_data['route'] ?? '', $parts_data['params']?? []) ?>" method="post">
-			<input type="hidden" name="_method" value="DELETE">
+			<input type="hidden" name="_method" value="POST">
 			<?= csrf(); ?>
 			<div class="c-modal__body">
 				<div class="c-info">

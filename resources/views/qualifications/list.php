@@ -1,8 +1,10 @@
 <?php
-$list = empty($data['list'])? []: $data['list'];
-$paginate = empty($data['paginator'])? '': $data['paginator']->links();
+$user = $data['user']?? [];
+$qualifications = $data['qualifications']?? [];
+$list = empty($qualifications['list'])? []: $qualifications['list'];
+$paginate = empty($qualifications['paginator'])? '': $qualifications['paginator']->links();
 view_parts('head', ['title' => 'QUALIFICATION LIST', 'description' => 'QUALIFICATION LISTの説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -42,6 +44,14 @@ view_parts('globalNav');
                                 </svg>
                                 編集
                             </a>
+                        </div>
+                        <div class="c-card__btn c-card__btn--delete">
+                            <button class="js-showDeleteModal" data-id="<?= sanitize($value['id']); ?>" data-name="<?= sanitize($value['name']); ?>">
+                                <svg width="17" height="16" xmlns="http://www.w3.org/2000/svg">
+                                    <use href="<?= assets('img/symbol/control.svg#delete'); ?>"></use>
+                                </svg>
+                                削除
+                            </button>
                         </div>
                     </div>
                     <div class="c-slide c-slide--delete js-targetSlide">

@@ -48,7 +48,7 @@ view_parts('header-general');
                             </div>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--frame">
                             <a href="<?= route('user-register.index'); ?>">新規登録</a>
                         </div>

@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 use Exception;
 use PDOStatement;
 

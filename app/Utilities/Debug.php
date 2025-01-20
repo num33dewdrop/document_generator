@@ -1,5 +1,5 @@
 <?php
-namespace Utilities;
+namespace App\Utilities;
 
 class Debug {
 	private static bool $debug_flg = true;

@@ -7,6 +7,11 @@ return [
 	'max' => ':attributeは:max文字以内で入力してください。',
 	'min' => ':attributeは:min文字以上で入力してください。',
 	'same' => ':attributeと:otherは同じ値を入力してください。',
+	'string' => ':attributeは文字で入力してください。',
+	'numeric' => ':attributeは数字で入力してください。',
+	'phone' => ':attributeは電話番号の形式で入力してください。',
+	'zipcode' => ':attributeは郵便番号の形式で入力してください。',
+	'half' => ':attributeは半角で入力してください。',
 
 	'attributes' => [
 		"email" => "Email",
@@ -27,6 +32,16 @@ return [
 		"employment_status" => "雇用形態",
 		"job_summary" => "職務要約",
 		"experience" => "実務経験",
-		"track_record" => "実績"
+		"track_record" => "実績",
+		"name_ruby" => "氏名（フリガナ）",
+		"fixed_phone" => "固定電話番号",
+		"mobile_phone" => "携帯電話番号",
+		"contact_phone" => "連絡先電話番号",
+		"zip" => "郵便番号",
+		"contact_zip" => "郵便番号",
+		"department_name" => "部署名",
+		"scale" => "規模",
+		"official_position_name" => "役職名",
+		"document_name" => "タイトル",
 	],
 ];

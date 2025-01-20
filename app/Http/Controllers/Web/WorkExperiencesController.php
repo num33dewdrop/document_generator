@@ -1,16 +1,15 @@
 <?php
 
-namespace Http\Controllers\Web;
+namespace App\Http\Controllers\Web;
 
-use Auth\Auth;
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\EmploymentStatus;
-use Models\LastCareer;
-use Models\WorkExperience;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Auth\Auth;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\EmploymentStatus;
+use App\Models\LastCareer;
+use App\Models\WorkExperience;
+use App\Utilities\Debug;
 
 class WorkExperiencesController extends Controller  {
 	private WorkExperience $work_experience;
@@ -27,9 +26,9 @@ class WorkExperiencesController extends Controller  {
 	public function list(): void {
 		Debug::start('WORK EXPERIENCES LIST');
 
-		$data = $this->work_experience->list(10);
+		$this->data["work_experiences"] = $this->work_experience->list(10);
 		// ビューにデータを渡して表示
-		view('work-experiences.list', $data);
+		view('work-experiences.list', $this->data);
 
 		Debug::end('WORK EXPERIENCES LIST');
 	}
@@ -37,14 +36,14 @@ class WorkExperiencesController extends Controller  {
 	public function register():void {
 		Debug::start('WORK EXPERIENCES REGISTER');
 
-		if( ! $data["last_career"] = $this->last_career->all(1)) {
+		if( ! $this->data["last_career"] = $this->last_career->all(1)) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('work-experiences-list.show');
 		}
-		if( ! $data["employment_status"] = $this->employment_status->all()) {
+		if( ! $this->data["employment_status"] = $this->employment_status->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('work-experiences-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('work-experiences.form', $data, "register");
+		view('work-experiences.form', $this->data, "register");
 
 		Debug::end('WORK EXPERIENCES REGISTER');
 	}
@@ -52,17 +51,17 @@ class WorkExperiencesController extends Controller  {
 	public function edit(string $id):void {
 		Debug::start('WORK EXPERIENCES EDIT');
 
-		if (! $data["work_experiences"] = $this->work_experience->findById($id)) {
+		if (! $this->data["work_experiences"] = $this->work_experience->findById($id)) {
 			redirect()->carry(['error' => '指定されたIDは存在しません'])->route('work-experiences-list.show');
 		}
-		if( ! $data["last_career"] = $this->last_career->all(1)) {
+		if( ! $this->data["last_career"] = $this->last_career->all(1)) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('work-experiences-list.show');
 		}
-		if( ! $data["employment_status"] = $this->employment_status->all()) {
+		if( ! $this->data["employment_status"] = $this->employment_status->all()) {
 			redirect()->carry(['error' => 'システムエラー発生'])->route('work-experiences-list.show');
 		}
 		// ビューにデータを渡して表示
-		view('work-experiences.form', $data, "edit");
+		view('work-experiences.form', $this->data, "edit");
 
 		Debug::end('WORK EXPERIENCES EDIT');
 	}
@@ -72,15 +71,11 @@ class WorkExperiencesController extends Controller  {
 
 		$rules = [
 			'company_name' => 'required|string',
-			'business' => 'string',
 			'capital_stock' => 'int',
 			'sales' => 'int',
 			'number_of_employees' => 'int',
 			'employment_status' => 'int',
-			'job_summary' => 'string',
 			'last_career' => 'int',
-			'experience' => 'string',
-			'track_record' => 'string',
 			'first_date' => 'required',
 			'last_date' => 'required'
 		];
@@ -103,15 +98,11 @@ class WorkExperiencesController extends Controller  {
 
 		$rules = [
 			'company_name' => 'required|string',
-			'business' => 'string',
 			'capital_stock' => 'int',
 			'sales' => 'int',
 			'number_of_employees' => 'int',
 			'employment_status' => 'int',
-			'job_summary' => 'string',
 			'last_career' => 'int',
-			'experience' => 'string',
-			'track_record' => 'string',
 			'first_date' => 'required',
 			'last_date' => 'required'
 		];

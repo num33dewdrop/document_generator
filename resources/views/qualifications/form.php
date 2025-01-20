@@ -1,4 +1,5 @@
 <?php
+$user = $data['user'] ?? [];
 $qualification = $data["qualification"] ?? [];
 $is_register = !isset($type) || $type === "register";
 
@@ -7,7 +8,7 @@ $page_name = $is_register?
     ['en' =>'QUALIFICATION EDIT', 'ja' => '資格編集'];
 
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
-view_parts('header');
+view_parts('header', $user);
 view_parts('globalNav');
 ?>
 <main class="l-main">
@@ -46,8 +47,7 @@ view_parts('globalNav');
                                         </div>
 	                                    <?= displayErrors(error('qualification_name')) ?>
                                     </div>
-                                </dd>
-                                <dd class="c-form__group">
+
                                     <div class="c-form__input">
                                         <label for="acquisition_date" class="c-form__label">取得年月日</label>
                                         <div class="c-input c-input--date js-flatpickr">
@@ -64,7 +64,7 @@ view_parts('globalNav');
                             </dl>
                         </div>
                     </div>
-                    <div class="c-btnBox">
+                    <div class="c-btnBox c-btnBox--full">
                         <div class="c-btn c-btn--frame">
                             <a href="<?= route('qualifications-list.show'); ?>">戻る</a>
                         </div>

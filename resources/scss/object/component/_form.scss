@@ -4,13 +4,14 @@
 
 .c-form {
   width: 100%;
-  @include flex($direction: column, $gap: 15);
+  @include flex( $gap: 15);
   &:not(:last-child) {
     padding-bottom: 20px;
     border-bottom: 1px solid $gray-light2;
   }
+
   &__title {
-    width: 150px;
+    width: 200px;
     color: $navyBlue-light;
     @include font(16, 16, 8, 600);
   }
@@ -27,7 +28,7 @@
     @include font(14, 14, 8, 600);
   }
   @include mq() {
-    //@include flex($direction: column, $gap: 10);
+    @include flex($direction: column, $gap: 10);
     &__title {
       width: 100%;
     }

@@ -1,13 +1,12 @@
 <?php
 
-namespace Http\Controllers\Web\Auth;
+namespace App\Http\Controllers\Web\Auth;
 
-use Database\Connection;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Models\User;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Database\Connection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Models\User;
+use App\Utilities\Debug;
 
 class RegisterController extends Controller {
 	public function index(): void {

@@ -1,12 +1,10 @@
 <?php
 
-namespace Http\Controllers\Web\Auth;
+namespace App\Http\Controllers\Web\Auth;
 
-use Auth\Auth;
-use Http\Controllers\Controller;
-use Http\Requests\Request;
-use Utilities\Debug;
-use Validators\Validator;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use App\Utilities\Debug;
 
 class LoginController extends Controller  {
 

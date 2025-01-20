@@ -1,10 +1,10 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-use Database\Connection;
+use App\Database\Connection;
 use PDOStatement;
-use Utilities\Debug;
+use App\Utilities\Debug;
 
 class WorkExperience extends Model {
 	public function findById(string $id): array {
