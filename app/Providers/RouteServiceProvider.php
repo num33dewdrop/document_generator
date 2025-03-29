@@ -9,6 +9,7 @@ class RouteServiceProvider {
 	public function __construct() {
 		$this->mapApiRoutes();
 		$this->mapWebRoutes();
+		$this->mapOutsideRoutes();
 	}
 
 	protected function mapWebRoutes(): void {
@@ -23,5 +24,12 @@ class RouteServiceProvider {
 		Route::middleware('api')
 			->namespace($this->namespace.'Api\\')
 			->load(base_path('routes/api.php'));
+	}
+
+	protected function mapOutsideRoutes(): void {
+		// apiミドルウェアグループを適用してルートを読み込む
+		Route::middleware('outside')
+		     ->namespace($this->namespace.'Outside\\')
+		     ->load(base_path('routes/outside.php'));
 	}
 }

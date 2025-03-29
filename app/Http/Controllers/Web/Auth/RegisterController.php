@@ -31,7 +31,7 @@ class RegisterController extends Controller {
 
 		$user->create($request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 

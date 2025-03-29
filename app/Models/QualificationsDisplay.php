@@ -43,7 +43,7 @@ class QualificationsDisplay extends Model {
 				AND qd.qualification_id = :q_id";
 		$data = [
 			':d_id'      => $d_id,
-			':a_id'      => $q_id,
+			':q_id'      => $q_id,
 			':user_id'   => session()->get('user_id'),
 		];
 		Connection::query($sql, $data);

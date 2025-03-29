@@ -183,7 +183,6 @@ class Route {
 			if (is_string($action)) {
 				[$controller, $method] = explode('@', $action);
 				$controller = $namespace . $controller;
-				Debug::echo("controller : ".$controller);
 				if (class_exists($controller)) {
 					$controllerInstance = self::$container->make($controller);
 					if (method_exists($controllerInstance, $method)) {
@@ -199,7 +198,7 @@ class Route {
 		} catch (PDOException $e) {
 			error_log("PDOException: $e");
 			self::handleError($e);
-		}  catch (RuntimeException $e) {
+		} catch (RuntimeException $e) {
 			error_log($e);
 			redirect()->carry(["error" => $e->getMessage()])->back();
 		}
@@ -212,7 +211,7 @@ class Route {
 			$response = ['error' => $e->getMessage()];
 			response()->json($response, $e->getCode());
 		}else {
-			http_response_code($e->getCode()); // 401ステータスコードを返す
+			http_response_code($e->getCode());
 			view('errors.notFound');
 		}
 	}

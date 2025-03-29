@@ -66,7 +66,7 @@ class AcademicBackgroundsController extends Controller {
 
 		$this->academic_background->create($request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 
@@ -88,7 +88,7 @@ class AcademicBackgroundsController extends Controller {
 
 		$this->academic_background->update($id ,$request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -100,7 +100,7 @@ class AcademicBackgroundsController extends Controller {
 
 		$this->academic_background->delete($id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 

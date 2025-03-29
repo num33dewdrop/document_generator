@@ -12,8 +12,25 @@
   &--wide {
     padding: 30px 30px 40px;
   }
+  &--center {
+    @include flex(center, center);
+  }
+  &--square {
+    height: 100vw;
+  }
+  &--high {
+    padding: 80px 30px;
+  }
   &__inner {
     @include flex($direction: column, $gap: 20);
+    &--center {
+      align-items: center;
+    }
+  }
+  &__item {
+    &--full {
+      flex: 1;
+    }
   }
   @include mq() {
     border-radius: 0;

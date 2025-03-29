@@ -61,7 +61,7 @@ class UserController extends Controller {
 		}
 		$this->auth->user->update(array_merge($request->postAll(), ["pic" => $path]));
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -72,7 +72,7 @@ class UserController extends Controller {
 		Debug::start('USER DELETE');
 		$this->auth->user->delete();
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 

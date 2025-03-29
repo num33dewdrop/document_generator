@@ -24,7 +24,7 @@ class DepartmentsController extends Controller {
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
 		$this->department->delete($id);
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			$response['error'] = '指定のIDが存在しません。';
 			response()->json($response, 400);
 		}

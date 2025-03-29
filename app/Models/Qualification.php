@@ -12,6 +12,19 @@ class Qualification extends Model {
 		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
+	public function findByIds(array $ids): array {
+		$sql = "SELECT
+					q.id,
+					q.user_id,
+					q.name,
+					q.acquisition_date
+				FROM qualifications AS q 
+				WHERE q.id IN (:ids)
+				AND q.user_id = :user_id
+				AND q.delete_flg = 0";
+		return Connection::fetchAll($sql, [':user_id' => session()->get('user_id'), 'ids' => $ids]);
+	}
+
 	public function list(int $limit = 20): array {
 		$currentPage = empty($this->paginator->getRequest()->getParam('p'))? 1: (int) $this->paginator->getRequest()->getParam('p');
 		$offset = ($currentPage - 1) * $limit;

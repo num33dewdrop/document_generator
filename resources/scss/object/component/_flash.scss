@@ -9,6 +9,9 @@
   width: 100%;
   box-shadow: $shadow;
   overflow: hidden;
+  &--general {
+    top: 0;
+  }
   &__message {
     padding: 10px 15px;
     &--success {

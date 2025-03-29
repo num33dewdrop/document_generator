@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\Connection;
+use App\Utilities\Paginator;
 use PDOStatement;
 use App\Utilities\Debug;
 
@@ -13,6 +14,23 @@ class AcademicBackground extends Model{
 				AND id = :id
 				AND delete_flg = 0";
 		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
+	}
+
+	public function findByIds(array $ids): array {
+		$sql = "SELECT
+					a.id,
+					a.user_id,
+					a.name,
+					a.first_date,
+					a.last_date,
+					a.last_career_id,
+					lc.name AS last_career
+				FROM academic_backgrounds AS a
+				LEFT JOIN last_career AS lc ON lc.id = a.last_career_id
+				WHERE a.id IN (:ids)
+				AND a.user_id = :user_id
+				AND a.delete_flg = 0";
+		return Connection::fetchAll($sql, [':user_id' => session()->get('user_id'), 'ids' => $ids]);
 	}
 
 	public function list(int $limit = 20): array {

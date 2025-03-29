@@ -38,6 +38,11 @@ class Validator {
 					self::addError($field, 'duplicate');
 				}
 				break;
+			case 'google-id-duplicate':
+				if ($user instanceof User && $user->findByGoogleClient($value)) {
+					self::addError($field, 'duplicate');
+				}
+				break;
 			case (bool) preg_match( '/^max:(\d+)$/', $rule, $matches ):
 				$max = (int)$matches[1];
 				if (mb_strlen($value) > $max) {

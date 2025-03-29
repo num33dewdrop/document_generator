@@ -9,4 +9,9 @@ class Prefecture extends Model {
 		$sql = "SELECT id, name FROM prefectures";
 		return Connection::fetchAll($sql);
 	}
+
+	public function findById(string $id): array {
+		$sql = "SELECT id, name FROM prefectures WHERE id = :id";
+		return Connection::fetchAssoc($sql, [':id' => $id]);
+	}
 }

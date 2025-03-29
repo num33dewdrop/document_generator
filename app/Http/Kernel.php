@@ -20,6 +20,9 @@ class Kernel
 //			ThrottleMiddleware::class,
 			ApiCsrfMiddleware::class
 		],
+		'outside' => [
+
+		]
 	];
 
 	// 個別のミドルウェア

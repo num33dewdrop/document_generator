@@ -56,7 +56,7 @@ class QualificationsController extends Controller {
 
 		$this->qualification->create($request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 
@@ -76,7 +76,7 @@ class QualificationsController extends Controller {
 
 		$this->qualification->update($id ,$request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -87,7 +87,7 @@ class QualificationsController extends Controller {
 		Debug::start('QUALIFICATION DELETE');
 		$this->qualification->delete($id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 

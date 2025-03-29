@@ -69,7 +69,7 @@ class OfficialPositionsController extends Controller {
 
 		$this->official_position->create($w_id, $request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 
@@ -90,7 +90,7 @@ class OfficialPositionsController extends Controller {
 
 		$this->official_position->update($o_id ,$request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -101,7 +101,7 @@ class OfficialPositionsController extends Controller {
 		Debug::start('OFFICIAL POSITION DELETE');
 		$this->official_position->delete($o_id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 

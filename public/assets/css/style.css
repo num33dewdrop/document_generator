@@ -1062,6 +1062,20 @@ Component
 .c-box--wide {
   padding: 30px 30px 40px;
 }
+.c-box--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0px;
+}
+.c-box--square {
+  height: 100vw;
+}
+.c-box--high {
+  padding: 80px 30px;
+}
 .c-box__inner {
   display: flex;
   align-items: flex-start;
@@ -1069,6 +1083,12 @@ Component
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 20px;
+}
+.c-box__inner--center {
+  align-items: center;
+}
+.c-box__item--full {
+  flex: 1;
 }
 @media screen and (max-width: 768px) {
   .c-box {
@@ -1693,6 +1713,9 @@ Component
   width: 100%;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08), 3px 3px 18px rgba(0, 0, 0, 0.02);
   overflow: hidden;
+}
+.c-flash--general {
+  top: 0;
 }
 .c-flash__message {
   padding: 10px 15px;

@@ -17,9 +17,6 @@ class CsrfMiddleware implements MiddlewareInterface {
 	}
 	public function handle( Closure $next ) {
 		// 1. リクエスト検証
-//		if ($this->request->method() === 'GET') {
-//			throw new RuntimeException('Method Not Allowed', 405);
-//		}
 		if ($this->request->method() !== 'GET' && !$this->tokensMatch()) {
 			throw new RuntimeException('認証に失敗しました。', 403);
 		}

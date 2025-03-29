@@ -7,12 +7,16 @@ use App\Http\Requests\Request;
 use App\Models\AcademicBackground;
 use App\Models\AcademicBackgroundsDisplay;
 use App\Models\Document;
+use App\Models\Prefecture;
 use App\Models\Qualification;
 use App\Models\QualificationsDisplay;
 use App\Models\WorkExperience;
 use App\Models\WorkExperiencesDisplay;
+use App\Providers\ExportServiceProvider;
+use App\Providers\GoogleServiceProvider;
 use PDOException;
 use App\Utilities\Debug;
+use ReflectionException;
 
 class DocumentsController extends Controller {
 
@@ -23,6 +27,7 @@ class DocumentsController extends Controller {
 	private AcademicBackgroundsDisplay $academic_background_display;
 	private WorkExperiencesDisplay $work_experience_display;
 	private QualificationsDisplay $qualification_display;
+	private Prefecture $prefecture;
 
 	public function __construct(
 		Auth $auth,
@@ -33,6 +38,7 @@ class DocumentsController extends Controller {
 		AcademicBackgroundsDisplay $academic_backgrounds_display,
 		WorkExperiencesDisplay $work_experience_display,
 		QualificationsDisplay $qualifications_display,
+		Prefecture $prefecture
 	)
 	{
 		parent::__construct( $auth );
@@ -43,6 +49,7 @@ class DocumentsController extends Controller {
 		$this->academic_background_display = $academic_backgrounds_display;
 		$this->work_experience_display = $work_experience_display;
 		$this->qualification_display = $qualifications_display;
+		$this->prefecture = $prefecture;
 	}
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');
@@ -151,7 +158,7 @@ class DocumentsController extends Controller {
 
 			$this->syncData(
 				$id,
-				$request->input('academic_background'),
+				$request->input('academic_background')?? [],
 				"academic_background",
 				[$this->academic_background_display, "all"],
 				[$this->academic_background_display, "create"],
@@ -160,7 +167,7 @@ class DocumentsController extends Controller {
 
 			$this->syncData(
 				$id,
-				$request->input('work_experience'),
+				$request->input('work_experience')?? [],
 				"work_experience",
 				[$this->work_experience_display, "all"],
 				[$this->work_experience_display, "create"],
@@ -169,7 +176,7 @@ class DocumentsController extends Controller {
 
 			$this->syncData(
 				$id,
-				$request->input('qualification'),
+				$request->input('qualification')?? [],
 				"qualification",
 				[$this->qualification_display, "all"],
 				[$this->qualification_display, "create"],
@@ -190,16 +197,33 @@ class DocumentsController extends Controller {
 		Debug::start('DOCUMENT DELETE');
 		$this->document->delete($id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 
 		redirect()->route('documents-list.show');
 	}
 
-	public function export():void {
+	public function export(
+		string $id,
+		ExportServiceProvider $export_service_provider,
+		GoogleServiceProvider $google_service_provider
+	):void {
 		Debug::start('DOCUMENT EXPORT');
+		if (! $data = $this->document->findById($id)) {
+			redirect()->carry(['error' => '指定されたIDは存在しません'])->back();
+		}
+		$academicBackgroundIds = explode(',', $data['academic_backgrounds']);
+		$workExperienceIds = explode(',', $data['work_experiences']);
+		$qualificationIds = explode(',', $data['qualifications']);
 
+		$data['academic_backgrounds'] = $this->academic_background->findByIds($academicBackgroundIds);
+		$data['work_experiences'] = $this->work_experience->findByIds($workExperienceIds);
+		$data['qualifications'] = $this->qualification->findByIds($qualificationIds);
+		$data['user'] = $this->data['user'];
+		$export_service_provider->execution($data, $google_service_provider);
+
+		redirect()->route('documents-list.show');
 		Debug::end('DOCUMENT EXPORT');
 	}
 

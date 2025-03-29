@@ -6,15 +6,15 @@ Route::get('/', function() {
 	view('welcome');
 })->name('welcome');
 
-//ログイン済みユーザーがアクセスした場合にリダイレクトする。
 //未認証ユーザーのアクセスを許可する。
 Route::group(['middleware' => 'guest'], function() {
 	//ログイン
 	Route::get('/user/login', 'Auth\LoginController@index')->name('user-login.index');
-	Route::post('/user/login', 'Auth\LoginController@login')->name('user-login.store');
+	Route::get('/user/auth/google', 'Auth\LoginController@google')->name('user-login.google');
+//	Route::post('/user/login', 'Auth\LoginController@login')->name('user-login.store');
 	//登録
-	Route::get('/user/register', 'Auth\RegisterController@index')->name('user-register.index');
-	Route::post('/user/register', 'Auth\RegisterController@store')->name('user-register.store');
+//	Route::get('/user/register', 'Auth\RegisterController@index')->name('user-register.index');
+//	Route::post('/user/register', 'Auth\RegisterController@store')->name('user-register.store');
 });
 
 //未認証ユーザーがアクセスした場合にログインページへリダイレクトする。

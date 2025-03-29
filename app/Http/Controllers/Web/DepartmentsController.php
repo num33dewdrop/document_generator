@@ -70,7 +70,7 @@ class DepartmentsController extends Controller {
 
 		$this->department->create($w_id, $request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 
@@ -92,7 +92,7 @@ class DepartmentsController extends Controller {
 
 		$this->department->update($d_id ,$request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -103,7 +103,7 @@ class DepartmentsController extends Controller {
 		Debug::start('DEPARTMENT DELETE');
 		$this->department->delete($d_id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 

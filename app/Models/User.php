@@ -7,10 +7,53 @@ use PDOStatement;
 
 class User extends Model {
 	public function findById(int $id): array {
-		$sql = "SELECT * FROM users
-				WHERE id = :id
-				AND delete_flg = 0";
+		$sql = "SELECT
+					u.id,
+					u.google_id,
+					u.name,
+					u.name_ruby,
+					u.birthday,
+					u.sex,
+					u.dependents,
+					u.partner,
+					u.partner_support,
+					u.fixed_phone,
+					u.mobile_phone,
+					u.contact_phone,
+					u.email,
+					u.contact_email,
+					u.zip,
+					p.name AS prefecture,
+					u.city_town_village,
+					u.address_ruby,
+					u.contact_zip,
+					p2.name AS contact_prefecture,
+					u.contact_city_town_village,
+					u.contact_address_ruby,
+					u.word,
+					u.excel,
+					u.power_point,
+					u.pic
+				FROM users AS u
+				LEFT JOIN prefectures p on p.id = u.prefectures_id
+				LEFT JOIN prefectures p2 on p2.id = u.contact_prefectures_id
+				WHERE u.id = :id
+				AND u.delete_flg = 0";
 		return Connection::fetchAssoc($sql, [':id' => $id]);
+	}
+
+	public function findByGoogleClient(string $google_id): array {
+		$sql = "SELECT * FROM users
+				WHERE google_id = :google_id
+				AND delete_flg = 0";
+		return Connection::fetchAssoc($sql, [':google_id' => $google_id]);
+	}
+
+	public function findByWithdrawnUser(string $google_id): array {
+		$sql = "SELECT * FROM users
+				WHERE google_id = :google_id
+				AND delete_flg = 1";
+		return Connection::fetchAssoc($sql, [':google_id' => $google_id]);
 	}
 
 	public function findByEmail(string $email): array {
@@ -22,21 +65,21 @@ class User extends Model {
 
 	public function create(array $posts): void {
 		$sql  = "INSERT INTO users (
+					google_id,
 					name,
 					email,
-					password,
 					create_at
 				)
 				VALUES (
+					:google_id,
 					:name,
 					:email,
-					:password,
 					:create_at
 				)";
 		$data = [
 			':name'      => $posts['name'],
 			':email'     => $posts['email'],
-			':password'  => password_hash( $posts['password'], PASSWORD_DEFAULT ),
+			':google_id' => $posts['google_id'],
 			':create_at' => date( 'Y-m-d H:i:s' )
 		];
 		Connection::query( $sql, $data );

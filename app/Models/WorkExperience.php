@@ -15,6 +15,31 @@ class WorkExperience extends Model {
 		return Connection::fetchAssoc($sql, [':user_id' => session()->get('user_id'), ':id' => $id]);
 	}
 
+	public function findByIds(array $ids): array {
+		$sql = "SELECT
+					w.id,
+					w.user_id,
+					w.name,
+					w.first_date,
+					w.last_date,
+					w.business,
+					w.capital_stock,
+					w.sales,
+					w.number_of_employees,
+					es.name AS employment_status,
+					w.job_summary,
+					lc.name AS last_career,
+					w.experience,
+					w.track_record
+				FROM work_experiences AS w
+				LEFT JOIN last_career AS lc ON lc.id = w.last_career_id
+				LEFT JOIN employment_status AS es ON es.id = w.employment_status_id
+				WHERE w.id IN (:ids)
+				AND w.user_id = :user_id
+				AND w.delete_flg = 0";
+		return Connection::fetchAll($sql, [':user_id' => session()->get('user_id'), 'ids' => $ids]);
+	}
+
 	public function list(int $limit = 20): array {
 		$currentPage = empty($this->paginator->getRequest()->getParam('p'))? 1: (int) $this->paginator->getRequest()->getParam('p');
 		$offset = ($currentPage - 1) * $limit;

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Database;
+use App\Utilities\Debug;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -40,7 +41,7 @@ class Connection {
 		return self::$pdo;
 	}
 
-	public static function impactCheck (): bool {
+	public static function impacted (): bool {
 		return self::$stmt && self::$stmt->rowCount() > 0;
 	}
 
@@ -59,35 +60,44 @@ class Connection {
 		self::$pdo->rollBack();
 	}
 
-	private static function bind( $parameter, $value ): void {
-		$var_type = match ( true ) {
-			is_bool( $value ) => PDO::PARAM_BOOL,
-			is_int( $value ) => PDO::PARAM_INT,
-			is_null( $value ) => PDO::PARAM_NULL,
+	private static function bind($parameter, $value): void {
+		self::$stmt->bindValue($parameter, $value, self::getPdoType($value));
+	}
+
+	private static function getPdoType($value): int {
+		return match (true) {
+			is_bool($value) => PDO::PARAM_BOOL,
+			is_int($value) => PDO::PARAM_INT,
+			is_null($value) => PDO::PARAM_NULL,
 			default => PDO::PARAM_STR,
 		};
-		self::$stmt->bindValue($parameter, $value, $var_type);
 	}
 
 	// 通常のクエリ実行
 	public static function query(string $sql, array $params = []): void {
 		try {
+			// 配列を持つパラメータをプレースホルダに変換
+			foreach ($params as $key1 => $value) {
+				if (is_array($value)) {
+					$placeholders = "";
+					foreach ($value as $key2 => $item) {
+						$placeholders .= ":".rtrim($key1, "s").($key2+1).",";
+						$params[":".rtrim($key1, "s").($key2+1)] = $item; // 配列要素を順番に追加
+					}
+					$placeholders = rtrim($placeholders, ',');
+					$sql = str_replace(":$key1", $placeholders, $sql);
+					unset($params[$key1]);
+				}
+			}
+
 			self::$stmt = self::$pdo->prepare($sql);
+
+			// バインド処理
 			foreach ($params as $parameter => $value) {
-				self::bind( $parameter, $value );
+				self::bind($parameter, $value);
 			}
 			self::$stmt->execute();
-//			if($this->stmt->execute()) {
-//				session()->remove('errors');
-//				session()->remove('old');
-//			}else {
-//				Debug::echo('クエリ失敗');
-////			    error_log("Query execution failed: " . implode(", ", $this->stmt->errorInfo()));
-////				throw new PDOException("Query execution failed: " . implode(", ", $this->stmt->errorInfo()));
-//			}
 		} catch (PDOException $e) {
-			// エラーハンドリング
-//			error_log("Query preparation failed: " . $e->getMessage());
 			throw new PDOException("クエリ失敗: " . $e->getMessage(), 500);
 		}
 	}

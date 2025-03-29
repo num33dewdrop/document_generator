@@ -61,6 +61,13 @@ if (!function_exists('base_url')) {
 	}
 }
 
+//
+if (!function_exists('base_domain')) {
+	function base_domain(): string {
+		return (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'];
+	}
+}
+
 if (!function_exists('config')) {
 	function config($key): string {
 		$config = require base_path('config/app.php');
@@ -106,6 +113,28 @@ if (!function_exists('env')) {
 if (!function_exists('error')) {
 	function error(string $key, array $default = []): array {
 		return session()->get('errors', $default)[$key]?? [];
+	}
+}
+
+if (!function_exists('formatDateWithAge')) {
+	function formatDateWithAge(string $birthdate): string {
+		// 入力された日付を DateTime オブジェクトに変換
+		try {
+			$birthDate = new DateTime( $birthdate );
+			$today = new DateTime(); // 現在の日付
+
+			// 年月日部分をフォーマット
+			$formattedDate = $birthDate->format('Y年m月d日');
+
+			// 年齢を計算（満年齢）
+			$age = $today->diff($birthDate)->y;
+
+			// フォーマットされた文字列を返す
+			return "{$formattedDate}　（満　{$age}歳）";
+		} catch ( Exception $e ) {
+			error_log("日付のフォーマットに失敗しました : $e");
+			return "年　　月　　日　（満　　歳）";
+		}
 	}
 }
 

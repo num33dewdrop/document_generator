@@ -86,7 +86,7 @@ class WorkExperiencesController extends Controller  {
 
 		$this->work_experience->create($request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '登録に失敗しました。'])->back();
 		}
 
@@ -113,7 +113,7 @@ class WorkExperiencesController extends Controller  {
 
 		$this->work_experience->update($id ,$request->postAll());
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '編集に失敗しました。'])->back();
 		}
 
@@ -125,7 +125,7 @@ class WorkExperiencesController extends Controller  {
 
 		$this->work_experience->delete($id);
 
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			redirect()->carry(['error' => '削除に失敗しました。'])->back();
 		}
 

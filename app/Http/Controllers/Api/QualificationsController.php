@@ -23,7 +23,7 @@ class QualificationsController extends Controller {
 		$id = $this->request->getParam('id');
 		$response = ['error' => '', 'success' => ''];
 		$this->qualification->delete($id);
-		if (!Connection::impactCheck()) {
+		if (!Connection::impacted()) {
 			$response['error'] = '指定のIDが存在しません。';
 			response()->json($response, 400);
 		}
