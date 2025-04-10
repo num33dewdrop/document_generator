@@ -1,0 +1,22 @@
+{
+    "name": "document_generator/document_generator",
+    "type": "project",
+    "description": "Original Framework.",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "ext-pdo": "*",
+        "phpoffice/phpspreadsheet": "^1.12",
+        "ext-mbstring": "*",
+        "ext-exif": "*",
+        "google/apiclient": "^2.18"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/helpers.php"
+        ]
+    }
+}

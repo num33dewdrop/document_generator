@@ -64,17 +64,26 @@ class GoogleServiceProvider {
 
 		// 最初のシート名を取得（例: 複数ある場合は最初のシートを使う）
 		$sheetName = $sheetNames[0] ?? null;
-		$range = "{$sheetName}!B2:S56";
+		$range = "{$sheetName}!B2:S57";
 
 		// 既存データを取得
 		$response = $sheetsService->spreadsheets_values->get($spreadsheetId, $range);
-		$existingData = $response->getValues();
+		$expectedColumnCount = 18;
+		$expectedRowCount = 53;
 
-		// データがない場合の初期化（エラー防止）
-		if (!$existingData) {
-			Debug::echo('none');
-			$existingData = array_fill(0, 55, array_fill(0, 18, "")); // B2:S56 の範囲
+		$existingData = array_map(function ($row) use ($expectedColumnCount) {
+			return array_replace(array_fill(0, $expectedColumnCount, ''), $row);
+		}, $response->getValues());
+
+		// 行数を揃える（足りない分だけ空行を追加）
+		$currentRowCount = count($existingData);
+		if ($currentRowCount < $expectedRowCount) {
+			$emptyRow = array_fill(0, $expectedColumnCount, '');
+			for ($i = $currentRowCount; $i < $expectedRowCount; $i++) {
+				$existingData[] = $emptyRow;
+			}
 		}
+
 		Debug::echo($documentData);
 		// 必要なセルだけ更新
 		$existingData[0][3] = date('Y年m月d日現在');
@@ -96,96 +105,80 @@ class GoogleServiceProvider {
 		$existingData[13][6] = $documentData["user"]["email"];
 		$existingData[15][7] = $documentData["user"]["contact_phone"]?? "";
 		$existingData[19][6] = $documentData["user"]["contact_email"]?? "";
+
 		// 学歴・職歴トータル
 		$ab_total = $documentData["academic_backgrounds"]["total"];
 		$we_total = $documentData["work_experiences"]["total"];
 		// 学歴
-		$existingData[24][0] = "";
-		$existingData[24][1] = "";
-		$existingData[24][2] = "学歴";
-		// 学科名のカラム足りない。後で追加
-		foreach ($documentData["academic_backgrounds"]["records"] as $key => $value) {
-			$start_date = explode('-', $value["first_date"]);
-			$last_date = explode('-', $value["last_date"]);
-			if($key < 7) {
-				$existingData[26 + ($key * 4)][0] = $start_date[0];
-				$existingData[26 + ($key * 4)][1] = $start_date[1];
-				$existingData[26 + ($key * 4)][2] = $value["name"].'　入学';
-				$existingData[26 + ($key * 4) + 2][0] = $last_date[0];
-				$existingData[26 + ($key * 4) + 2][1] = $last_date[1];
-				$existingData[26 + ($key * 4) + 2][2] = $value["name"].'　'.$value["last_career"];
-			} else {
-				$existingData[2 + (($key - 7) * 4)][11] = $start_date[0];
-				$existingData[2 + (($key - 7) * 4)][12] = $start_date[1];
-				$existingData[2 + (($key - 7) * 4)][13] = $value["name"].'　入学';
-				$existingData[2 + (($key - 7) * 4) + 2][11] = $last_date[0];
-				$existingData[2 + (($key - 7) * 4) + 2][12] = $last_date[1];
-				$existingData[2 + (($key - 7) * 4) + 2][13] = $value["name"].'　'.$value["last_career"];
+		if(count($documentData["academic_backgrounds"]["records"]) > 0) {
+			$existingData[24][2] = "学歴";
+			// 学科名のカラム足りない。後で追加
+			foreach ($documentData["academic_backgrounds"]["records"] as $key => $value) {
+				$start_date = explode('-', $value["first_date"]);
+				$last_date = explode('-', $value["last_date"]);
+				if($key < 7) {
+					$existingData[26 + ($key * 4)][0] = $start_date[0];
+					$existingData[26 + ($key * 4)][1] = $start_date[1];
+					$existingData[26 + ($key * 4)][2] = $value["name"].'　入学';
+					$existingData[26 + ($key * 4) + 2][0] = $last_date[0];
+					$existingData[26 + ($key * 4) + 2][1] = $last_date[1];
+					$existingData[26 + ($key * 4) + 2][2] = $value["name"].'　'.$value["last_career"];
+				} else {
+					$existingData[2 + (($key - 7) * 4)][11] = $start_date[0];
+					$existingData[2 + (($key - 7) * 4)][12] = $start_date[1];
+					$existingData[2 + (($key - 7) * 4)][13] = $value["name"].'　入学';
+					$existingData[2 + (($key - 7) * 4) + 2][11] = $last_date[0];
+					$existingData[2 + (($key - 7) * 4) + 2][12] = $last_date[1];
+					$existingData[2 + (($key - 7) * 4) + 2][13] = $value["name"].'　'.$value["last_career"];
+				}
 			}
 		}
 
 		// 職歴
-		if($ab_total <= 5) {
-			$existingData[26 + ($ab_total * 4)][0] = "";
-			$existingData[26 + ($ab_total * 4)][1] = "";
-			$existingData[26 + ($ab_total * 4)][2] = "";
-			$existingData[26 + ($ab_total * 4) + 2][0] = "";
-			$existingData[26 + ($ab_total * 4) + 2][1] = "";
-			$existingData[26 + ($ab_total * 4) + 2][2] = "職歴";
-		} else {
-			$existingData[2 + (max(($ab_total - 7), 0) * 4)][11] = "";
-			$existingData[2 + (max(($ab_total - 7), 0) * 4)][12] = "";
-			$existingData[2 + (max(($ab_total - 7), 0) * 4)][13] = "";
-			$existingData[2 + (max(($ab_total - 7), 0) * 4) + 2][11] = "";
-			$existingData[2 + (max(($ab_total - 7), 0) * 4) + 2][12] = "";
-			$existingData[2 + (max(($ab_total - 7), 0) * 4) + 2][13] = "職歴";
-		}
-
-		foreach ($documentData["work_experiences"]["records"] as $key => $value) {
-			$start_date = explode('-', $value["first_date"]);
-			$last_date = explode('-', $value["last_date"]);
+		if(count($documentData["work_experiences"]["records"]) > 0) {
 			if($ab_total <= 5) {
-				if($ab_total + $key <= 6) {
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][0] = $start_date[0];
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][1] = $start_date[1];
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][2] = $value["name"].'　入社';
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][0] = $last_date[0];
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][1] = $last_date[1];
-					$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][2] = $value["name"].'　'.$value["last_career"];
-				} else {
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 2][11] = $start_date[0];
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 2][12] = $start_date[1];
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 2][13] = $value["name"].'　入社';
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 4][11] = $last_date[0];
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 4][12] = $last_date[1];
-					$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (6 - $ab_total)) * 4) + 4][13] = $value["name"].'　'.$value["last_career"];
-				}
+				$existingData[26 + ($ab_total * 4) + 2][2] = "職歴";
 			} else {
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][11] = $start_date[0];
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][12] = $start_date[1];
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][13] = $value["name"].'　入社';
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][11] = $last_date[0];
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][12] = $last_date[1];
-				$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][13] = $value["name"].'　'.$value["last_career"];
+				$existingData[2 + (max(($ab_total - 7), 0) * 4) + 2][13] = "職歴";
+			}
+
+			foreach ($documentData["work_experiences"]["records"] as $key => $value) {
+				$start_date = explode('-', $value["first_date"]);
+				$last_date = explode('-', $value["last_date"]);
+				if($ab_total <= 5) {
+					if($ab_total + $key <= 4) {
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][0] = $start_date[0];
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][1] = $start_date[1];
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 4][2] = $value["name"].'　入社';
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][0] = $last_date[0];
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][1] = $last_date[1];
+						$existingData[26 + ($ab_total * 4) + ($key * 4) + 6][2] = $value["name"].'　'.$value["last_career"];
+					} else {
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4)][11] = $start_date[0];
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4)][12] = $start_date[1];
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4)][13] = $value["name"].'　入社';
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4) + 2][11] = $last_date[0];
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4) + 2][12] = $last_date[1];
+						$existingData[2 + (max(($ab_total - 7), 0) * 4) + (($key - (5 - $ab_total)) * 4) + 2][13] = $value["name"].'　'.$value["last_career"];
+					}
+				} else {
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][11] = $start_date[0];
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][12] = $start_date[1];
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 2:4)][13] = $value["name"].'　入社';
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][11] = $last_date[0];
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][12] = $last_date[1];
+					$existingData[2 + (max(($ab_total - 7), 0) * 4) + ($key * 4) + (max(($ab_total - 7), 0) === 0? 4:6)][13] = $value["name"].'　'.$value["last_career"];
+				}
 			}
 		}
 
-		if($ab_total + $we_total <= 6) {
-			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 4][0] = "";
-			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 4][1] = "";
+		if($ab_total + $we_total <= 5) {
 			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 4][2] = "現在に至る";
-			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 6][0] = "";
-			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 6][1] = "";
 			$existingData[26 + ($ab_total * 4) + ($we_total * 4) + 6][2] = "以上"; //これを右寄せにしたい
 		} else {
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 4][11] = "";
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 4][12] = "";
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 4][13] = "現在に至る";
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 6][11] = "";
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 6][12] = "";
-			$existingData[2 + (($ab_total + $we_total - 6) * 4) + 6][13] = "以上"; //これを右寄せにしたい
+			$existingData[2 + (($ab_total + $we_total - 5) * 4)][13] = "現在に至る";
+			$existingData[2 + (($ab_total + $we_total - 5) * 4) + 2][13] = "以上"; //これを右寄せにしたい
 		}
-
 
 		// 資格
 		foreach ($documentData["qualifications"]["records"] as $key => $value) {
@@ -234,9 +227,9 @@ class GoogleServiceProvider {
 					"range" => [
 						"sheetId" => $sheets[0]->getProperties()->getSheetId(),
 						"startRowIndex" => $ab_total < 7 ? 25 + ($ab_total * 4) + 4: 3 + (($ab_total - 7) * 4),
-						"endRowIndex" => 27 + ($ab_total * 4) + 4,
-						"startColumnIndex" => 3,
-						"endColumnIndex" => 4
+						"endRowIndex" => $ab_total < 7 ? 27 + ($ab_total * 4) + 4: 5 + (($ab_total - 7) * 4),
+						"startColumnIndex" => $ab_total < 7 ? 3: 14,
+						"endColumnIndex" => $ab_total < 7 ?4: 15
 					],
 					"cell" => [
 						"userEnteredFormat" => [
@@ -257,10 +250,10 @@ class GoogleServiceProvider {
 				"repeatCell" => [
 					"range" => [
 						"sheetId" => $sheets[0]->getProperties()->getSheetId(),
-						"startRowIndex" => 25 + ($ab_total * 4) + ($we_total * 4) + 8,
-						"endRowIndex" => 27 + ($ab_total * 4) + ($we_total * 4) + 8,
-						"startColumnIndex" => 3,
-						"endColumnIndex" => 4
+						"startRowIndex" => $ab_total + $we_total <= 5? 25 + ($ab_total * 4) + ($we_total * 4) + 8: 3 + (($ab_total + $we_total - 5) * 4) + 2,
+						"endRowIndex" => $ab_total + $we_total <= 5? 27 + ($ab_total * 4) + ($we_total * 4) + 8:5 + (($ab_total + $we_total - 5) * 4) + 2,
+						"startColumnIndex" => $ab_total + $we_total <= 5? 3: 14,
+						"endColumnIndex" => $ab_total + $we_total <= 5?4: 15
 					],
 					"cell" => [
 						"userEnteredFormat" => [
