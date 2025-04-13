@@ -5,7 +5,7 @@ $list = empty($qualifications['list'])? []: $qualifications['list'];
 $paginate = empty($qualifications['paginator'])? '': $qualifications['paginator']->links();
 view_parts('head', ['title' => 'QUALIFICATION LIST', 'description' => 'QUALIFICATION LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "qualifications"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

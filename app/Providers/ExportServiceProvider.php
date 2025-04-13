@@ -21,7 +21,7 @@ class ExportServiceProvider {
 		$template_id = $this->template['google']['spreadsheet'];
 		$accessToken = session()->get('google_token');
 		$newId = $google_service_provider->generateResumeForUser($accessToken, $template_id, $data);
-//		Debug::echo($newId);
+		Debug::echo($newId);
 	}
 	// excelでの出力
 //	public function execution(array $data): void {

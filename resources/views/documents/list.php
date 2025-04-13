@@ -5,7 +5,7 @@ $list = empty($documents['list'])? []: $documents['list'];
 $paginate = empty($documents['paginator'])? '': $documents['paginator']->links();
 view_parts('head', ['title' => 'DOCUMENT LIST', 'description' => 'DOCUMENT LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "documents"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

@@ -87,6 +87,9 @@ class GoogleServiceProvider {
 		Debug::echo($documentData);
 		// 必要なセルだけ更新
 		$existingData[0][3] = date('Y年m月d日現在');
+//		if(isset($documentData["user"]["pic"])){
+//			$existingData[0][6] = '=IMAGE("' . $documentData["user"]["pic"] . '")';
+//		}
 		$existingData[2][1] = $documentData["user"]["name_ruby"]?? "";
 		$existingData[4][1] = $documentData["user"]["name"];
 		$existingData[7][0] = formatDateWithAge(sanitize($documentData['user']['birthday']));
@@ -188,7 +191,21 @@ class GoogleServiceProvider {
 			$existingData[17 + ($key * 2)][13] = $value["name"];
 		}
 
-		Debug::echo($existingData);
+		// 志望動機・自己PR
+		$existingData[32][11] = $documentData["pr"]?? "";
+
+		// 本人希望欄
+		$existingData[46][11] = $documentData["wish"]?? "";
+
+		// 通勤時間（約　時間　分）
+
+		// 扶養家族人数
+		$existingData[37][16] = ($documentData["dependents"]?? "")."人";
+
+		// 配偶者
+		$existingData[41][16] = $documentData["partner"] === 1? "有":"無";
+		$existingData[41][17] = $documentData["partner_support"] === 1? "有":"無";
+
 		// 更新リクエスト
 		$valueRange = new Google_Service_Sheets_ValueRange();
 		$valueRange->setValues($existingData);
@@ -275,8 +292,7 @@ class GoogleServiceProvider {
 		$batchUpdateRequest = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest([
 			"requests" => $requests
 		]);
-		$batchResponse = $sheetsService->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
-		Debug::echo($batchResponse);
+		$sheetsService->spreadsheets->batchUpdate($spreadsheetId, $batchUpdateRequest);
 	}
 	public function generateResumeForUser($accessToken, $templateFileId, $documentData): string {
 		// ① ユーザーのDriveにコピー

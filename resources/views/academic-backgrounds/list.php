@@ -5,7 +5,7 @@ $list = empty($academic_backgrounds['list'])? []: $academic_backgrounds['list'];
 $paginate = empty($academic_backgrounds['paginator'])? '': $academic_backgrounds['paginator']->links();
 view_parts('head', ['title' => 'ACADEMIC BACKGROUND LIST', 'description' => 'ACADEMIC BACKGROUND LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "academic-backgrounds"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

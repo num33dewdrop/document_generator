@@ -1,7 +1,7 @@
 <?php
 view_parts('head', ['title' => 'ERROR', 'description' => 'ERRORの説明']);
 view_parts('header');
-view_parts('globalNav');
+view_parts('globalNav', ["type" => ""]);
 ?>
 	<main class="l-main">
 		<div class="l-main__head">

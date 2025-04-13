@@ -9,7 +9,7 @@ $page_name = $is_register?
 
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "qualification"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

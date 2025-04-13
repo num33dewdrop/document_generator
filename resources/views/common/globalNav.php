@@ -2,7 +2,7 @@
     <nav>
         <ul>
             <li class="">
-                <a class="current" href="<?= route('documents-list.show'); ?>">
+                <a class="<?= isset($parts_data) && $parts_data["type"] === "documents"? "current":"";  ?>" href="<?= route('documents-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#home'); ?>"></use>
                     </svg>
@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="<?= route('work-experiences-list.show'); ?>">
+                <a class="<?= isset($parts_data) && $parts_data["type"] === "work-experiences"? "current":"";  ?>" href="<?= route('work-experiences-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#works'); ?>"></use>
                     </svg>
@@ -18,7 +18,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="<?= route('academic-backgrounds-list.show'); ?>">
+                <a class="<?= isset($parts_data) && $parts_data["type"] === "academic-backgrounds"? "current":"";  ?>" href="<?= route('academic-backgrounds-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#academic'); ?>"></use>
                     </svg>
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="<?= route('qualifications-list.show'); ?>">
+                <a class="<?= isset($parts_data) && $parts_data["type"] === "qualifications"? "current":"";  ?>" href="<?= route('qualifications-list.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#qualification'); ?>"></use>
                     </svg>
@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li class="">
-                <a class="" href="<?= route('user-edit.show'); ?>">
+                <a class="<?= isset($parts_data) && $parts_data["type"] === "user-edit"? "current":"";  ?>" href="<?= route('user-edit.show'); ?>">
                     <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
                         <use href="<?= assets('img/symbol/global_nav.svg#user'); ?>"></use>
                     </svg>

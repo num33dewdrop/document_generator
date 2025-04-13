@@ -5,7 +5,7 @@ $list = empty($data['departments']['list'])? []: $data['departments']['list'];
 $paginate = empty($data['departments']['paginator'])? '': $data['departments']['paginator']->links();
 view_parts('head', ['title' => 'DEPARTMENT LIST', 'description' => 'DEPARTMENT LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "work-experiences"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

@@ -150,13 +150,12 @@ class Route {
 			throw new RuntimeException("404 Not Found: $path", 404);
 		} catch (ReflectionException $e) {
 			error_log("ReflectionException: $e");
-			self::handleError($e);
 		} catch (PDOException $e) {
 			error_log("PDOException: $e");
 			self::handleError($e);
 		} catch (RuntimeException $e) {
-			error_log($e);
-			redirect()->carry(["error" => $e->getMessage()])->back();
+			error_log("RuntimeException: $e");
+			self::handleError($e);
 		}
 	}
 

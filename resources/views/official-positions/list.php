@@ -5,7 +5,7 @@ $list = empty($data['official_positions']['list'])? []: $data['official_position
 $paginate = empty($data['official_positions']['paginator'])? '': $data['official_positions']['paginator']->links();
 view_parts('head', ['title' => 'OFFICIAL POSITION LIST', 'description' => 'OFFICIAL POSITION LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "work-experiences"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

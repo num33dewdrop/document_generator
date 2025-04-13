@@ -5,7 +5,7 @@ $list = empty($work_experiences['list'])? []: $work_experiences['list'];
 $paginate = empty($work_experiences['paginator'])? '': $work_experiences['paginator']->links();
 view_parts('head', ['title' => 'WORK EXPERIENCE LIST', 'description' => 'WORK EXPERIENCE LISTの説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "work-experiences"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">

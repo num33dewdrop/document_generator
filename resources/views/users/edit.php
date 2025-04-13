@@ -4,7 +4,7 @@ $prefectures = $data['prefectures']?? [];
 $page_name = ['en' =>'EDIT MEMBER INFORMATION', 'ja' => '会員情報編集'];
 view_parts('head', ['title' => $page_name['en'], 'description' => $page_name['ja'].'の説明']);
 view_parts('header', $user);
-view_parts('globalNav');
+view_parts('globalNav', ["type" => "user-edit"]);
 ?>
 <main class="l-main">
     <div class="l-main__head">
