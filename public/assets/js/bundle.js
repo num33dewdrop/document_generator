@@ -3625,14 +3625,12 @@ new _modules_imgDrop__WEBPACK_IMPORTED_MODULE_0__["default"](imgDropObj);
 new _modules_toggleIsOpen__WEBPACK_IMPORTED_MODULE_1__["default"](menuObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrObj);
 new _modules_flatpickr__WEBPACK_IMPORTED_MODULE_4__["default"](flatpickrRangeObj);
-new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](exportModalObj);
 var Sliders = new _modules_slide__WEBPACK_IMPORTED_MODULE_2__["default"](slideObj);
 var DeleteModal = new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](deleteModalObj);
+var ExportModal = new _modules_popup__WEBPACK_IMPORTED_MODULE_3__["default"](exportModalObj);
 var Flash = new _modules_flashMessage__WEBPACK_IMPORTED_MODULE_5__["default"](flashMessageObj);
-
-// console.log(ExportModal);
-
 var $apiHandleDelete = document.querySelectorAll('.js-handleDelete');
+var $apiHandleExport = document.querySelectorAll('.js-handleExport');
 var $flash = document.querySelector('.js-flash');
 $apiHandleDelete.forEach(function (elem) {
   elem.addEventListener('click', /*#__PURE__*/function () {
@@ -3681,6 +3679,57 @@ $apiHandleDelete.forEach(function (elem) {
     }));
     return function (_x) {
       return _ref.apply(this, arguments);
+    };
+  }());
+});
+$apiHandleExport.forEach(function (elem) {
+  elem.addEventListener('click', /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e) {
+      var _e$currentTarget$data4, _e$currentTarget$data5, _e$currentTarget$data6;
+      var id, target, token, response, json, _Sliders$current2;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            if (!(!(e.currentTarget instanceof HTMLButtonElement) || !$flash)) {
+              _context2.next = 2;
+              break;
+            }
+            return _context2.abrupt("return", false);
+          case 2:
+            id = (_e$currentTarget$data4 = e.currentTarget.dataset.id) !== null && _e$currentTarget$data4 !== void 0 ? _e$currentTarget$data4 : '';
+            target = (_e$currentTarget$data5 = e.currentTarget.dataset.target) !== null && _e$currentTarget$data5 !== void 0 ? _e$currentTarget$data5 : '';
+            token = (_e$currentTarget$data6 = e.currentTarget.dataset.token) !== null && _e$currentTarget$data6 !== void 0 ? _e$currentTarget$data6 : '';
+            if (!(id === '' || token === '')) {
+              _context2.next = 7;
+              break;
+            }
+            return _context2.abrupt("return", false);
+          case 7:
+            _context2.next = 9;
+            return (0,_api_fetch__WEBPACK_IMPORTED_MODULE_6__.fetchApi)(ROOT + '/api/' + target + '/export?id=' + id, 'POST', token);
+          case 9:
+            response = _context2.sent;
+            _context2.next = 12;
+            return response.json();
+          case 12:
+            json = _context2.sent;
+            console.log(json);
+            if (response.ok) {
+              $flash.innerHTML = "<p class=\"c-flash__message c-flash__message--success c-text--m c-text--center\">".concat(json.success, "</p>");
+              (_Sliders$current2 = Sliders.current) === null || _Sliders$current2 === void 0 || _Sliders$current2.remove();
+            } else {
+              $flash.innerHTML = "<p class=\"c-flash__message c-flash__message--error c-text--m c-text--center\">".concat(json.error, "</p>");
+            }
+            ExportModal.handleHidePopup();
+            Flash.handleShowMessage();
+          case 17:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function (_x2) {
+      return _ref2.apply(this, arguments);
     };
   }());
 });

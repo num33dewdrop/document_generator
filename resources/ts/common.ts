@@ -57,15 +57,14 @@ new ToggleIsOpen(menuObj);
 
 new Flatpickr(flatpickrObj);
 new Flatpickr(flatpickrRangeObj);
-new Popup(exportModalObj);
 
 const Sliders = new Slide(slideObj);
 const DeleteModal = new Popup(deleteModalObj);
+const ExportModal = new Popup(exportModalObj);
 const Flash =  new FlashMessage(flashMessageObj);
 
-// console.log(ExportModal);
-
 const $apiHandleDelete : NodeListOf<HTMLButtonElement> = document.querySelectorAll('.js-handleDelete');
+const $apiHandleExport : NodeListOf<HTMLButtonElement> = document.querySelectorAll('.js-handleExport');
 const $flash : HTMLDivElement | null = document.querySelector('.js-flash');
 $apiHandleDelete.forEach(elem => {
     elem.addEventListener('click', async e => {
@@ -80,7 +79,6 @@ $apiHandleDelete.forEach(elem => {
         }
         const response = await fetchApi(ROOT + '/api/' + target + '/delete?id=' + id, 'DELETE', token);
         const json = await response.json();
-
         if(response.ok) {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--success c-text--m c-text--center">${json.success}</p>`;
             Sliders.current?.remove();
@@ -88,6 +86,31 @@ $apiHandleDelete.forEach(elem => {
             $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;
         }
         DeleteModal.handleHidePopup();
+        Flash.handleShowMessage();
+    });
+});
+
+$apiHandleExport.forEach(elem => {
+    elem.addEventListener('click', async e => {
+        if(! (e.currentTarget instanceof HTMLButtonElement) || !$flash) {
+            return false;
+        }
+        const id = e.currentTarget.dataset.id?? '';
+        const target = e.currentTarget.dataset.target?? '';
+        const token = e.currentTarget.dataset.token?? '';
+        if(id === '' || token === '') {
+            return false;
+        }
+        const response = await fetchApi(ROOT + '/api/' + target + '/export?id=' + id, 'POST', token);
+        const json = await response.json();
+        console.log(json);
+        if(response.ok) {
+            $flash.innerHTML = `<p class="c-flash__message c-flash__message--success c-text--m c-text--center">${json.success}</p>`;
+            Sliders.current?.remove();
+        }else {
+            $flash.innerHTML = `<p class="c-flash__message c-flash__message--error c-text--m c-text--center">${json.error}</p>`;
+        }
+        ExportModal.handleHidePopup();
         Flash.handleShowMessage();
     });
 });

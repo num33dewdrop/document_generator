@@ -1,7 +1,7 @@
 <?php
 view_parts('head');
 view_parts('header');
-view_parts('globalNav');
+view_parts('globalNav', ["type" => ""]);
 ?>
 <main class="l-main">
 HOME!!

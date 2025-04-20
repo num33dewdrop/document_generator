@@ -27,7 +27,6 @@ class DocumentsController extends Controller {
 	private AcademicBackgroundsDisplay $academic_background_display;
 	private WorkExperiencesDisplay $work_experience_display;
 	private QualificationsDisplay $qualification_display;
-	private Prefecture $prefecture;
 
 	public function __construct(
 		Auth $auth,
@@ -37,8 +36,7 @@ class DocumentsController extends Controller {
 		Qualification $qualification,
 		AcademicBackgroundsDisplay $academic_backgrounds_display,
 		WorkExperiencesDisplay $work_experience_display,
-		QualificationsDisplay $qualifications_display,
-		Prefecture $prefecture
+		QualificationsDisplay $qualifications_display
 	)
 	{
 		parent::__construct( $auth );
@@ -49,7 +47,6 @@ class DocumentsController extends Controller {
 		$this->academic_background_display = $academic_backgrounds_display;
 		$this->work_experience_display = $work_experience_display;
 		$this->qualification_display = $qualifications_display;
-		$this->prefecture = $prefecture;
 	}
 	public function list(): void {
 		Debug::start('DOCUMENT LIST');

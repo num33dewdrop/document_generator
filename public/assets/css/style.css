@@ -677,7 +677,7 @@ Component
 }
 
 .c-card {
-  width: calc(50% - 5px / 2);
+  width: 100%;
 }
 .c-card.is-show {
   position: relative;

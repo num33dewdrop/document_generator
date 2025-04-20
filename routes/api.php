@@ -3,6 +3,7 @@
 use App\Http\Routes\Route;
 
 Route::delete('/api/document/delete', 'DocumentsController@delete')->name('api.documents-delete.store');
+Route::post('/api/document/export', 'DocumentsController@export')->name('api.documents-export.store');
 
 Route::delete('/api/qualification/delete', 'QualificationsController@delete')->name('api.qualifications-delete.store');
 

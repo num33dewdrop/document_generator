@@ -3,7 +3,7 @@
 @use '../../foundation/_keyframes' as *;
 
 .c-card {
-  width: calc(50% - #{$list-gap}px/2);
+  width: 100%;
   &.is-show {
     position: relative;
     z-index: 2;

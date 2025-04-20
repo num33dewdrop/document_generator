@@ -203,8 +203,8 @@ class GoogleServiceProvider {
 		$existingData[37][16] = ($documentData["dependents"]?? "")."人";
 
 		// 配偶者
-		$existingData[41][16] = $documentData["partner"] === 1? "有":"無";
-		$existingData[41][17] = $documentData["partner_support"] === 1? "有":"無";
+		$existingData[41][16] = $documentData["user"]["partner"] === 1? "有":"無";
+		$existingData[41][17] = $documentData["user"]["partner_support"] === 1? "有":"無";
 
 		// 更新リクエスト
 		$valueRange = new Google_Service_Sheets_ValueRange();
