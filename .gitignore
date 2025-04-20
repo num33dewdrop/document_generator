@@ -131,3 +131,5 @@ dist
 /vendor/
 /storage/public/uploads/*
 !/storage/public/uploads/.gitkeep
+
+/public/assets/
