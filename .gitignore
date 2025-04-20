@@ -129,7 +129,10 @@ dist
 .pnp.*
 
 /vendor/
-/storage/public/uploads/*
-!/storage/public/uploads/.gitkeep
+/storage/app/public/uploads/*
+!/storage/app/public/uploads/.gitkeep
 
-/public/assets/
+/public/assets/*
+!/public/assets/css/.gitkeep
+!/public/assets/img/.gitkeep
+!/public/assets/js/.gitkeep
